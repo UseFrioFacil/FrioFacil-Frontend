@@ -4,6 +4,7 @@ import LandingPage from '../pages/Lading/MainPage';
 import RequestServicePage from "../pages/Client/RequestServicePage"
 import RegisterPage from '../pages/Register/RegisterPage'
 import LoginPage from '../pages/Login/LoginPage';
+import DashboardPage from '../pages/Dashboard/DashboardPage'
 
 
 export default function AppRoutes() {
@@ -15,6 +16,7 @@ export default function AppRoutes() {
         <Route path='/solicitarservico' element={<RequestServicePage/>}/>
         <Route path='/cadastro' element={<RegisterPage/>}/>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         {/*<Route path="/dashboard" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />*/}
       </Routes>
     </Router>
