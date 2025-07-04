@@ -23,3 +23,4 @@
 # Contribuidores
 
 - Ryan Barreto 
+- Gabriel Henrique
