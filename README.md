@@ -18,3 +18,8 @@
 - Framer Motion
 - Lucide Icons
 -
+
+
+# Contribuidores
+
+- Ryan Barreto 
