@@ -1,12 +1,13 @@
 import type { FC } from 'react';
 import { useState } from 'react';
-import { ShieldCheck, Users, Calendar, BarChart, DollarSign, Zap, Check, ChevronDown } from 'lucide-react';
+import { useEffect } from 'react';
+import { ShieldCheck, Users, Calendar, BarChart, DollarSign, Zap, Check, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import './MainPageStyle.css';
 import "../../styles/global.css"
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 
-// Componente FeatureCard (movido para dentro para simplicidade, sem alterações)
+// Componente FeatureCard (sem alterações)
 const FeatureCard: FC<{ icon: React.ElementType; title: string; color: string; children: React.ReactNode }> = ({ icon: Icon, title, color, children }) => (
   <div className="feature-card">
     <div className="feature-header">
@@ -19,7 +20,7 @@ const FeatureCard: FC<{ icon: React.ElementType; title: string; color: string; c
   </div>
 );
 
-// Componente PricingCard (movido para dentro para simplicidade, sem alterações)
+// Componente PricingCard (sem alterações)
 const PricingCard: FC<{ plan: string; price: string; features: string[]; cta: string; popular?: boolean }> = ({ plan, price, features, cta, popular }) => (
   <div className={`pricing-card ${popular ? 'pricing-card-popular' : ''}`}>
     {popular && <div className="popular-badge">Mais Popular</div>}
@@ -31,7 +32,7 @@ const PricingCard: FC<{ plan: string; price: string; features: string[]; cta: st
       {features.map((feature, index) => (
         <li key={index} className="pricing-feature">
           <span className="feature-check">
-            <Check size={16} className="text-green-500" />
+            <Check size={16} />
           </span>
           <span>{feature}</span>
         </li>
@@ -43,7 +44,7 @@ const PricingCard: FC<{ plan: string; price: string; features: string[]; cta: st
   </div>
 );
 
-// Componente FaqItem com estado para animação
+// Componente FaqItem (sem alterações)
 const FaqItem: FC<{ question: string; answer: string }> = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -65,6 +66,55 @@ const FaqItem: FC<{ question: string; answer: string }> = ({ question, answer })
 
 // Componente Principal da Aplicação
 const App: FC = () => {
+    // Estado para controlar o índice da imagem atual no carrossel
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    // Array com as informações das imagens do carrossel
+    const carouselImages = [
+        {
+            src: "https://placehold.co/1200x600/E0F2FE/0284C7?text=Dashboard+Intuitivo",
+            alt: "Dashboard Intuitivo da plataforma FrioFácil"
+        },
+        {
+            src: "https://placehold.co/1200x600/D1FAE5/059669?text=Agenda+Otimizada",
+            alt: "Visualização da Agenda Otimizada para equipes"
+        },
+        {
+            src: "https://placehold.co/1200x600/FEF3C7/D97706?text=Controle+Financeiro",
+            alt: "Gráficos e relatórios do Controle Financeiro"
+        },
+        {
+            src: "https://placehold.co/1200x600/FEE2E2/DC2626?text=Gest%C3%A3o+de+Clientes",
+            alt: "Tela de Gestão de Clientes com histórico de serviços"
+        }
+    ];
+
+    // Função para ir para a próxima imagem
+    const nextImage = () => {
+        setCurrentImageIndex((prevIndex) =>
+            prevIndex === carouselImages.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+
+    // Função para voltar para a imagem anterior
+    const prevImage = () => {
+        setCurrentImageIndex((prevIndex) =>
+            prevIndex === 0 ? carouselImages.length - 1 : prevIndex - 1
+        );
+    };
+
+    // --- NOVO: Efeito para rotação automática ---
+    useEffect(() => {
+        // Define um temporizador para chamar a função nextImage a cada 5 segundos
+        const timer = setTimeout(() => {
+            nextImage();
+        }, 5000); // 5000 milissegundos = 5 segundos
+
+        // Função de limpeza: cancela o temporizador se o componente for desmontado
+        // ou se o índice da imagem mudar (o que reinicia o efeito e o temporizador)
+        return () => clearTimeout(timer);
+    }, [currentImageIndex]); // O efeito é re-executado sempre que currentImageIndex muda
+
   return (
     <div className="app">
       <Header showOptions={true} showMenu={true}/>
@@ -87,13 +137,31 @@ const App: FC = () => {
                 Conhecer Recursos
               </a>
             </div>
-            <div>
-              <img 
-                src="https://placehold.co/1200x600/E0F2FE/0284C7?text=Dashboard+FrioF%C3%A1cil" 
-                alt="Dashboard da plataforma FrioFácil" 
-                className="hero-image"
-              />
+            
+            {/* --- Carrossel de Imagens com Efeito de Slide --- */}
+            <div className="hero-image-container">
+              <div 
+                className="carousel-track" 
+                style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+              >
+                {carouselImages.map((image, index) => (
+                  <img 
+                    key={index}
+                    src={image.src} 
+                    alt={image.alt} 
+                    className="hero-image"
+                  />
+                ))}
+              </div>
+              <button onClick={prevImage} className="carousel-button prev" aria-label="Imagem Anterior">
+                <ChevronLeft size={32} />
+              </button>
+              <button onClick={nextImage} className="carousel-button next" aria-label="Próxima Imagem">
+                <ChevronRight size={32} />
+              </button>
             </div>
+            {/* --- FIM --- */}
+
           </div>
         </section>
 
