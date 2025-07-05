@@ -5,7 +5,6 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-
 # Estágio 2: Servir a aplicação com NGINX
 FROM nginx:stable-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
