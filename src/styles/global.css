@@ -1,16 +1,27 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* --- Reset & Globals --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  color: #111827;
-  background-color: #f9fafb;
-  line-height: 1.5;
+body, #root { 
+    font-family: 'Inter', sans-serif; 
+    background-color: #f9fafb; 
+    color: #1f2937; 
 }
 
-a{
-  cursor: pointer;
+button, input, select, textarea { 
+    font-family: inherit; 
+}
+
+.animate-fade-in { 
+    animation: fadeIn 0.4s ease-out; 
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
