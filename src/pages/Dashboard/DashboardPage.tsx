@@ -130,6 +130,7 @@ const initialTransactions: Transaction[] = [
     { id: 4, description: "Serviço #X - ...", type: "Receita", amount: 800, date: "2025-06-25" },
 ];
 
+//Opção da DashBoard
 
 const adminNavLinks: DashboardNavLink[] = [
     { id: 'inicio', label: 'Início', icon: LayoutDashboard },
@@ -144,7 +145,6 @@ const adminNavLinks: DashboardNavLink[] = [
 
 const funcionarioNavLinks: DashboardNavLink[] = [
     { id: 'inicio', label: 'Início', icon: LayoutDashboard },
-    { id: 'servicos', label: 'Meus Serviços', icon: Wrench },
     { id: 'agenda', label: 'Minha Agenda', icon: Calendar },
     { id: 'empresa', label: 'Empresa', icon: Building },
     { id: 'informacoes', label: 'Informações', icon: Info },
