@@ -11,7 +11,7 @@ const RegistrationScreen: FC = () => {
             <div className="registration-wrapper">
                 <div className="registration-card">
                     <div className="registration-header">
-                        <h1 className="registration-title">Crie sua Conta</h1>
+                        <h1 className="registration-title">Cadastre sua Empresa</h1>
                         <p className="registration-subtitle">Preencha os campos abaixo para começar a usar o FrioFácil.</p>
                     </div>
                     
