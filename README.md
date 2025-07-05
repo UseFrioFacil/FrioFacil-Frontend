@@ -20,8 +20,28 @@
 -
 
 
-# 👥 Contribuidores
-
-- [<img src="https://avatars.githubusercontent.com/u/213251617?v=4" width="30" /> **Ryan Barreto**](https://github.com/ryanbworks)
-- [<img src="https://avatars.githubusercontent.com/u/113862540?v=4" width="30" /> **Gabriel Henrique**](https://github.com/GabrielHen-dev)
-- [<img src="https://avatars.githubusercontent.com/u/160763405?v=4" width="30" /> **Wagner Daniel**](https://github.com/WagnerDaniell)
+<table align="center">
+  <tr>
+    <td align="center">
+      <a href="https://github.com/ryanbworks">
+        <img src="https://avatars.githubusercontent.com/u/213251617?v=4" width="100" style="border-radius: 50%;" alt="Foto de Ryan Barreto"/>
+        <br />
+        <sub><b>Ryan Barreto</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/GabrielHen-dev">
+        <img src="https://avatars.githubusercontent.com/u/113862540?v=4" width="100" style="border-radius: 50%;" alt="Foto de Gabriel Henrique"/>
+        <br />
+        <sub><b>Gabriel Henrique</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/WagnerDaniell">
+        <img src="https://avatars.githubusercontent.com/u/160763405?v=4" width="100" style="border-radius: 50%;" alt="Foto de Wagner Daniel"/>
+        <br />
+        <sub><b>Wagner Daniel</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
