@@ -5,7 +5,7 @@ import RequestServicePage from "../pages/Client/RequestServicePage"
 import RegisterPage from '../pages/Register/RegisterPage'
 import LoginPage from '../pages/Login/LoginPage';
 import DashboardPage from '../pages/Dashboard/DashboardPage'
-
+import NotFoundPage from '../pages/NotFound/NotFoundPage';
 
 export default function AppRoutes() {
   return (
@@ -18,6 +18,9 @@ export default function AppRoutes() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         {/*<Route path="/dashboard" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />*/}
+
+        {/* ADICIONE ESTA LINHA NO FINAL */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );
