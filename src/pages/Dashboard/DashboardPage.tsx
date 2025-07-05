@@ -87,7 +87,7 @@ interface Empresa {
 // --- DADOS MOCKADOS (Simulando um banco de dados) ---
 
 const mockUsers: Record<Role, UserProfile> = {
-    admin: { name: 'Ana Beatriz', role: 'admin', avatarUrl: 'https://placehold.co/100x100/E0F2FE/3B82F6?text=A' },
+    admin: { name: 'Ana Banana', role: 'admin', avatarUrl: 'https://placehold.co/100x100/E0F2FE/3B82F6?text=A' },
     funcionario: { name: 'Carlos Silva', role: 'funcionario', company: 'FrioFácil Refrigeração', avatarUrl: 'https://placehold.co/100x100/E0F2FE/3B82F6?text=C' }
 };
 
