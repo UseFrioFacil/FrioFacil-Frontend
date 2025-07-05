@@ -46,7 +46,7 @@ const Header: FC<HeaderProps> = ({ showOptions, showMenu }) => {
 
         <div className="nav-desktop">
           <a onClick={() => navigate("/login")} className="nav-link">Entrar</a>
-          <a className="btn btn-primary" onClick={() => navigate("/cadastro")}>Comece Grátis</a>
+          <a className="btn btn-primary" onClick={() => navigate("/cadastreempresa")}>Comece Grátis</a>
         </div>
 
         {/* Botão do Menu Mobile */}
@@ -73,7 +73,7 @@ const Header: FC<HeaderProps> = ({ showOptions, showMenu }) => {
           ))}
           <div className="mobile-nav-footer">
             <a onClick={() => navigate("/login")} className="mobile-nav-link">Entrar</a>
-            <a onClick={() => navigate("/cadastro")} className="btn btn-primary">Comece Grátis</a>
+            <a onClick={() => navigate("/cadastreempresa")} className="btn btn-primary">Comece Grátis</a>
           </div>
         </nav>
       </div>

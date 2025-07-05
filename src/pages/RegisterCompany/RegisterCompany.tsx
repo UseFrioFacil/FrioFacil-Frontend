@@ -1,8 +1,8 @@
 import type { FC } from 'react';
-import './RegisterStyle.css';
+import './RegisterCompanyStyle.css';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import RegistrationScreen from './uiRegister/RegistrationScreen'
+import RegistrationScreen from './uiRegisterCompany/RegistrationCompanyScreen'
 
 // --- COMPONENTE PRINCIPAL PARA RENDERIZAÇÃO ---
 const RegisterPage: FC = () => {
