@@ -1,12 +1,66 @@
 import type { FC } from 'react';
-import { ShieldCheck, Users, Calendar, BarChart, DollarSign, Zap } from 'lucide-react';
+import { useState } from 'react';
+import { ShieldCheck, Users, Calendar, BarChart, DollarSign, Zap, Check, ChevronDown } from 'lucide-react';
 import './MainPageStyle.css';
 import "../../styles/global.css"
-import FeatureCard from "./uiLanding/FeatureCard"
-import PricingCard from "./uiLanding/PricingCard"
-import FaqItem from './uiLanding/FaqItem';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+
+// Componente FeatureCard (movido para dentro para simplicidade, sem alterações)
+const FeatureCard: FC<{ icon: React.ElementType; title: string; color: string; children: React.ReactNode }> = ({ icon: Icon, title, color, children }) => (
+  <div className="feature-card">
+    <div className="feature-header">
+      <div className={`feature-icon ${color}`}>
+        <Icon size={24} color="white" />
+      </div>
+      <h3 className="feature-title">{title}</h3>
+    </div>
+    <p className="feature-description">{children}</p>
+  </div>
+);
+
+// Componente PricingCard (movido para dentro para simplicidade, sem alterações)
+const PricingCard: FC<{ plan: string; price: string; features: string[]; cta: string; popular?: boolean }> = ({ plan, price, features, cta, popular }) => (
+  <div className={`pricing-card ${popular ? 'pricing-card-popular' : ''}`}>
+    {popular && <div className="popular-badge">Mais Popular</div>}
+    <h3 className="pricing-plan">{plan}</h3>
+    <p className="pricing-price">
+      R$ {price} <span className="pricing-period">/mês</span>
+    </p>
+    <ul className="pricing-features">
+      {features.map((feature, index) => (
+        <li key={index} className="pricing-feature">
+          <span className="feature-check">
+            <Check size={16} className="text-green-500" />
+          </span>
+          <span>{feature}</span>
+        </li>
+      ))}
+    </ul>
+    <button className={`pricing-button ${popular ? 'pricing-button-popular' : 'pricing-button-regular'}`}>
+      {cta}
+    </button>
+  </div>
+);
+
+// Componente FaqItem com estado para animação
+const FaqItem: FC<{ question: string; answer: string }> = ({ question, answer }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="faq-item">
+      <button className="faq-question" onClick={() => setIsOpen(!isOpen)}>
+        <span className="faq-question-text">{question}</span>
+        <ChevronDown className={`chevron-icon ${isOpen ? 'open' : ''}`} />
+      </button>
+      <div className={`faq-answer-container ${isOpen ? 'open' : ''}`}>
+        <div className="faq-answer">
+          {answer}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 
 // Componente Principal da Aplicação
