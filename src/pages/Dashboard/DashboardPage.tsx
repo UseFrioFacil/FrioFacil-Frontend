@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { 
     LayoutDashboard, Users, Wrench, UsersRound, Calendar, DollarSign, Send, 
     LogOut, Building, Info, Bell, Menu, X, Snowflake,
-    Search, PlusCircle, MoreVertical, Trash2, Edit, ChevronLeft, ChevronRight as ChevronRightIcon, AlertTriangle, TrendingUp, TrendingDown,  MessageSquare, ChevronUp, ChevronDown, Image as ImageIcon, Settings
+    Search, PlusCircle, MoreVertical, Trash2, Edit, ChevronLeft, ChevronRight as ChevronRightIcon, AlertTriangle, TrendingUp, TrendingDown, MessageSquare, ChevronUp, ChevronDown, Image as ImageIcon, Settings
 } from 'lucide-react';
 
 // --- TIPOS E INTERFACES ---
@@ -63,6 +63,7 @@ interface Servico {
     funcionarioId: number | null;
     dataAgendamento: string | null;
     horario: string | null;
+    local: string;
     status: ServicoStatus;
     valor: number;
 }
@@ -87,7 +88,7 @@ interface Empresa {
 // --- DADOS MOCKADOS (Simulando um banco de dados) ---
 
 const mockUsers: Record<Role, UserProfile> = {
-    admin: { name: 'Ana Banana', role: 'admin', avatarUrl: 'https://placehold.co/100x100/E0F2FE/3B82F6?text=A' },
+    admin: { name: 'Ana Beatriz', role: 'admin', avatarUrl: 'https://placehold.co/100x100/E0F2FE/3B82F6?text=A' },
     funcionario: { name: 'Carlos Silva', role: 'funcionario', company: 'FrioFácil Refrigeração', avatarUrl: 'https://placehold.co/100x100/E0F2FE/3B82F6?text=C' }
 };
 
@@ -113,13 +114,13 @@ const initialMockFuncionarios: Funcionario[] = [
 ];
 
 const initialMockServicos: Servico[] = [
-    { id: 6, descricao: 'Ar condicionado não gela e está pingando', clienteId: 6, funcionarioId: null, dataAgendamento: null, horario: null, status: 'Aguardando Contato', valor: 0 },
-    { id: 1, descricao: 'Manutenção Preventiva Ar Condicionado Split', clienteId: 1, funcionarioId: 1, dataAgendamento: '2025-07-10', horario: '09:00', status: 'Agendado', valor: 250.00 },
-    { id: 2, descricao: 'Instalação de Câmara Fria', clienteId: 2, funcionarioId: 3, dataAgendamento: '2025-07-02', horario: '14:00', status: 'Concluído', valor: 3500.00 },
-    { id: 3, descricao: 'Reparo em sistema de ventilação', clienteId: 2, funcionarioId: 2, dataAgendamento: '2025-07-04', horario: '11:00', status: 'Em Andamento', valor: 450.00 },
-    { id: 4, descricao: 'Limpeza e Higienização de Dutos', clienteId: 1, funcionarioId: 1, dataAgendamento: '2025-06-28', horario: '10:30', status: 'Cancelado', valor: 800.00 },
-    { id: 5, descricao: 'Troca de compressor', clienteId: 6, funcionarioId: 3, dataAgendamento: '2025-07-15', horario: '15:00', status: 'Agendado', valor: 1200.00 },
-    { id: 7, descricao: 'Verificação de rotina', clienteId: 2, funcionarioId: 2, dataAgendamento: '2025-07-21', horario: '16:00', status: 'Agendado', valor: 150.00 },
+    { id: 6, descricao: 'Ar condicionado não gela e está pingando', clienteId: 6, funcionarioId: null, dataAgendamento: null, horario: null, local: 'Rua da Aurora, 456, Recife - PE', status: 'Aguardando Contato', valor: 0 },
+    { id: 1, descricao: 'Manutenção Preventiva Ar Condicionado Split', clienteId: 1, funcionarioId: 1, dataAgendamento: '2025-07-10', horario: '09:00', local: 'Av. Paulista, 1000, Sala 5, São Paulo - SP', status: 'Agendado', valor: 250.00 },
+    { id: 2, descricao: 'Instalação de Câmara Fria', clienteId: 2, funcionarioId: 3, dataAgendamento: '2025-07-02', horario: '14:00', local: 'Rua das Flores, 123, Rio de Janeiro - RJ', status: 'Concluído', valor: 3500.00 },
+    { id: 3, descricao: 'Reparo em sistema de ventilação', clienteId: 2, funcionarioId: 2, dataAgendamento: '2025-07-04', horario: '11:00', local: 'Rua das Flores, 123, Apto 301, Rio de Janeiro - RJ', status: 'Em Andamento', valor: 450.00 },
+    { id: 4, descricao: 'Limpeza e Higienização de Dutos', clienteId: 1, funcionarioId: 1, dataAgendamento: '2025-06-28', horario: '10:30', local: 'Av. Paulista, 1000, São Paulo - SP', status: 'Cancelado', valor: 800.00 },
+    { id: 5, descricao: 'Troca de compressor', clienteId: 6, funcionarioId: 3, dataAgendamento: '2025-07-15', horario: '15:00', local: 'Rua da Aurora, 456, Recife - PE', status: 'Agendado', valor: 1200.00 },
+    { id: 7, descricao: 'Verificação de rotina', clienteId: 2, funcionarioId: 2, dataAgendamento: '2025-07-21', horario: '16:00', local: 'Rua das Flores, 123, Rio de Janeiro - RJ', status: 'Agendado', valor: 150.00 },
 ];
 
 const initialTransactions: Transaction[] = [
@@ -143,6 +144,7 @@ const adminNavLinks: DashboardNavLink[] = [
 
 const funcionarioNavLinks: DashboardNavLink[] = [
     { id: 'inicio', label: 'Início', icon: LayoutDashboard },
+    { id: 'servicos', label: 'Meus Serviços', icon: Wrench },
     { id: 'agenda', label: 'Minha Agenda', icon: Calendar },
     { id: 'empresa', label: 'Empresa', icon: Building },
     { id: 'informacoes', label: 'Informações', icon: Info },
@@ -285,7 +287,7 @@ const ClientesView: FC = () => {
             <div className="table-container">
                 <div className="table-wrapper">
                     <table className="data-table">
-                        <thead>
+                        <thead className="hide-sm">
                             <tr>
                                 <th>Cliente</th>
                                 <th>Status</th>
@@ -296,7 +298,7 @@ const ClientesView: FC = () => {
                         <tbody>
                             {paginatedClientes.map(cliente => (
                                 <tr key={cliente.id}>
-                                    <td>
+                                    <td data-label="Cliente">
                                         <div className="table-cell-user">
                                             <img className="avatar" src={cliente.avatarUrl} alt={`Avatar de ${cliente.name}`} />
                                             <div>
@@ -307,12 +309,12 @@ const ClientesView: FC = () => {
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td data-label="Status">
                                         <span className={`status-badge ${cliente.status === 'ativo' ? 'status-ativo' : 'status-inativo'}`}>
                                             {cliente.status}
                                         </span>
                                     </td>
-                                    <td className="hide-md">
+                                    <td data-label="Cliente Desde" className="hide-md">
                                         {new Date(cliente.since).toLocaleDateString('pt-BR')}
                                     </td>
                                     <td className="table-actions">
@@ -477,7 +479,7 @@ const ServicosView: FC = () => {
             <div className="table-container">
                 <div className="table-wrapper">
                     <table className="data-table">
-                        <thead>
+                        <thead className="hide-sm">
                             <tr>
                                 <th>Serviço / Cliente</th>
                                 <th className="hide-lg">Funcionário</th>
@@ -494,12 +496,14 @@ const ServicosView: FC = () => {
 
                                 return (
                                 <tr key={servico.id}>
-                                    <td>
-                                        <div className="text-main">{servico.descricao}</div>
-                                        <div className="text-sub">{cliente?.name || 'Desconhecido'}</div>
-                                        <div className="text-sub">{cliente?.telefone}</div>
+                                    <td data-label="Serviço">
+                                        <div className="table-cell-content">
+                                            <span className="text-main">{servico.descricao}</span>
+                                            <span className="text-sub">{cliente?.name || 'Desconhecido'}</span>
+                                            <span className="text-sub">{cliente?.telefone}</span>
+                                        </div>
                                     </td>
-                                    <td className="hide-lg">
+                                    <td data-label="Funcionário" className="hide-lg">
                                         {funcionario ? (
                                             <div className="table-cell-user">
                                                 <img src={funcionario.avatarUrl} alt={funcionario.name} className="avatar small" />
@@ -509,7 +513,7 @@ const ServicosView: FC = () => {
                                             <span className="text-italic">Não atribuído</span>
                                         )}
                                     </td>
-                                    <td className="hide-md">
+                                    <td data-label="Data" className="hide-md">
                                         {servico.dataAgendamento ? (
                                             <div>
                                                 <div>{new Date(servico.dataAgendamento).toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</div>
@@ -517,7 +521,7 @@ const ServicosView: FC = () => {
                                             </div>
                                         ) : <span className="text-italic">A definir</span>}
                                     </td>
-                                    <td>
+                                    <td data-label="Status">
                                         <span className={`status-badge ${getStatusColorClass(servico.status)}`}>
                                             {servico.status}
                                         </span>
@@ -671,7 +675,7 @@ const FuncionariosView: FC = () => {
             <div className="table-container">
                 <div className="table-wrapper">
                     <table className="data-table">
-                        <thead>
+                        <thead className="hide-sm">
                             <tr>
                                 <th>Funcionário</th>
                                 <th className="hide-md">Telefone</th>
@@ -681,7 +685,7 @@ const FuncionariosView: FC = () => {
                         <tbody>
                             {paginatedFuncionarios.map(func => (
                                 <tr key={func.id}>
-                                    <td>
+                                    <td data-label="Funcionário">
                                         <div className="table-cell-user">
                                             <img className="avatar" src={func.avatarUrl} alt={`Avatar de ${func.name}`} />
                                             <div>
@@ -690,7 +694,7 @@ const FuncionariosView: FC = () => {
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="hide-md">{func.telefone}</td>
+                                    <td data-label="Telefone" className="hide-md">{func.telefone}</td>
                                     <td className="table-actions">
                                         <button onClick={() => setOpenMenuId(func.id === openMenuId ? null : func.id)} className="menu-button">
                                             <MoreVertical size={20} />
@@ -821,6 +825,7 @@ const AgendaView: FC = () => {
                             <p><strong>Cliente:</strong> {findCliente(selectedServico.clienteId)?.name}</p>
                             <p><strong>Telefone:</strong> {findCliente(selectedServico.clienteId)?.telefone}</p>
                             <p><strong>Descrição:</strong> {selectedServico.descricao}</p>
+                            <p><strong>Local:</strong> {selectedServico.local}</p>
                             <p><strong>Funcionário:</strong> {findFuncionario(selectedServico.funcionarioId)?.name || 'Não atribuído'}</p>
                             <p><strong>Data:</strong> {new Date(selectedServico.dataAgendamento!).toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</p>
                             <p><strong>Horário:</strong> {selectedServico.horario}</p>
@@ -879,7 +884,7 @@ const FinanceiroView: FC = () => {
                 <h3 className="table-title">Últimas Transações</h3>
                 <div className="table-wrapper">
                     <table className="data-table">
-                        <thead>
+                        <thead className="hide-sm">
                             <tr>
                                 <th>Descrição</th>
                                 <th>Data</th>
@@ -889,9 +894,9 @@ const FinanceiroView: FC = () => {
                         <tbody>
                             {transactions.map(t => (
                                 <tr key={t.id}>
-                                    <td className="text-main">{t.description}</td>
-                                    <td>{new Date(t.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</td>
-                                    <td className={`font-semibold ${t.type === 'Receita' ? 'text-green' : 'text-red'}`} style={{textAlign: 'right'}}>
+                                    <td data-label="Descrição" className="text-main">{t.description}</td>
+                                    <td data-label="Data">{new Date(t.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</td>
+                                    <td data-label="Valor" className={`font-semibold ${t.type === 'Receita' ? 'text-green' : 'text-red'}`} style={{textAlign: 'right'}}>
                                         {t.type === 'Despesa' && '- '}R$ {t.amount.toFixed(2)}
                                     </td>
                                 </tr>
@@ -956,8 +961,8 @@ const NotificacoesView: FC = () => {
                         <h3>Automações</h3>
                          <div className="automation-item">
                              <div>
-                                <p className="font-semibold">Lembrete de Manutenção</p>
-                                <p className="text-xs">Enviado 7 dias antes do prazo.</p>
+                                 <p className="font-semibold">Lembrete de Manutenção</p>
+                                 <p className="text-xs">Enviado 7 dias antes do prazo.</p>
                              </div>
                              <button className="toggle-switch active">
                                  <span className="toggle-handle"></span>
@@ -1021,9 +1026,9 @@ const ConfiguracoesView: FC = () => {
                 </div>
                 <div style={{marginLeft: 'auto'}}>
                      <button onClick={() => setIsEditModalOpen(true)} className="button button-secondary">
-                        <Edit size={16} />
-                        Editar Dados
-                    </button>
+                         <Edit size={16} />
+                         Editar Dados
+                     </button>
                 </div>
              </div>
              <LogoModal isOpen={isLogoModalOpen} onClose={() => setIsLogoModalOpen(false)} onSave={(logoUrl) => handleSave({...empresa, logoUrl})} currentLogoUrl={empresa.logoUrl} />
@@ -1051,7 +1056,7 @@ const InformacoesView: FC = () => {
     };
 
     return (
-         <div className="animate-fade-in">
+       <div className="animate-fade-in">
              <h2 className="view-title">Informações e Políticas</h2>
              <p className="view-subtitle">Políticas e diretrizes importantes para a equipa.</p>
              <div className="card">
@@ -1111,7 +1116,7 @@ const ClientModal: FC<{isOpen: boolean, onClose: () => void, onSave: (data: any)
                     <h3>{clientToEdit ? 'Editar Cliente' : 'Adicionar Novo Cliente'}</h3>
                     <button onClick={onClose} className="modal-close-button"><X size={24} /></button>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="modal-form-container">
                     <div className="modal-body">
                         <div className="form-group-radio">
                             <label><input type="radio" name="clientType" value="PF" checked={formData.clientType === 'PF'} onChange={handleChange} /> Pessoa Física</label>
@@ -1155,6 +1160,7 @@ const ServicoModal: FC<{isOpen: boolean, onClose: () => void, onSave: (data: any
         funcionarioId: '',
         dataAgendamento: '',
         horario: '',
+        local: '',
         valor: '',
         status: 'Agendado' as ServicoStatus
     };
@@ -1168,6 +1174,7 @@ const ServicoModal: FC<{isOpen: boolean, onClose: () => void, onSave: (data: any
                 funcionarioId: String(servicoToEdit.funcionarioId || ''),
                 dataAgendamento: servicoToEdit.dataAgendamento || '',
                 horario: servicoToEdit.horario || '',
+                local: servicoToEdit.local || '',
                 valor: String(servicoToEdit.valor),
                 status: servicoToEdit.status
             });
@@ -1202,11 +1209,15 @@ const ServicoModal: FC<{isOpen: boolean, onClose: () => void, onSave: (data: any
                     <h3>{servicoToEdit ? 'Editar Serviço' : 'Adicionar Novo Serviço'}</h3>
                     <button onClick={onClose} className="modal-close-button"><X size={24} /></button>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="modal-form-container">
                     <div className="modal-body grid-2-col">
                         <div className="form-group span-2">
                             <label htmlFor="descricao">Descrição do Serviço</label>
                             <textarea name="descricao" id="descricao" value={formData.descricao} onChange={handleChange} required rows={3}></textarea>
+                        </div>
+                         <div className="form-group span-2">
+                            <label htmlFor="local">Local do Serviço</label>
+                            <input type="text" name="local" id="local" value={formData.local} onChange={handleChange} required placeholder="Endereço onde o serviço será realizado" />
                         </div>
                         <div className="form-group">
                             <label htmlFor="clienteId">Cliente</label>
@@ -1226,7 +1237,7 @@ const ServicoModal: FC<{isOpen: boolean, onClose: () => void, onSave: (data: any
                             <label htmlFor="dataAgendamento">Data de Agendamento</label>
                             <input type="date" name="dataAgendamento" id="dataAgendamento" value={formData.dataAgendamento} onChange={handleChange} />
                         </div>
-                         <div className="form-group">
+                        <div className="form-group">
                             <label htmlFor="horario">Horário</label>
                             <input type="time" name="horario" id="horario" value={formData.horario} onChange={handleChange} />
                         </div>
@@ -1607,7 +1618,7 @@ export default function DashboardPage() {
                 .sidebar-container-mobile.open { transform: translateX(0); }
                 .sidebar-overlay { position: fixed; inset: 0; background-color: rgba(0,0,0,0.5); z-index: 30; }
                 .main-content-wrapper { flex: 1; display: flex; flex-direction: column; max-height: 100vh; }
-                .main-content { flex: 1; overflow-y: auto; padding: 2rem; }
+                .main-content { flex: 1; overflow-y: auto; padding: 1.5rem; }
 
                 /* --- Sidebar --- */
                 .sidebar { background-color: white; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; height: 100%; }
@@ -1636,7 +1647,7 @@ export default function DashboardPage() {
                 .topbar-user-info small { font-size: 0.75rem; color: #6b7280; text-transform: capitalize; }
                 
                 /* --- Role Switcher (Demo only) --- */
-                .role-switcher { position: absolute; top: 1rem; right: 1.5rem; background-color: white; padding: 0.375rem; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); z-index: 50; display: flex; gap: 0.25rem; border: 1px solid #e5e7eb; }
+                .role-switcher { position: fixed; bottom: 1rem; right: 1.5rem; background-color: white; padding: 0.375rem; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); z-index: 50; display: flex; gap: 0.25rem; border: 1px solid #e5e7eb; }
                 .role-switcher button { padding: 0.25rem 0.75rem; font-size: 0.875rem; border-radius: 0.375rem; border: none; cursor: pointer; transition: all 0.2s; }
                 .role-switcher button.active { background-color: #3b82f6; color: white; }
                 .role-switcher button:not(.active) { background-color: #f3f4f6; }
@@ -1645,8 +1656,8 @@ export default function DashboardPage() {
                 /* --- General View Styles --- */
                 .view-header { display: flex; flex-direction: column; gap: 1rem; }
                 .view-title { font-size: 1.875rem; font-weight: bold; color: #111827; }
-                .view-subtitle { margin-top: 0.5rem; color: #4b5563; }
-                .view-header-actions { display: flex; align-items: center; gap: 0.5rem; }
+                .view-subtitle { margin-top: 0.25rem; color: #4b5563; }
+                .view-header-actions { display: flex; flex-direction: column; align-items: stretch; gap: 0.5rem; }
                 .search-container { position: relative; flex-grow: 1; }
                 .search-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #9ca3af; }
                 .search-input { width: 100%; padding: 0.625rem 1rem 0.625rem 2.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem; }
@@ -1660,20 +1671,22 @@ export default function DashboardPage() {
                 .button-danger:hover { background-color: #b91c1c; }
                 .button-whatsapp { background-color: #25d366; color: white; }
                 .button-whatsapp:hover { background-color: #16a34a; }
-                .button-text { display: none; }
+                .button-text { display: inline; }
 
                 /* --- Table Styles --- */
                 .table-container { margin-top: 2rem; background-color: white; border-radius: 1rem; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #e5e7eb; overflow: hidden; }
                 .table-wrapper { overflow-x: auto; }
                 .data-table { width: 100%; font-size: 0.875rem; text-align: left; color: #6b7280; border-collapse: collapse; }
                 .data-table thead { font-size: 0.75rem; color: #374151; text-transform: uppercase; background-color: #f9fafb; }
-                .data-table th, .data-table td { padding: 1rem 1.5rem; white-space: nowrap;}
+                .data-table th, .data-table td { padding: 1rem 1.5rem; }
                 .data-table tbody tr { border-bottom: 1px solid #e5e7eb; }
+                .data-table tbody tr:last-child { border-bottom: none; }
                 .data-table tbody tr:hover { background-color: #f9fafb; }
                 .table-cell-user { display: flex; align-items: center; gap: 0.75rem; }
-                .table-cell-user .text-main { font-weight: 600; color: #111827; }
-                .table-cell-user .text-sub { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
-                .status-badge { padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 500; border-radius: 9999px; display: inline-flex; }
+                .table-cell-user .text-main, .table-cell-content .text-main { font-weight: 600; color: #111827; white-space: normal; }
+                .table-cell-user .text-sub, .table-cell-content .text-sub { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; white-space: normal; }
+                .table-cell-content { display: flex; flex-direction: column; gap: 0.25rem; }
+                .status-badge { padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 500; border-radius: 9999px; display: inline-flex; white-space: nowrap; }
                 .status-ativo { background-color: #dcfce7; color: #166534; }
                 .status-inativo { background-color: #fee2e2; color: #991b1b; }
                 .status-aguardando { background-color: #f3e8ff; color: #6b21a8; }
@@ -1685,7 +1698,7 @@ export default function DashboardPage() {
                 .actions-wrapper { display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem; }
                 .menu-button { padding: 0.5rem; border-radius: 0.375rem; background: none; border: none; cursor: pointer; color: #6b7280; }
                 .menu-button:hover { background-color: #f3f4f6; }
-                .whatsapp-button { padding: 0.5rem; border-radius: 0.375rem; color: #16a34a; }
+                .whatsapp-button { padding: 0.5rem; border-radius: 0.375rem; color: #16a34a; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;}
                 .whatsapp-button:hover { background-color: #dcfce7; }
                 .dropdown-menu { position: absolute; right: 0; top: 100%; margin-top: 0.5rem; width: 160px; background-color: white; border-radius: 0.375rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; z-index: 20; }
                 .dropdown-menu a { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; text-decoration: none; }
@@ -1698,22 +1711,114 @@ export default function DashboardPage() {
                 .pagination-buttons button:disabled { opacity: 0.5; cursor: not-allowed; }
                 .table-empty { text-align: center; padding: 3rem; }
 
-                /* --- Modal Styles --- */
-                .modal-overlay { position: fixed; inset: 0; background-color: rgba(0,0,0,0.5); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-                .modal-content { background-color: white; border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
-                .modal-content.wide { max-width: 672px; }
-                .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem; border-bottom: 1px solid #e5e7eb; }
-                .modal-header h3 { font-size: 1.25rem; font-weight: bold; }
-                .modal-close-button { padding: 0.25rem; border-radius: 9999px; background: none; border: none; cursor: pointer; }
-                .modal-close-button:hover { background-color: #f3f4f6; }
-                .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-                .modal-body.grid-2-col { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-                .form-group { display: flex; flex-direction: column; }
-                .form-group label { font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem; }
-                .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem; }
-                .form-group-radio { display: flex; gap: 1rem; }
-                .form-group-radio label { display: flex; align-items: center; gap: 0.5rem; }
-                .modal-footer { display: flex; justify-content: flex-end; gap: 0.75rem; padding: 1.5rem; background-color: #f9fafb; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; }
+                /* --- Modal Styles (CORRIGIDO) --- */
+                .modal-overlay {
+                    position: fixed;
+                    inset: 0;
+                    background-color: rgba(17, 24, 39, 0.6);
+                    backdrop-filter: blur(4px);
+                    z-index: 50;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 1rem;
+                }
+                .modal-content {
+                    background-color: white;
+                    border-radius: 1rem;
+                    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                    max-width: 500px;
+                    display: flex;
+                    flex-direction: column;
+                    max-height: 90vh;
+                    overflow: hidden; /* Important: hides overflow on the container */
+                }
+                .modal-content.wide {
+                    max-width: 672px;
+                }
+                .modal-header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 1rem 1.5rem;
+                    border-bottom: 1px solid #e5e7eb;
+                    flex-shrink: 0;
+                }
+                .modal-header h3 {
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                }
+                .modal-close-button {
+                    padding: 0.25rem;
+                    border-radius: 9999px;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    color: #6b7280;
+                }
+                .modal-close-button:hover {
+                    background-color: #f3f4f6;
+                    color: #1f2937;
+                }
+                .modal-form-container {
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 1;
+                    overflow: hidden; /* Crucial for child scrolling */
+                }
+                .modal-body {
+                    padding: 1.5rem;
+                    overflow-y: auto; /* This enables scrolling on the body */
+                    flex-grow: 1; /* Allows the body to take up available space */
+                }
+                .modal-body.grid-2-col {
+                    display: grid;
+                    grid-template-columns: 1fr; /* Mobile-first: 1 column */
+                    gap: 1rem;
+                }
+                .form-group {
+                    display: flex;
+                    flex-direction: column;
+                }
+                .form-group label {
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    color: #374151;
+                    margin-bottom: 0.5rem;
+                }
+                .form-group input, .form-group select, .form-group textarea {
+                    width: 100%;
+                    padding: 0.625rem 0.75rem;
+                    border: 1px solid #d1d5db;
+                    border-radius: 0.5rem;
+                    transition: border-color 0.2s, box-shadow 0.2s;
+                }
+                .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+                     outline: none;
+                     border-color: #3b82f6;
+                     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+                }
+                .form-group-radio {
+                    display: flex;
+                    gap: 1.5rem;
+                    align-items: center;
+                }
+                .form-group-radio label {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.875rem;
+                }
+                .modal-footer {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 0.75rem;
+                    padding: 1rem 1.5rem;
+                    background-color: #f9fafb;
+                    border-top: 1px solid #e5e7eb;
+                    flex-shrink: 0;
+                }
                 
                 /* --- Confirmation Modal --- */
                 .confirmation-icon-wrapper { height: 3rem; width: 3rem; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 9999px; background-color: #fee2e2; }
@@ -1761,6 +1866,7 @@ export default function DashboardPage() {
                 .toggle-switch { height: 1.5rem; width: 2.75rem; border-radius: 9999px; padding: 0.25rem; background-color: #22c55e; display: flex; align-items: center; transition: all 0.2s; border: none; cursor: pointer; }
                 .toggle-handle { height: 1rem; width: 1rem; border-radius: 9999px; background-color: white; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); transform: translateX(1.25rem); transition: transform 0.2s; }
                 
+                .card.card-row { display: flex; flex-direction: column; gap: 1rem; }
                 .empresa-logo { width: 6rem; height: 6rem; border-radius: 9999px; border: 4px solid #f3f4f6; }
                 .empresa-details { display: flex; flex-direction: column; gap: 0.75rem; }
                 .empresa-details h3 { font-size: 1.5rem; font-weight: bold; color: #111827; }
@@ -1776,6 +1882,32 @@ export default function DashboardPage() {
                 .faq-answer { margin-top: 0.75rem; color: #4b5563; font-size: 0.875rem; line-height: 1.5; }
 
                 /* --- Responsive --- */
+                @media (max-width: 767px) {
+                    .sidebar-container-desktop { display: none; }
+                    .sidebar-close-button { display: block; }
+                    .topbar-menu-button { display: block; }
+                    .topbar-user-info { display: none; }
+                    .view-header { flex-direction: column; align-items: stretch; }
+                    .data-table thead.hide-sm { display: none; }
+                    .data-table, .data-table tbody, .data-table tr { display: block; width: 100%; }
+                    .data-table tr { border: 1px solid #e5e7eb; border-radius: 0.5rem; margin-bottom: 1rem; padding: 1rem; }
+                    .data-table td { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #f3f4f6; text-align: right; flex-wrap: wrap; }
+                    .data-table tr:last-child td:last-child { border-bottom: none; }
+                    .data-table td::before { content: attr(data-label); font-weight: 600; color: #374151; margin-right: 1rem; text-align: left; white-space: nowrap; }
+                    .table-actions { justify-content: flex-end !important; }
+                    .table-actions::before { display: none; }
+                    .data-table td .table-cell-user, .data-table td .table-cell-content {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-end;
+                        gap: 0.25rem;
+                        text-align: right;
+                        word-break: break-all;
+                    }
+                    .table-cell-user .avatar { display: none; }
+                    .calendar-grid { grid-template-columns: 1fr; }
+                    .calendar-day { height: auto; min-height: 4rem; }
+                }
                 @media (min-width: 768px) {
                     .view-header { flex-direction: row; align-items: center; justify-content: space-between; }
                     .stats-grid { grid-template-columns: repeat(3, 1fr); }
@@ -1784,19 +1916,12 @@ export default function DashboardPage() {
                     .modal-body .span-2 { grid-column: span 2 / span 2; }
                     .hide-md { display: table-cell; }
                 }
-                @media (max-width: 768px) {
-                    .sidebar-container-desktop { display: none; }
-                    .sidebar-close-button { display: block; }
-                    .topbar-menu-button { display: block; }
-                    .topbar-user-info { display: none; }
-                    .view-header { flex-direction: column; align-items: stretch; }
-                    .hide-md { display: none; }
-                }
                  @media (max-width: 1024px) {
                     .hide-lg { display: none; }
                  }
                 @media (min-width: 640px) {
                     .button-text { display: inline; }
+                    .card.card-row { flex-direction: row; align-items: flex-start; gap: 2rem; }
                 }
                 `}
             </style>
