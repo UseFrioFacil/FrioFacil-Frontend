@@ -20,7 +20,8 @@
 -
 
 
-# Contribuidores
+# 👥 Contribuidores
 
-- Ryan Barreto 
-- Gabriel Henrique
+- [<img src="https://avatars.githubusercontent.com/u/213251617?v=4" width="30" /> **Ryan Barreto**](https://github.com/ryanbworks)
+- [<img src="https://avatars.githubusercontent.com/u/113862540?v=4" width="30" /> **Gabriel Henrique**](https://github.com/GabrielHen-dev)
+- [<img src="https://avatars.githubusercontent.com/u/160763405?v=4" width="30" /> **Wagner Daniel**](https://github.com/WagnerDaniell)
