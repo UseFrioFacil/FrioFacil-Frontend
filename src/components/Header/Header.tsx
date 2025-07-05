@@ -29,7 +29,7 @@ const Header: FC<HeaderProps> = ({ showOptions, showMenu }) => {
   return (
     <header className="header">
       <div className="header-container container">
-        <a className="logo" onClick={() => navigate("/")}>
+        <a className="logo" onClick={() => navigate(-1)}>
           <Snowflake className="logo-icon" />
           <span className="logo-text">FrioFácil</span>
         </a>
