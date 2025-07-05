@@ -17,9 +17,9 @@
 - CSS  
 - Framer Motion
 - Lucide Icons
--
 
 
+## Contribuidores
 <table align="center">
   <tr>
     <td align="center">
