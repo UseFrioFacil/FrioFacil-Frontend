@@ -41,7 +41,7 @@ const LoginScreen: FC = () => {
 
                     <div className="signup-link-container">
                         <p className="signup-text">
-                            Não tem uma conta? <a href="#" className="signup-link">Cadastre-se</a>
+                            Não tem uma conta? <a href="https://usefriofacil.com.br/cadastreempresa" className="signup-link">Cadastre-se</a>
                         </p>
                     </div>
                 </div>
