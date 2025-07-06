@@ -17,7 +17,7 @@ export default function AppRoutes() {
         <Route path='/cadastreempresa' element={<RegisterPage/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        {/*<Route path="/dashboard" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />*/}
+        {/* "Salvando pra usar dps o Componente de Proteção de tela "element={<ProtectedRoute><HomePage /></ProtectedRoute>}*/}
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
