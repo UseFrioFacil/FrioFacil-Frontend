@@ -33,7 +33,7 @@ const CheckoutPage: FC = () => {
   };
 
   useEffect(() => {
-    fetch('http://64.181.162.35:25565/api/payment/create-payment-intent', {
+    fetch('https://usefriofacil.com.br:25565/api/payment/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ plano: plan.name }),
