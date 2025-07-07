@@ -21,9 +21,8 @@ const CheckoutPage: FC = () => {
 
 
   const plan = {
-    name: 'Profissional',
+    name: 'profissional',
     price: '49,99',
-    amountInCents: 4999, // Stripe exige valor em centavos
     features: [
       'Clientes ilimitados',
       'Lembretes automáticos',
@@ -37,7 +36,7 @@ const CheckoutPage: FC = () => {
     fetch('http://localhost:5000/api/payment/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: plan.amountInCents }),
+      body: JSON.stringify({ plano: plan.name }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
