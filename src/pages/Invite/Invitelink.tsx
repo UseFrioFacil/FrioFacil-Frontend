@@ -111,7 +111,7 @@ const AcceptInvitePage: FC = () => {
 };
 
 // Componente App principal para renderização
-export default function App() {
+export default function InviteLink() {
   const AppHeader = () => (
     <header style={{ padding: '20px', backgroundColor: '#fff', borderBottom: '1px solid #e5e7eb', textAlign: 'center', fontWeight: 'bold', color: '#111827' }}>
       FrioFácil
