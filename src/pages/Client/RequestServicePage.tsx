@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Building, Home, Briefcase, Droplet, Thermometer, Zap, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Droplet, Thermometer, Zap, AlertTriangle, CheckCircle } from 'lucide-react'; 
 import "./RequestServiceStyle.css"
 import Header from '../../components/Header/Header'
 import TechnicianInfoCard from './uiClient/TechnicianInfoCard'
@@ -17,24 +17,19 @@ const mockTechnician = {
 interface FormData {
   problemDescription: string;
   commonProblems: string[];
-  propertyType: string;
-  room: string;
-  urgency: string;
+  telefone: string;
+  localizacao: string;
 }
 
 export default function RequestServicePage() {
-  const [step, setStep] = useState(1);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     problemDescription: '',
     commonProblems: [],
-    propertyType: '',
-    room: '',
-    urgency: '',
+    telefone: '',
+    localizacao: '',
   });
   console.log(formData)
-
-  const handleNext = () => setStep(s => s + 1);
-  const handleBack = () => setStep(s => s - 1);
 
   const handleProblemTagClick = (problem: string) => {
     setFormData(prev => {
@@ -48,144 +43,108 @@ export default function RequestServicePage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Formulário enviado:", formData);
-    handleNext();
+    setIsSubmitted(true);
   };
 
-  const renderStep = () => {
-    switch (step) {
-      case 1:
-        return (
-          <FormStep title="1. Qual é o problema?">
-            <div className="step-content">
-              <div className="form-group">
-                <label className="form-label">Selecione os problemas principais (opcional):</label>
-                <div className="problems-grid">
-                  <ProblemTag label="Não Gela" icon={Thermometer} isSelected={formData.commonProblems.includes('Não Gela')} onClick={() => handleProblemTagClick('Não Gela')} />
-                  <ProblemTag label="Está Pingando" icon={Droplet} isSelected={formData.commonProblems.includes('Está Pingando')} onClick={() => handleProblemTagClick('Está Pingando')} />
-                  <ProblemTag label="Não Liga" icon={Zap} isSelected={formData.commonProblems.includes('Não Liga')} onClick={() => handleProblemTagClick('Não Liga')} />
-                  <ProblemTag label="Barulho Estranho" icon={AlertTriangle} isSelected={formData.commonProblems.includes('Barulho Estranho')} onClick={() => handleProblemTagClick('Barulho Estranho')} />
-                </div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="description" className="form-label">
-                  Descreva com mais detalhes:
-                </label>
-                <textarea
-                  id="description"
-                  className="textarea"
-                  placeholder="Ex: O ar condicionado parou de gelar ontem à noite e está fazendo um barulho alto no motor..."
-                  value={formData.problemDescription}
-                  onChange={(e) => setFormData({ ...formData, problemDescription: e.target.value })}
-                />
-              </div>
-            </div>
-          </FormStep>
-        );
-      case 2:
-        return (
-          <FormStep title="2. Onde fica o equipamento?">
-            <div className="step-content">
-              <div className="form-group">
-                <label className="form-label">Tipo de imóvel:</label>
-                <div className="problems-grid">
-                  <ProblemTag label="Casa" icon={Home} isSelected={formData.propertyType === 'Casa'} onClick={() => setFormData({...formData, propertyType: 'Casa'})} />
-                  <ProblemTag label="Apartamento" icon={Building} isSelected={formData.propertyType === 'Apartamento'} onClick={() => setFormData({...formData, propertyType: 'Apartamento'})} />
-                  <ProblemTag label="Comercial" icon={Briefcase} isSelected={formData.propertyType === 'Comercial'} onClick={() => setFormData({...formData, propertyType: 'Comercial'})} />
-                </div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="room" className="form-label">Qual o cômodo?</label>
-                <input
-                  type="text"
-                  id="room"
-                  value={formData.room}
-                  onChange={(e) => setFormData({...formData, room: e.target.value})}
-                  placeholder="Ex: Quarto, Sala, Escritório..."
-                  className="text-input"
-                />
-              </div>
-            </div>
-          </FormStep>
-        );
-      case 3:
-        return (
-          <FormStep title="3. Revise e envie sua solicitação">
-            <div className="step-content">
-              <div className="review-item">
-                <h4 className="review-title">Problema:</h4>
-                <p className="review-content">{formData.commonProblems.join(', ')}</p>
-                <p className="review-content">{formData.problemDescription || "Nenhuma descrição adicional."}</p>
-              </div>
-              <div className="review-item">
-                <h4 className="review-title">Local:</h4>
-                <p className="review-content">{formData.propertyType}, no cômodo: {formData.room}</p>
-              </div>
-              <div className="review-note">
-                Ao enviar, você concorda em compartilhar essas informações com <strong>{mockTechnician.name}</strong> para que ele possa entrar em contato e agendar uma visita.
-              </div>
-            </div>
-          </FormStep>
-        );
-      case 4:
-        return (
-          <div className="success-container">
+  if (isSubmitted) {
+    return (
+      <div className="page-container">
+        <Header showOptions={false} showMenu={false}/>
+        <main className="main-container">
+           <div className="success-container">
             <CheckCircle className="success-icon" />
             <h2 className="success-title">Solicitação Enviada!</h2>
             <p className="success-message">
               Sua solicitação foi enviada com sucesso para <strong>{mockTechnician.name}</strong>. Ele(a) entrará em contato em breve para agendar a visita.
             </p>
             <a href="https://wa.me/5599999999999?text=Oi%2C+quero+mais+informações%21" className="success-button">
-              Voltar para o WhatsApp
+              Entrar em contato por WhatsApp
             </a>
           </div>
-        );
-      default:
-        return null;
-    }
-  };
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="page-container">
       <Header showOptions={false} showMenu={false}/>
       <main className="main-container">
         <div className="content-container">
-          {step < 4 && <TechnicianInfoCard tech={mockTechnician} />}
+          <TechnicianInfoCard tech={mockTechnician} />
           
-          {renderStep()}
+          <form onSubmit={handleSubmit} className="single-form">
+            
+            {/* 1. Usando um único FormStep para todos os campos */}
+            <FormStep title="Formulário de Solicitação">
+              <div className="step-content">
+                
+                {/* Campos sobre o problema */}
+                <div className="form-group">
+                  <label className="form-label">Qual é o problema? (opcional)</label>
+                  <div className="problems-grid">
+                    <ProblemTag label="Não Gela" icon={Thermometer} isSelected={formData.commonProblems.includes('Não Gela')} onClick={() => handleProblemTagClick('Não Gela')} />
+                    <ProblemTag label="Está Pingando" icon={Droplet} isSelected={formData.commonProblems.includes('Está Pingando')} onClick={() => handleProblemTagClick('Está Pingando')} />
+                    <ProblemTag label="Não Liga" icon={Zap} isSelected={formData.commonProblems.includes('Não Liga')} onClick={() => handleProblemTagClick('Não Liga')} />
+                    <ProblemTag label="Barulho Estranho" icon={AlertTriangle} isSelected={formData.commonProblems.includes('Barulho Estranho')} onClick={() => handleProblemTagClick('Barulho Estranho')} />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="description" className="form-label">
+                    Descreva com mais detalhes:
+                  </label>
+                  <textarea
+                    id="description"
+                    className="textarea"
+                    placeholder="Ex: O ar parou de gelar e está fazendo um barulho alto..."
+                    value={formData.problemDescription}
+                    onChange={(e) => setFormData({ ...formData, problemDescription: e.target.value })}
+                    required
+                  />
+                </div>
 
-          {step < 3 && (
-            <div className="navigation-buttons">
-              <button
-                onClick={handleBack}
-                disabled={step === 1}
-                className="back-button"
-              >
-                Voltar
-              </button>
-              <button
-                onClick={handleNext}
-                className="next-button"
-              >
-                Avançar
-              </button>
+                {/* Campos de informação do cliente */}
+                <div className="form-group">
+                  <label htmlFor="localizacao" className="form-label">Seu endereço completo:</label>
+                  <input
+                    type="text"
+                    id="localizacao"
+                    value={formData.localizacao}
+                    onChange={(e) => setFormData({...formData, localizacao: e.target.value})}
+                    placeholder="Rua, Número, Bairro, Cidade"
+                    className="text-input"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="telefone" className="form-label">Seu telefone (WhatsApp):</label>
+                  <input
+                    type="tel"
+                    id="telefone"
+                    value={formData.telefone}
+                    onChange={(e) => setFormData({...formData, telefone: e.target.value})}
+                    placeholder="(99) 99999-9999"
+                    className="text-input"
+                    required
+                  />
+                </div>
+              </div>
+            </FormStep>
+
+            <div className="review-note">
+              Ao enviar, suas informações serão compartilhadas com <strong>{mockTechnician.name}</strong>.
             </div>
-          )}
-          {step === 3 && (
+
             <div className="navigation-buttons">
               <button
-                onClick={handleBack}
-                className="back-button"
-              >
-                Voltar
-              </button>
-              <button
-                onClick={handleSubmit}
+                type="submit"
                 className="submit-button"
               >
                 Enviar Solicitação
               </button>
             </div>
-          )}
+
+          </form>
         </div>
       </main>
     </div>
