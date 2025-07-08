@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CreditCard, Lock, CheckCircle, ChevronLeft } from 'lucide-react';
+import { Lock, CheckCircle, ChevronLeft } from 'lucide-react';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
