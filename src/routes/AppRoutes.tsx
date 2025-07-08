@@ -9,6 +9,7 @@ import NotFoundPage from '../pages/NotFound/NotFoundPage';
 import PaymentPage  from '../pages/Checkout/Payment';
 import AcceptInvitePage from '../pages/Invite/InviteLink.tsx'
 import HomePage from '../pages/Home/HomePage.tsx';
+import Cadastro from '../pages/Register/Register.tsx'
 
 export default function AppRoutes() {
   return (
@@ -20,6 +21,7 @@ export default function AppRoutes() {
         <Route path='/solicitarservico' element={<RequestServicePage/>}/>
         <Route path='/cadastrarempresa' element={<RegisterPage/>}/>
         <Route path="/login" element={<LoginPage />} />
+        <Route path='/cadastro' element={<Cadastro/>}/>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path='/checkout' element={<PaymentPage />} />'
         <Route path='/convite' element={<AcceptInvitePage />} />
