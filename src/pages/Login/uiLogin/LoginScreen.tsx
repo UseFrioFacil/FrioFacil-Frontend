@@ -1,9 +1,12 @@
 import type { FC } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import FormInput from '../../../components/Form/FormInput';
+import { useNavigate } from 'react-router-dom';
 
 
 const LoginScreen: FC = () => {
+    const navigate = useNavigate()
+
     return (
         <div className="login-container">
             <div className="login-wrapper">
@@ -33,7 +36,7 @@ const LoginScreen: FC = () => {
                         </div>
 
                         <div className="submit-button-container">
-                            <button type="submit" className="submit-button">
+                            <button type="submit" className="submit-button" onClick={() => navigate('/home')}>
                                 Entrar
                             </button>
                         </div>

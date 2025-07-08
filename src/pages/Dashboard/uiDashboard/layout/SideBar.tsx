@@ -2,6 +2,7 @@ import type { FC, ElementType } from 'react';
 import { 
     LogOut, X, Snowflake, LayoutDashboard, Users, Wrench, UsersRound, Calendar, DollarSign, Send, Building, Info, Settings
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 type Role = 'admin' | 'funcionario';
 
@@ -42,6 +43,8 @@ const Sidebar: FC<{ user: UserProfile; activeView: string; setActiveView: (view:
         setActiveView(viewId);
         if (window.innerWidth < 768) { closeSidebar(); }
     };
+    const navigate = useNavigate()
+
     return (
         <aside className="sidebar">
             <div className="sidebar-header">
@@ -63,7 +66,7 @@ const Sidebar: FC<{ user: UserProfile; activeView: string; setActiveView: (view:
                 ))}
             </nav>
             <div className="sidebar-footer">
-                <a href="#" className="sidebar-nav-link">
+                <a onClick={() => navigate(-1)} className="sidebar-nav-link">
                     <LogOut size={20} />
                     <span>Sair</span>
                 </a>

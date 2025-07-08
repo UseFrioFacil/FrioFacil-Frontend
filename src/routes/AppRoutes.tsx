@@ -7,7 +7,8 @@ import LoginPage from '../pages/Login/LoginPage';
 import DashboardPage from '../pages/Dashboard/DashboardPage'
 import NotFoundPage from '../pages/NotFound/NotFoundPage';
 import PaymentPage  from '../pages/Checkout/Payment';
-import AcceptInvitePage from '../pages/Invite/Invitelink'
+import AcceptInvitePage from '../pages/Invite/InviteLink.tsx'
+import HomePage from '../pages/Home/HomePage.tsx';
 
 export default function AppRoutes() {
   return (
@@ -15,8 +16,9 @@ export default function AppRoutes() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path='/home' element={<HomePage/>}/>
         <Route path='/solicitarservico' element={<RequestServicePage/>}/>
-        <Route path='/cadastreempresa' element={<RegisterPage/>}/>
+        <Route path='/cadastrarempresa' element={<RegisterPage/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path='/checkout' element={<PaymentPage />} />'

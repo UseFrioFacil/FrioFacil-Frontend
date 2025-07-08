@@ -99,7 +99,8 @@
     border-radius: 0.5rem; 
     text-decoration: none; 
     color: #4b5563; 
-    transition: background-color 0.2s, color 0.2s; 
+    transition: background-color 0.2s, color 0.2s;
+    cursor: pointer;
 }
 
 .sidebar-nav-link:hover { 
