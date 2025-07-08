@@ -7,7 +7,7 @@ import LoginPage from '../pages/Login/LoginPage.tsx';
 import DashboardPage from '../pages/Dashboard/DashboardPage.tsx'
 import NotFoundPage from '../pages/NotFound/NotFoundPage.tsx';
 import PaymentPage  from '../pages/Checkout/Payment.tsx';
-import AcceptInvitePage from '../pages/Invite/Invitelink.tsx'
+import AcceptInvitePage from '../pages/Invite/InviteLink.tsx'
 import HomePage from '../pages/Home/HomePage.tsx';
 import Cadastro from '../pages/Register/Register.tsx'
 
