@@ -58,7 +58,7 @@ export default function HomePage() {
         <>
             <div className="home-container">
                 <HeaderHome user={user}/>
-                <main>
+                <main className='containerhome'>
                     <section className="welcome-section">
                         <h1 className="welcome-title">Bem-vindo(a) de volta, {user.name.split(' ')[0]}!</h1>
                         <p className="welcome-subtitle">Escolha uma empresa para gerenciar ou crie uma nova para começar.</p>

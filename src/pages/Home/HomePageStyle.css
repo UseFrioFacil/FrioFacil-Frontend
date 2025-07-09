@@ -16,9 +16,10 @@
     background-color: var(--background-color);
     min-height: 100vh;
     font-family: sans-serif;
+    
 }
 
-main {
+.containerhome {
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Lock, CheckCircle, ChevronLeft } from 'lucide-react';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import Header from '../../components/Header/Header';
 
 const stripePromise = loadStripe('pk_test_51RhvjHH8Ck0x1QJ5q9TrGsCU79a5K1UkL8B1LW0g3LMAPIEoLZAecuIkEIKkWR8CvSb1cGb5jujOR4Op0cs3vXAS00ri8g6ZNR'); // <-- sua chave pública do Stripe
 
@@ -343,9 +344,7 @@ export default function App() {
     }
   }
 `}</style>
-      <header style={{ padding: '20px', backgroundColor: '#fff', borderBottom: '1px solid #e5e7eb', textAlign: 'center', fontWeight: 'bold', color: '#111827' }}>
-        FrioFácil
-      </header>
+      <Header showMenu={false} showOptions={false}/>
 
       <div className="checkout-container">
         <div className="checkout-layout">
