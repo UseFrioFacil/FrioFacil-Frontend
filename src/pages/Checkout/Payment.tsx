@@ -3,6 +3,7 @@ import { Lock, CheckCircle, ChevronLeft } from 'lucide-react';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 
 const stripePromise = loadStripe('pk_test_51RhvjHH8Ck0x1QJ5q9TrGsCU79a5K1UkL8B1LW0g3LMAPIEoLZAecuIkEIKkWR8CvSb1cGb5jujOR4Op0cs3vXAS00ri8g6ZNR'); // <-- sua chave pública do Stripe
 
@@ -362,9 +363,7 @@ export default function App() {
         </div>
       </div>
 
-      <footer style={{ padding: '20px', backgroundColor: '#111827', color: 'white', textAlign: 'center', fontSize: '14px' }}>
-        © 2024 FrioFácil. Todos os direitos reservados.
-      </footer>
+      <Footer/>
     </>
   );
 }
