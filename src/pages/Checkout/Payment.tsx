@@ -17,7 +17,7 @@ const CheckoutForm = ({ price }: { price: number }) => {
     setLoading(true);
 
     try {
-      const res = await fetch('https://payment.usefriofacil.com.br/api/create-payment-intent', {
+      const res = await fetch('https://payment.usefriofacil.com.br/api/payments/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: Math.round(price * 100) }),
