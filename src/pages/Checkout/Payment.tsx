@@ -86,7 +86,7 @@ const formatCEP = (value: string) => {
   return cleanValue.replace(/(\d{5})(\d{3})/, '$1-$2');
 };
 
-const CheckoutForm = ({ selectedPlan, companyTempId }: { selectedPlan: typeof plans[0], companyTempId?: string }) => {
+const CheckoutForm = ({ selectedPlan, jwtToken }: { selectedPlan: typeof plans[0], jwtToken?: string }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -180,9 +180,16 @@ const CheckoutForm = ({ selectedPlan, companyTempId }: { selectedPlan: typeof pl
       }
 
       // 2. Enviar dados para o backend
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      
+      // Adicionar JWT no header se disponível
+      if (jwtToken) {
+        headers['Authorization'] = `Bearer ${jwtToken}`;
+      }
+
       const response = await fetch('http://localhost:25565/api/create-subscription', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           priceId: selectedPlan.priceId,
           customerEmail: customerEmail.trim(),
@@ -191,7 +198,7 @@ const CheckoutForm = ({ selectedPlan, companyTempId }: { selectedPlan: typeof pl
           customerPhone: customerPhone.replace(/\D/g, ''),
           customerAddress: customerAddress,
           paymentMethodId: paymentMethod.id,
-          companyTempId: "01980007-6e58-7c15-9ae2-2253b77bc8fc", //O Company ID e seomente um campo que recebe o valor de um Id
+          // companyTempId será extraído do JWT pela API
         }),
       });
 
@@ -617,9 +624,10 @@ const PlanSelector = ({ onSelectPlan, companyTempId }: { onSelectPlan: (plan: ty
 export default function PaymentPage() {
   const [selectedPlan, setSelectedPlan] = useState<typeof plans[0] | null>(null);
   
-  // Pegar CompanyTempId da URL se existir
+  // Pegar CompanyTempId e JWT da URL se existir
   const urlParams = new URLSearchParams(window.location.search);
   const companyTempId = urlParams.get('companyTempId');
+  const jwtToken = urlParams.get('jwt');
 
   if (!selectedPlan) {
     return (
@@ -1130,7 +1138,7 @@ export default function PaymentPage() {
         </button>
         
         <Elements stripe={stripePromise}>
-          <CheckoutForm selectedPlan={selectedPlan} companyTempId={companyTempId || undefined} />
+          <CheckoutForm selectedPlan={selectedPlan} jwtToken={jwtToken || undefined} />
         </Elements>
       </div>
     </>
