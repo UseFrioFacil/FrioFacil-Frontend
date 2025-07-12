@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, CheckCircle, Calendar, Shield, MapPin, Phone, User, CreditCard } from 'lucide-react';
+import { Lock, CheckCircle, Calendar, Shield, MapPin, User, CreditCard } from 'lucide-react';
 import { Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -191,7 +191,7 @@ const CheckoutForm = ({ selectedPlan, companyTempId }: { selectedPlan: typeof pl
           customerPhone: customerPhone.replace(/\D/g, ''),
           customerAddress: customerAddress,
           paymentMethodId: paymentMethod.id,
-          companyTempId: companyTempId
+          companyTempId: "01980007-6e58-7c15-9ae2-2253b77bc8fc", //O Company ID e seomente um campo que recebe o valor de um Id
         }),
       });
 
