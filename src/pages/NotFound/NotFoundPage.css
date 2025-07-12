@@ -1,0 +1,160 @@
+/* Importa a fonte 'Inter' do Google Fonts para consistência com o design */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+/* Estilos para o container principal da página */
+.not-found-container {
+  background-color: #f9fafb; /* Cor de fundo (bg-gray-50) */
+  font-family: 'Inter', sans-serif; /* Fonte (font-sans) */
+  color: #111827; /* Cor do texto padrão (text-gray-900) */
+  min-height: 100vh; /* Altura mínima da tela inteira */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza horizontalmente */
+  justify-content: center; /* Centraliza verticalmente */
+  padding: 1.5rem; /* Espaçamento interno */
+  text-align: center; /* Alinha todo o texto ao centro */
+}
+
+/* Container para o conteúdo central */
+.not-found-content {
+  max-width: 28rem; /* Largura máxima (max-w-md) */
+  width: 100%;
+}
+
+/* ANIMAÇÃO: Wrapper para o ícone principal */
+.not-found-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem; /* Espaçamento inferior (mb-6) */
+  animation: fadeInUp 0.6s ease-out 0.2s forwards;
+  opacity: 0; /* Começa invisível para a animação */
+}
+
+/* Estilo do ícone SearchX */
+.not-found-icon {
+  width: 6rem; /* w-24 */
+  height: 6rem; /* h-24 */
+  color: #93c5fd; /* text-blue-300 */
+}
+
+/* ANIMAÇÃO: Estilo para o código de erro "404" */
+.error-code {
+  font-size: 4.5rem; /* text-7xl */
+  line-height: 1;
+  font-weight: 800; /* font-extrabold */
+  color: #3b82f6; /* text-blue-500 */
+  letter-spacing: -0.05em; /* tracking-tighter */
+  animation: fadeInUp 0.6s ease-out 0.4s forwards;
+  opacity: 0;
+}
+
+@media (min-width: 768px) {
+  .error-code {
+    font-size: 6rem; /* md:text-8xl */
+  }
+}
+
+/* ANIMAÇÃO: Título "Página Não Encontrada" */
+.error-title {
+  margin-top: 0.5rem; /* mt-2 */
+  font-size: 1.5rem; /* text-2xl */
+  line-height: 2rem;
+  font-weight: 700; /* font-bold */
+  color: #1f2937; /* text-gray-800 */
+  animation: fadeInUp 0.6s ease-out 0.6s forwards;
+  opacity: 0;
+}
+
+@media (min-width: 768px) {
+  .error-title {
+    font-size: 1.875rem; /* md:text-3xl */
+    line-height: 2.25rem;
+  }
+}
+
+/* ANIMAÇÃO: Texto de descrição do erro */
+.error-description {
+  margin-top: 1rem; /* mt-4 */
+  font-size: 1.125rem; /* text-lg */
+  line-height: 1.75; /* leading-relaxed */
+  color: #4b5563; /* text-gray-600 */
+  animation: fadeInUp 0.6s ease-out 0.8s forwards;
+  opacity: 0;
+}
+
+/* ANIMAÇÃO: Wrapper do botão de ação */
+.action-button-wrapper {
+  margin-top: 2.5rem; /* mt-10 */
+  animation: fadeInUp 0.6s ease-out 1s forwards;
+  opacity: 0;
+}
+
+/* Estilo do botão "Voltar para o Início" */
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem; /* gap-3 */
+  background-color: #3b82f6; /* bg-blue-500 */
+  color: white;
+  padding: 1rem 2rem; /* px-8 py-4 */
+  border-radius: 0.75rem; /* rounded-xl */
+  font-weight: 600; /* font-semibold */
+  font-size: 1.125rem; /* text-lg */
+  text-decoration: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+  transition: all 0.3s ease; /* transition-all duration-300 */
+}
+
+.action-button:hover {
+  background-color: #2563eb; /* hover:bg-blue-600 */
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.1); /* hover:shadow-blue-500/30 */
+  transform: translateY(-4px); /* hover:-translate-y-1 */
+}
+
+.action-button-icon {
+  width: 1.5rem; /* w-6 */
+  height: 1.5rem; /* h-6 */
+}
+
+/* ANIMAÇÃO: Wrapper da logo no rodapé */
+.footer-logo-wrapper {
+  margin-top: 4rem; /* mt-16 */
+  animation: fadeInUp 0.6s ease-out 1.2s forwards;
+  opacity: 0;
+}
+
+/* Estilo da logo no rodapé */
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+  color: #9ca3af; /* text-gray-400 */
+  text-decoration: none;
+  transition: color 0.3s ease; /* transition-colors */
+}
+
+.footer-logo:hover {
+  color: #4b5563; /* hover:text-gray-600 */
+}
+
+.footer-logo-icon {
+  width: 1.5rem; /* h-6 */
+  height: 1.5rem; /* w-6 */
+}
+
+.footer-logo-text {
+  font-weight: 700; /* font-bold */
+}
+
+/* Definição da animação de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

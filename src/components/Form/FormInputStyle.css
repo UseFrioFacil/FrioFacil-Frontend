@@ -1,0 +1,70 @@
+/* --- Container Principal --- */
+.form-input-container {
+  width: 100%;
+  margin-bottom: 1rem; /* Espaçamento entre os campos */
+}
+
+/* --- Rótulo (Label) --- */
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.required-asterisk {
+  color: #e53e3e; /* Vermelho para o asterisco de obrigatório */
+  margin-left: 0.25rem;
+}
+
+/* --- Wrapper do Input (A Mágica Acontece Aqui) --- */
+.input-wrapper {
+  /* 1. Torna este container a referência para o posicionamento do ícone */
+  position: relative; 
+  display: flex;
+  align-items: center;
+}
+
+/* --- Ícone --- */
+.input-icon {
+  /* 2. Posiciona o ícone absolutamente dentro do .input-wrapper */
+  position: absolute; 
+  left: 12px; /* Distância da borda esquerda */
+  height: 100%;
+  display: flex;
+  align-items: center;
+  /* Impede que o ícone seja clicável, passando o clique para o input */
+  pointer-events: none; 
+  color: #667085; /* Cor cinza para o ícone */
+}
+
+.input-icon .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* --- Campo de Input --- */
+.form-input {
+  /* 3. A CORREÇÃO PRINCIPAL: Adiciona um espaço interno à esquerda */
+  /* Este espaço "empurra" o início do texto para depois do ícone. */
+  padding-left: 45px !important; 
+  
+  /* Estilos para deixar o campo bonito */
+  width: 100%;
+  height: 44px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 16px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.form-input::placeholder {
+  color: #98a2b3;
+}

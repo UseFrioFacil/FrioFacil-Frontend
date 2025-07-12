@@ -1,0 +1,354 @@
+.page-container {
+    background-color: #f9fafb;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .header {
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    height: 2rem;
+    width: 2rem;
+    color: #3b82f6;
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+  }
+
+  .back-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4b5563;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: #3b82f6;
+  }
+
+  .main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .content-container {
+    max-width: 42rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .technician-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .technician-avatar {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+  }
+
+  .technician-info {
+    flex: 1;
+  }
+
+  .technician-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .technician-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0.25rem 0;
+  }
+
+  .technician-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #4b5563;
+  }
+
+  .rating-icon {
+    color: #f59e0b;
+    fill: currentColor;
+  }
+
+  .form-step {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .step-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+  }
+
+  .step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+
+  .problems-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .problem-tag {
+    flex: 1;
+    padding: 1rem;
+    border: 2px solid;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+    min-width: 120px;
+    cursor: pointer;
+  }
+
+  .problem-tag-default {
+    background-color: #f9fafb;
+    border-color: #e5e7eb;
+    color: #374151;
+  }
+
+  .problem-tag-selected {
+    background-color: #eff6ff;
+    border-color: #3b82f6;
+    color: #2563eb;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .problem-tag:hover:not(.problem-tag-selected) {
+    border-color: #9ca3af;
+  }
+
+  .problem-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .problem-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-align: center;
+  }
+
+  .text-input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #f3f4f6;
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .text-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #3b82f6;
+  }
+
+  .textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #f3f4f6;
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #3b82f6;
+  }
+
+  .review-item {
+    margin-bottom: 1rem;
+  }
+
+  .review-title {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .review-content {
+    padding-left: 0.5rem;
+    color: #4b5563;
+  }
+
+  .review-note {
+    padding-top: 1rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .success-container {
+    text-align: center;
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .success-icon {
+    margin: 0 auto;
+    height: 4rem;
+    width: 4rem;
+    color: #10b981;
+  }
+
+  .success-title {
+    margin-top: 1rem;
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #1f2937;
+  }
+
+  .success-message {
+    margin-top: 0.5rem;
+    color: #4b5563;
+    max-width: 28rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .success-button {
+    margin-top: 2rem;
+    display: inline-block;
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+
+  .success-button:hover {
+    background-color: #2563eb;
+  }
+
+  .navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .back-button {
+    padding: 0.5rem 1.5rem;
+    color: #4b5563;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+  }
+
+  .back-button:hover {
+    background-color: #e5e7eb;
+  }
+
+  .back-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .next-button {
+    padding: 0.75rem 2rem;
+    background-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+  }
+
+  .next-button:hover {
+    background-color: #2563eb;
+  }
+
+  .submit-button {
+    padding: 0.75rem 2rem;
+    background-color: #10b981;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+  }
+
+  .submit-button:hover {
+    background-color: #059669;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
