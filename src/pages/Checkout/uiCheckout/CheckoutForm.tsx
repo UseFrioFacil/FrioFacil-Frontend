@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Lock, CheckCircle, Calendar, Shield, MapPin, User, CreditCard } from 'lucide-react';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { plans } from "../Payment"
+import Header from '../../../components/Header/Header';
 
 // Função para validar CPF
 const validateCPF = (cpf: string) => {
@@ -187,25 +188,28 @@ const CheckoutForm = ({ selectedPlan, jwtToken }: { selectedPlan: typeof plans[0
 
   if (success) {
     return (
-      <div className="success-message">
-        <CheckCircle size={48} className="success-icon" />
-        <h3>Assinatura ativada com sucesso!</h3>
-        <p>Plano {selectedPlan.name} ativado. Você receberá um e-mail de confirmação.</p>
-        
-        <div className="subscription-info">
-          <Calendar size={16} />
-          <span>Próxima cobrança: {new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR')}</span>
-        </div>
+      <>
+        <Header showMenu={false} showOptions={false}/>
+        <div className="success-message">
+          <CheckCircle size={48} className="success-icon" />
+          <h3>Assinatura ativada com sucesso!</h3>
+          <p>Plano {selectedPlan.name} ativado. Você receberá um e-mail de confirmação.</p>
+          
+          <div className="subscription-info">
+            <Calendar size={16} />
+            <span>Próxima cobrança: {new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR')}</span>
+          </div>
 
-        <div className="payment-info">
-          <CreditCard size={16} />
-          <div>
-            <p><strong>Pagamento automático configurado</strong></p>
-            <p>Seu cartão será cobrado automaticamente a cada mês para renovar a assinatura.</p>
-            <p>Você pode alterar ou cancelar a qualquer momento no seu painel.</p>
+          <div className="payment-info">
+            <CreditCard size={16} />
+            <div>
+              <p><strong>Pagamento automático configurado</strong></p>
+              <p>Seu cartão será cobrado automaticamente a cada mês para renovar a assinatura.</p>
+              <p>Você pode alterar ou cancelar a qualquer momento no seu painel.</p>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 

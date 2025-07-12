@@ -4,6 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import './Payment.css'
 import CheckoutForm from './uiCheckout/CheckoutForm';
 import PlanSelector from './uiCheckout/PlanSelector'
+import Header from '../../components/Header/Header';
 
 const stripePromise = loadStripe('pk_test_51RjWIRHKR0vqiVIlUdWni0r20rOdgsAQ0fGlUCuxxlVWjeAXG7A2pgn5oHaHbneWB8lmwmX0LoC2ZUrJuJH3JXa800Lh5oadUh');
 
@@ -55,8 +56,8 @@ export default function PaymentPage() {
 
   return (
     <>
-      <style>{}</style>
-      
+      <Header showMenu={false} showOptions={false}/>
+
       <div className="checkout-container">
         <button className="back-button" onClick={() => setSelectedPlan(null)}>
           ← Voltar para planos
