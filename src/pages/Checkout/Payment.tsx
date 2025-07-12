@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Lock, CheckCircle, CreditCard, Smartphone } from 'lucide-react';
+import React, { useState } from 'react';
+import { Lock, CheckCircle, Calendar } from 'lucide-react';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe('pk_test_51RjWIRHKR0vqiVIlUdWni0r20rOdgsAQ0fGlUCuxxlVWjeAXG7A2pgn5oHaHbneWB8lmwmX0LoC2ZUrJuJH3JXa800Lh5oadUh');
 
-// Configuração dos planos
+// Configuração dos planos com IDs do Stripe
 const plans = [
   {
     id: 'basico',
@@ -16,7 +16,8 @@ const plans = [
       'Lembretes básicos',
       'Suporte por e-mail',
       'Dashboard simples'
-    ]
+    ],
+    priceId: 'price_1RjwXwHKR0vqiVIlCoD6A0a5' // Será substituído pelo ID real do Stripe
   },
   {
     id: 'profissional',
@@ -29,31 +30,12 @@ const plans = [
       'Dashboard completo',
       'Orçamentos online',
       'Relatórios avançados'
-    ]
+    ],
+    priceId: 'price_1RjwXwHKR0vqiVIloWVpqnzZ' // Será substituído pelo ID real do Stripe
   }
 ];
 
-// Configuração dos métodos de pagamento
-const paymentMethods = [
-  {
-    id: 'card',
-    name: 'Cartão de Crédito',
-    icon: <CreditCard size={20} />,
-    description: 'Visa, Mastercard, Elo e outros'
-  },
-  {
-    id: 'apple_pay',
-    name: 'Apple Pay',
-    icon: <Smartphone size={20} />,
-    description: 'Pagamento rápido e seguro'
-  },
-  {
-    id: 'google_pay',
-    name: 'Google Pay',
-    icon: <Smartphone size={20} />,
-    description: 'Pagamento instantâneo'
-  }
-];
+
 
 const CheckoutForm = ({ selectedPlan }: { selectedPlan: typeof plans[0] }) => {
   const stripe = useStripe();
@@ -61,106 +43,64 @@ const CheckoutForm = ({ selectedPlan }: { selectedPlan: typeof plans[0] }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState('card');
-  const [walletAvailable, setWalletAvailable] = useState({
-    applePay: false,
-    googlePay: false
-  });
-
-  // Verificar disponibilidade das carteiras digitais
-  useEffect(() => {
-    const checkWalletAvailability = async () => {
-      try {
-        // Verificar Apple Pay
-        const applePayResponse = await fetch('http://localhost:25565/api/apple-pay-status');
-        const applePayData = await applePayResponse.json();
-        
-        // Verificar Google Pay
-        const googlePayResponse = await fetch('http://localhost:25565/api/google-pay-status');
-        const googlePayData = await googlePayResponse.json();
-
-        setWalletAvailable({
-          applePay: applePayData.available,
-          googlePay: googlePayData.available
-        });
-      } catch (error) {
-        console.log('Erro ao verificar carteiras digitais:', error);
-      }
-    };
-
-    checkWalletAvailability();
-  }, []);
-
-  const handlePaymentMethodChange = (methodId: string) => {
-    setSelectedMethod(methodId);
-    setError('');
-  };
+  const [customerEmail, setCustomerEmail] = useState('');
+  const [customerName, setCustomerName] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!stripe || !elements) return;
 
+    if (!customerEmail.trim()) {
+      setError('Por favor, informe seu e-mail');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     try {
-      // Criar PaymentIntent
-      const response = await fetch('http://localhost:25565/api/create-payment-intent', {
+      // 1. Criar PaymentMethod do cartão
+      const cardElement = elements.getElement(CardElement);
+      if (!cardElement) throw new Error('Dados do cartão não preenchidos');
+
+      const { paymentMethod, error: pmError } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+        billing_details: {
+          name: customerName || 'Cliente FrioFácil',
+          email: customerEmail
+        }
+      });
+      if (pmError || !paymentMethod) {
+        throw new Error(pmError?.message || 'Erro ao criar método de pagamento');
+      }
+
+      // 2. Enviar paymentMethodId para o backend
+      const response = await fetch('http://localhost:25565/api/create-subscription', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: selectedPlan.price,
-          planName: selectedPlan.name,
-          paymentMethod: selectedMethod
+          priceId: selectedPlan.priceId,
+          customerEmail: customerEmail.trim(),
+          customerName: customerName.trim() || 'Cliente FrioFácil',
+          paymentMethodId: paymentMethod.id
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Erro ao criar pagamento');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao criar assinatura');
       }
 
       const { clientSecret } = await response.json();
 
-      // Processar pagamento baseado no método selecionado
-      if (selectedMethod === 'card') {
-        // Pagamento com cartão tradicional
-        const result = await stripe.confirmCardPayment(clientSecret, {
-          payment_method: {
-            card: elements.getElement(CardElement)!,
-          },
-        });
-
-        if (result.error) {
-          throw new Error(result.error.message || 'Erro no pagamento');
-        }
-
-        if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
-          setSuccess(true);
-        }
-      } else if (selectedMethod === 'apple_pay' || selectedMethod === 'google_pay') {
-        // Pagamento com carteira digital
-        const result = await stripe.confirmPayment({
-          elements,
-          clientSecret,
-          confirmParams: {
-            return_url: `${window.location.origin}/payment-success`,
-            payment_method_data: {
-              billing_details: {
-                name: 'Cliente FrioFácil',
-                email: 'cliente@friofacil.com'
-              }
-            }
-          }
-        });
-
-        if (result.error) {
-          throw new Error(result.error.message || 'Erro no pagamento');
-        }
-
-        // Verificar se o pagamento foi bem-sucedido
-        if ('paymentIntent' in result && result.paymentIntent && (result.paymentIntent as any).status === 'succeeded') {
-          setSuccess(true);
-        }
+      // 3. Confirmar o pagamento da assinatura
+      const result = await stripe.confirmCardPayment(clientSecret);
+      if (result.error) {
+        throw new Error(result.error.message || 'Erro no pagamento');
+      }
+      if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+        setSuccess(true);
       }
     } catch (err: any) {
       setError(err.message || 'Erro ao processar pagamento');
@@ -174,8 +114,12 @@ const CheckoutForm = ({ selectedPlan }: { selectedPlan: typeof plans[0] }) => {
     return (
       <div className="success-message">
         <CheckCircle size={48} className="success-icon" />
-        <h3>Pagamento realizado com sucesso!</h3>
+        <h3>Assinatura ativada com sucesso!</h3>
         <p>Plano {selectedPlan.name} ativado. Você receberá um e-mail de confirmação.</p>
+        <div className="subscription-info">
+          <Calendar size={16} />
+          <span>Próxima cobrança: {new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR')}</span>
+        </div>
       </div>
     );
   }
@@ -185,9 +129,44 @@ const CheckoutForm = ({ selectedPlan }: { selectedPlan: typeof plans[0] }) => {
       <div className="plan-info">
         <h3>Plano {selectedPlan.name}</h3>
         <p className="price">R$ {selectedPlan.price.toFixed(2)}/mês</p>
+        <p className="recurring-info">
+          <Calendar size={16} />
+          Assinatura recorrente mensal
+        </p>
+      </div>
+
+      {/* Formulário de dados do cliente */}
+      <div className="customer-form">
+        <h3>Seus dados</h3>
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="customerName">Nome completo</label>
+            <input
+              type="text"
+              id="customerName"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              placeholder="Seu nome completo"
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="customerEmail">E-mail *</label>
+            <input
+              type="email"
+              id="customerEmail"
+              value={customerEmail}
+              onChange={(e) => setCustomerEmail(e.target.value)}
+              placeholder="seu@email.com"
+              className="form-input"
+              required
+            />
+          </div>
+        </div>
       </div>
 
       {/* Seleção do método de pagamento */}
+      {/*
       <div className="payment-methods">
         <h3>Escolha a forma de pagamento</h3>
         <div className="methods-grid">
@@ -220,27 +199,27 @@ const CheckoutForm = ({ selectedPlan }: { selectedPlan: typeof plans[0] }) => {
           })}
         </div>
       </div>
+      */}
 
       {/* Formulário de cartão (apenas para cartão) */}
-      {selectedMethod === 'card' && (
-        <div className="card-form">
-          <h3>Dados do cartão</h3>
-          <CardElement 
-            options={{ 
-              style: { 
-                base: { 
-                  fontSize: '16px',
-                  color: '#424770',
-                  '::placeholder': { color: '#aab7c4' },
-                },
-                invalid: { color: '#9e2146' },
-              } 
-            }} 
-          />
-        </div>
-      )}
+      <div className="card-form">
+        <h3>Dados do cartão</h3>
+        <CardElement 
+          options={{ 
+            style: { 
+              base: { 
+                fontSize: '16px',
+                color: '#424770',
+                '::placeholder': { color: '#aab7c4' },
+              },
+              invalid: { color: '#9e2146' },
+            } 
+          }} 
+        />
+      </div>
 
       {/* Informações para carteiras digitais */}
+      {/*
       {(selectedMethod === 'apple_pay' || selectedMethod === 'google_pay') && (
         <div className="wallet-info">
           <Smartphone size={24} />
@@ -252,6 +231,7 @@ const CheckoutForm = ({ selectedPlan }: { selectedPlan: typeof plans[0] }) => {
           </p>
         </div>
       )}
+      */}
 
       {error && (
         <div className="error-message">
@@ -264,12 +244,19 @@ const CheckoutForm = ({ selectedPlan }: { selectedPlan: typeof plans[0] }) => {
         disabled={!stripe || loading}
         type="submit"
       >
-        {loading ? 'Processando...' : `Pagar R$ ${selectedPlan.price.toFixed(2)}`}
+        {loading ? 'Processando...' : `Assinar Plano ${selectedPlan.name} - R$ ${selectedPlan.price.toFixed(2)}/mês`}
       </button>
 
       <div className="security-badge">
         <Lock size={14} />
         <span>Pagamento seguro e criptografado</span>
+      </div>
+
+      <div className="subscription-terms">
+        <p>
+          Ao assinar, você concorda com os termos de serviço. A assinatura será renovada automaticamente 
+          a cada mês até ser cancelada. Você pode cancelar a qualquer momento.
+        </p>
       </div>
     </form>
   );
@@ -279,6 +266,7 @@ const PlanSelector = ({ onSelectPlan }: { onSelectPlan: (plan: typeof plans[0]) 
   return (
     <div className="plans-container">
       <h2>Escolha seu plano</h2>
+      <p className="plans-subtitle">Assinatura mensal - cancele quando quiser</p>
       <div className="plans-grid">
         {plans.map((plan) => (
           <div key={plan.id} className="plan-card" onClick={() => onSelectPlan(plan)}>
@@ -296,7 +284,7 @@ const PlanSelector = ({ onSelectPlan }: { onSelectPlan: (plan: typeof plans[0]) 
               ))}
             </ul>
             <button className="select-plan-btn">
-              Escolher {plan.name}
+              Assinar {plan.name}
             </button>
           </div>
         ))}
@@ -330,6 +318,13 @@ export default function PaymentPage() {
             font-size: 32px;
             font-weight: 700;
             color: #111827;
+            margin-bottom: 8px;
+          }
+
+          .plans-subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #6b7280;
             margin-bottom: 40px;
           }
 
@@ -468,6 +463,60 @@ export default function PaymentPage() {
           font-size: 32px;
           font-weight: 800;
           color: #3b82f6;
+          margin-bottom: 8px;
+        }
+
+        .recurring-info {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          font-size: 14px;
+          color: #6b7280;
+          margin: 0;
+        }
+
+        .customer-form {
+          margin-bottom: 24px;
+        }
+
+        .customer-form h3 {
+          font-size: 18px;
+          font-weight: 600;
+          color: #111827;
+          margin-bottom: 16px;
+        }
+
+        .form-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .form-group label {
+          font-size: 14px;
+          font-weight: 500;
+          color: #374151;
+          margin-bottom: 8px;
+        }
+
+        .form-input {
+          padding: 12px;
+          border: 1px solid #d1d5db;
+          border-radius: 8px;
+          font-size: 16px;
+          transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+          outline: none;
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .payment-methods {
@@ -623,6 +672,19 @@ export default function PaymentPage() {
           margin-bottom: 16px;
         }
 
+        .subscription-info {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          margin-top: 16px;
+          padding: 12px;
+          background: #f0f9ff;
+          border-radius: 8px;
+          color: #3b82f6;
+          font-size: 14px;
+        }
+
         .security-badge {
           display: flex;
           align-items: center;
@@ -630,6 +692,17 @@ export default function PaymentPage() {
           gap: 8px;
           font-size: 12px;
           color: #6b7280;
+          margin-bottom: 16px;
+        }
+
+        .subscription-terms {
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          padding: 16px;
+          font-size: 12px;
+          color: #6b7280;
+          line-height: 1.5;
         }
 
         .back-button {
@@ -646,6 +719,12 @@ export default function PaymentPage() {
 
         .back-button:hover {
           text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+          .form-row {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
       
