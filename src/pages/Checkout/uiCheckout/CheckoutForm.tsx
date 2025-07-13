@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { FC, FormEvent } from 'react';
 import { Lock, CheckCircle, Calendar, Shield, MapPin, User, CreditCard } from 'lucide-react';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { plans } from "../Payment";
+import { plans } from "../Payment"; // Verifique se o caminho para este import está correto
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -45,7 +45,7 @@ const formatCEP = (value: string): string => {
 
 interface CheckoutFormProps {
     selectedPlan: typeof plans[0];
-    tokenTempCompany: string | null;
+    tokenTempCompany: string | null; // Este é o TOKEN da empresa temporária
 }
 
 // --- COMPONENTE PRINCIPAL ---
@@ -67,23 +67,36 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenTempCompany })
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        setLoading(true);
 
-        if (!stripe || !elements || !tokenTempCompany) {
-            toast.error("Formulário indisponível ou dados da empresa ausentes.");
+        const userToken = localStorage.getItem("accessToken");
+
+        if (!stripe || !elements) {
+            toast.error("Serviço de pagamento indisponível.");
+            setLoading(false);
             return;
         }
-
+        if (!userToken) {
+            toast.error("Usuário não autenticado. Por favor, faça login novamente.");
+            setLoading(false);
+            return;
+        }
+        if (!tokenTempCompany) {
+            toast.error("Identificação da empresa não encontrada.");
+            setLoading(false);
+            return;
+        }
         if (!customerName.trim() || !customerEmail.trim() || !validateCPF(customerCPF) || !customerPhone.trim()) {
             toast.error('Por favor, preencha seus dados pessoais corretamente.');
+            setLoading(false);
             return;
         }
         const { street, number, city, state, zipCode, neighborhood } = customerAddress;
         if (!street.trim() || !number.trim() || !city.trim() || !state.trim() || !zipCode.trim() || !neighborhood.trim()) {
             toast.error('Preencha o endereço de cobrança completo.');
+            setLoading(false);
             return;
         }
-
-        setLoading(true);
 
         try {
             const cardElement = elements.getElement(CardNumberElement);
@@ -121,16 +134,15 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenTempCompany })
                 customerPhone: customerPhone.replace(/\D/g, ''),
                 customerAddress: customerAddress,
                 paymentMethodId: paymentMethod.id,
+                companyTempId: tokenTempCompany, // TOKEN da empresa vai no corpo
             };
-
-            console.log(tokenTempCompany, payload)
+            
             const response = await axios.post(
-                'http://localhost:25565/api/create-subscription',
+                'http://localhost:25565/api/create-subscription', 
                 payload,
                 {
                     headers: {
-                        // O backend espera o JWT com o 'companytempid' aqui.
-                        Authorization: `Bearer ${tokenTempCompany}`
+                        Authorization: `Bearer ${userToken}`
                     }
                 }
             );
@@ -144,10 +156,12 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenTempCompany })
         } catch (err: any) {
             const errorMessage = err.response?.data?.message || err.message || 'Ocorreu um erro inesperado.';
             toast.error(errorMessage);
+            console.log(errorMessage)
         } finally {
             setLoading(false);
         }
     };
+    
     if (success) {
         return (
             <>

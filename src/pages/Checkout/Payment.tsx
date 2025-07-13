@@ -70,8 +70,8 @@ export default function PaymentPage() {
             <Header showMenu={false} showOptions={false} showBackButton={true}/>
 
             <div className="checkout-container">
-                <button className="back-button" onClick={() => setSelectedPlan(null)}>
-                    ← Voltar para planos
+                <button className="back-button" onClick={() => navigate("/home")}>
+                    ← Voltar para Home
                 </button>
                 
                 <Elements stripe={stripePromise}>
