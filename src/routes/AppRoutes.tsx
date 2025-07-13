@@ -11,7 +11,7 @@ import AcceptInvitePage from '../pages/Invite/InviteLink.tsx'
 import HomePage from '../pages/Home/HomePage.tsx';
 import Cadastro from '../pages/Register/Register.tsx'
 import ProtectedRoute from "../components/ProtectedRoute.tsx"
-import MinhaContaPage from '../pages/MyCount/MyAccount.tsx';
+import MinhaContaPage from '../pages/MyAccount/MyAccount.tsx';
 
 export default function AppRoutes() {
   return (

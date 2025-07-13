@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-//import axios from 'axios'; // Descomente quando for usar a API real
+import axios from 'axios';
 import { toast } from 'react-toastify';
-import { User, CreditCard, XCircle } from 'lucide-react';
-import './MyAccountStyle.css'; // Nome do arquivo CSS atualizado
-import Header from '../../components/Header/Header.tsx'; // Componente Header atualizado
+import { User, CreditCard, XCircle, ShieldAlert } from 'lucide-react';
+import './MyAccountStyle.css';
+import Header from '../../components/Header/Header.tsx';
 import LoadingSpinner from '../../components/Loading/LoadingSpinner.tsx';
 
 // --- INTERFACES DE DADOS ---
 
+// Interface atualizada para corresponder à resposta da sua API.
 interface UserProfile {
-    userId: string;
+    cpf: string;
     fullName: string;
+    phone: string;
     email: string;
     memberSince: string; 
 }
@@ -24,27 +26,10 @@ interface Subscription {
     price: string;
 }
 
+// --- MOCKS DE API (PARA FUNCIONALIDADES AINDA NÃO IMPLEMENTADAS) ---
 
-// Mock para a API de perfil do usuário
-const fetchUserProfileMock = (token: string): Promise<{ data: UserProfile }> => {
-    console.log("Fetching user profile with token:", token);
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve({
-                data: {
-                    userId: 'user-123',
-                    fullName: 'Carlos Alberto de Nóbrega',
-                    email: 'carlos.alberto@email.com',
-                    memberSince: '2023-01-15T10:00:00Z',
-                }
-            });
-        }, 800);
-    });
-};
-
-// Mock para a API de assinaturas
 const fetchSubscriptionsMock = (token: string): Promise<{ data: Subscription[] }> => {
-    console.log("Fetching subscriptions with token:", token);
+    console.log("Ainda não ta pronto pq vou ter que fazer uma requisição na ApiNode", token);
     return new Promise(resolve => {
         setTimeout(() => {
             resolve({
@@ -57,13 +42,21 @@ const fetchSubscriptionsMock = (token: string): Promise<{ data: Subscription[] }
     });
 };
 
-// Mock para cancelar assinatura
 const cancelSubscriptionMock = (subscriptionId: string, token: string): Promise<{ data: { message: string } }> => {
     console.log(`Canceling subscription ${subscriptionId} with token:`, token);
     return new Promise(resolve => {
         setTimeout(() => {
             resolve({ data: { message: 'Assinatura cancelada com sucesso!' } });
         }, 500);
+    });
+};
+
+const deleteAccountMock = (token: string): Promise<{ data: { message: string } }> => {
+    console.log(`Deleting account with token:`, token);
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve({ data: { message: 'Conta deletada permanentemente.' } });
+        }, 1000);
     });
 };
 
@@ -77,6 +70,10 @@ export default function MinhaContaPage() {
     const [error, setError] = useState<string | null>(null);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+    
+    // Estados para o modal de deleção
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [confirmationText, setConfirmationText] = useState('');
 
     useEffect(() => {
         const fetchAccountData = async () => {
@@ -91,17 +88,30 @@ export default function MinhaContaPage() {
             setError(null);
 
             try {
-                // Realiza as duas chamadas de API em paralelo
+                // Requisição real para o perfil do usuário
+                const profilePromise = axios.get('http://localhost:5103/api/friofacil/myaccount', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                // Promise.all para buscar dados do perfil e assinaturas em paralelo
                 const [profileResponse, subsResponse] = await Promise.all([
-                    // Substitua 'fetchUserProfileMock' pela sua chamada real do axios
-                    // ex: axios.get<UserProfile>('http://localhost:5103/api/friofacil/user/profile', config)
-                    fetchUserProfileMock(token),
-                    // Substitua 'fetchSubscriptionsMock' pela sua chamada real do axios
-                    // ex: axios.get<Subscription[]>('http://localhost:5104/api/billing/subscriptions', config)
-                    fetchSubscriptionsMock(token)
+                    profilePromise,
+                    fetchSubscriptionsMock(token) // Mantendo o mock para assinaturas
                 ]);
 
-                setUserProfile(profileResponse.data);
+                // Mapeia os dados da API para o formato esperado pelo estado do componente
+                const apiData = profileResponse.data;
+                const formattedUserProfile: UserProfile = {
+                    fullName: apiData.fullname,
+                    email: apiData.email,
+                    memberSince: apiData.createdAt,
+                    cpf: apiData.cpf,
+                    phone: apiData.phone
+                };
+                
+                setUserProfile(formattedUserProfile);
                 setSubscriptions(subsResponse.data);
 
             } catch (err) {
@@ -117,8 +127,6 @@ export default function MinhaContaPage() {
     }, [navigate]);
 
     const handleCancelSubscription = async (subscriptionId: string) => {
-        // Substituindo window.confirm por um toast de confirmação ou um modal seria o ideal.
-        // Por enquanto, mantemos o confirm para simplicidade.
         if (!window.confirm("Você tem certeza que deseja cancelar esta assinatura? Esta ação não pode ser desfeita.")) {
             return;
         }
@@ -131,21 +139,43 @@ export default function MinhaContaPage() {
         }
 
         try {
-            // Chamada à API para cancelar
             await cancelSubscriptionMock(subscriptionId, token);
-            
-            // Atualiza o estado local para refletir a mudança na UI
             setSubscriptions(prevSubs =>
                 prevSubs.map(sub =>
                     sub.id === subscriptionId ? { ...sub, status: 'Cancelado' } : sub
                 )
             );
-
             toast.success("Assinatura cancelada com sucesso!");
-
         } catch (err) {
             console.error("Erro ao cancelar assinatura:", err);
             toast.error("Não foi possível cancelar a assinatura. Tente novamente.");
+        }
+    };
+
+    const handleConfirmDelete = async () => {
+        if (confirmationText !== 'DELETAR CONTA') {
+            toast.error("O texto de confirmação está incorreto.");
+            return;
+        }
+
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+            toast.error("Sua sessão expirou. Faça login novamente.");
+            navigate('/login');
+            return;
+        }
+
+        try {
+            await deleteAccountMock(token);
+            toast.success("Sua conta foi deletada com sucesso. Sentiremos sua falta!");
+            
+            localStorage.removeItem("accessToken");
+            setIsDeleteModalOpen(false);
+            navigate('/login');
+
+        } catch (err) {
+            console.error("Erro ao deletar conta:", err);
+            toast.error("Não foi possível deletar sua conta. Por favor, entre em contato com o suporte.");
         }
     };
     
@@ -172,7 +202,6 @@ export default function MinhaContaPage() {
     }
 
     return (
-        // Usamos um container geral para aplicar a cor de fundo
         <div className="page-wrapper">
             <Header showBackButton={true} showMenu={false} showOptions={false}/>
             
@@ -180,13 +209,20 @@ export default function MinhaContaPage() {
                 <main className="account-main">
                     <h1 className="account-title">Minha Conta</h1>
 
-                    {/* Seção de Informações do Usuário */}
                     <section className="account-section">
                         <h2 className="section-title"><User className="title-icon" /> Informações Pessoais</h2>
                         <div className="card info-card">
                             <div className="info-row">
                                 <strong>Nome Completo:</strong>
                                 <span>{userProfile?.fullName}</span>
+                            </div>
+                             <div className="info-row">
+                                <strong>CPF:</strong>
+                                <span>{userProfile?.cpf}</span>
+                            </div>
+                            <div className="info-row">
+                                <strong>Telefone:</strong>
+                                <span>{userProfile?.phone}</span>
                             </div>
                             <div className="info-row">
                                 <strong>Email:</strong>
@@ -198,8 +234,7 @@ export default function MinhaContaPage() {
                             </div>
                         </div>
                     </section>
-
-                    {/* Seção de Assinaturas */}
+                    
                     <section className="account-section">
                         <h2 className="section-title"><CreditCard className="title-icon" /> Minhas Assinaturas</h2>
                         {subscriptions.length > 0 ? (
@@ -236,8 +271,61 @@ export default function MinhaContaPage() {
                             <p>Você ainda não possui nenhuma assinatura ativa.</p>
                         )}
                     </section>
+
+                    <section className="account-section">
+                        <h2 className="section-title danger-title"><ShieldAlert className="title-icon danger-icon" /> Zona de Perigo</h2>
+                        <div className="card danger-zone-card">
+                            <div className="danger-zone-content">
+                                <div>
+                                    <h3 className="danger-zone-subtitle">Deletar esta conta</h3>
+                                    <p className="danger-zone-text">Uma vez que você deletar sua conta, não há como voltar atrás. Tenha certeza absoluta.</p>
+                                </div>
+                                <button onClick={() => setIsDeleteModalOpen(true)} className="delete-account-button">
+                                    Deletar minha conta
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
                 </main>
             </div>
+
+            {isDeleteModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3 className="modal-title">Você tem certeza absoluta?</h3>
+                        <p className="modal-text">
+                            Esta ação é irreversível. Todos os seus dados, empresas e informações associadas serão permanentemente deletados. 
+                            Para confirmar, por favor, digite <strong>DELETAR CONTA</strong> no campo abaixo.
+                        </p>
+                        <input 
+                            type="text"
+                            className="modal-input"
+                            value={confirmationText}
+                            onChange={(e) => setConfirmationText(e.target.value)}
+                            placeholder="DELETAR CONTA"
+                        />
+                        <div className="modal-actions">
+                            <button 
+                                className="modal-button cancel"
+                                onClick={() => {
+                                    setIsDeleteModalOpen(false);
+                                    setConfirmationText('');
+                                }}
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                className="modal-button confirm-delete"
+                                onClick={handleConfirmDelete}
+                                disabled={confirmationText !== 'DELETAR CONTA'}
+                            >
+                                Eu entendo, deletar minha conta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

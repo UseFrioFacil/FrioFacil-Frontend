@@ -10,6 +10,8 @@ import InvitationCard from './uiHomePage/InvitationCard.tsx';
 import CompanyCard from './uiHomePage/CompanyCard.tsx';
 import LoadingSpinner from '../../components/Loading/LoadingSpinner.tsx';
 
+// --- INTERFACES ---
+
 interface UserData {
     userId: string;
     fullName: string;
@@ -20,6 +22,7 @@ export interface Company {
     id: string;
     name: string;
     logoUrl: string;
+    role: string;
 }
 
 export interface Invitation {
@@ -37,7 +40,6 @@ interface ApiCompany {
     entrydate: string;
 }
 
-
 interface ApiInvitation {
     id: string;
     companyName: string;
@@ -51,7 +53,6 @@ interface ApiHomeResponse {
     arrayInvites: ApiInvitation[];
     arrayCompanies: ApiCompany[];
 }
-
 
 // --- COMPONENTES EMBUTIDOS ---
 
@@ -108,7 +109,8 @@ export default function HomePage() {
                     const formattedCompanies: Company[] = data.arrayCompanies.map((apiCompany) => ({
                         id: apiCompany.companyid,
                         name: apiCompany.tradename,
-                        logoUrl: `https://placehold.co/150x150/6D28D9/FFFFFF?text=${apiCompany.tradename.charAt(0)}`
+                        logoUrl: `https://placehold.co/150x150/6D28D9/FFFFFF?text=${apiCompany.tradename.charAt(0)}`,
+                        role: apiCompany.role
                     }));
                     setCompanies(formattedCompanies);
                 }
@@ -121,7 +123,6 @@ export default function HomePage() {
                     }));
                     setInvitations(formattedInvitations);
                 }
-
 
             } catch (err) {
                 setError("Não foi possível carregar os dados da página. Tente novamente mais tarde.");
@@ -150,7 +151,8 @@ export default function HomePage() {
             const newCompany: Company = {
                 id: String(Date.now()),
                 name: accepted.companyName,
-                logoUrl: `https://placehold.co/150x150/6D28D9/FFFFFF?text=${accepted.companyName.charAt(0)}`
+                logoUrl: `https://placehold.co/150x150/6D28D9/FFFFFF?text=${accepted.companyName.charAt(0)}`,
+                role: 'funcionario'
             };
             setCompanies(prev => [...prev, newCompany]);
             setInvitations(prev => prev.filter(inv => inv.id !== id));
@@ -174,7 +176,6 @@ export default function HomePage() {
 
     return (
         <div className="home-container">
-            {/* AQUI A MÁGICA ACONTECE! Gerando a URL do avatar com a primeira letra do nome. */}
             {userData && <HeaderHome user={{ 
                 name: userData.fullName, 
                 email: userData.email, 
