@@ -1,22 +1,57 @@
 import { useState, useEffect } from 'react';
-import type {FC} from 'react';
+import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { PlusCircle } from 'lucide-react';
-
 import './HomePageStyle.css';
 import HeaderHome from './uiHomePage/HeaderHome.tsx';
-import InvitationCard, { type Invitation } from './uiHomePage/InvitationCard.tsx';
-import CompanyCard, { type Company } from './uiHomePage/CompanyCard.tsx';
+import InvitationCard from './uiHomePage/InvitationCard.tsx';
+import CompanyCard from './uiHomePage/CompanyCard.tsx';
 import LoadingSpinner from '../../components/Loading/LoadingSpinner.tsx';
-
 
 interface UserData {
     userId: string;
     fullName: string;
     email: string;
 }
+
+export interface Company {
+    id: string;
+    name: string;
+    logoUrl: string;
+}
+
+export interface Invitation {
+    id: string;
+    companyName: string;
+    from: string;
+}
+
+interface ApiCompany {
+    usercompanyid: string;
+    userid: string;
+    tradename: string;
+    companyid: string;
+    role: string;
+    entrydate: string;
+}
+
+
+interface ApiInvitation {
+    id: string;
+    companyName: string;
+    from: string;
+}
+
+interface ApiHomeResponse {
+    userId: string;
+    fullName: string;
+    email: string;
+    arrayInvites: ApiInvitation[];
+    arrayCompanies: ApiCompany[];
+}
+
 
 // --- COMPONENTES EMBUTIDOS ---
 
@@ -46,12 +81,12 @@ export default function HomePage() {
     useEffect(() => {
         const fetchHomeData = async () => {
             const token = localStorage.getItem("accessToken");
-
             if (!token) {
-                toast.error("Acesso negado. Por favor, faça o login.");
                 navigate('/login');
                 return;
             }
+
+            setIsLoading(true);
 
             try {
                 const config = {
@@ -60,7 +95,7 @@ export default function HomePage() {
                     }
                 };
 
-                const response = await axios.get('http://localhost:5103/api/friofacil/home', config);
+                const response = await axios.get<ApiHomeResponse>('http://localhost:5103/api/friofacil/home', config);
                 const data = response.data;
 
                 setUserData({
@@ -68,8 +103,25 @@ export default function HomePage() {
                     fullName: data.fullName,
                     email: data.email,
                 });
-                setCompanies(data.arrayCompanies || []);
-                setInvitations(data.arrayInvites || []);
+
+                if (data.arrayCompanies && Array.isArray(data.arrayCompanies)) {
+                    const formattedCompanies: Company[] = data.arrayCompanies.map((apiCompany) => ({
+                        id: apiCompany.companyid,
+                        name: apiCompany.tradename,
+                        logoUrl: `https://placehold.co/150x150/6D28D9/FFFFFF?text=${apiCompany.tradename.charAt(0)}`
+                    }));
+                    setCompanies(formattedCompanies);
+                }
+
+                if (data.arrayInvites && Array.isArray(data.arrayInvites)) {
+                    const formattedInvitations: Invitation[] = data.arrayInvites.map((apiInvite) => ({
+                        id: apiInvite.id,
+                        companyName: apiInvite.companyName,
+                        from: apiInvite.from
+                    }));
+                    setInvitations(formattedInvitations);
+                }
+
 
             } catch (err) {
                 setError("Não foi possível carregar os dados da página. Tente novamente mais tarde.");
@@ -85,7 +137,7 @@ export default function HomePage() {
         };
 
         fetchHomeData();
-    }, [navigate]); 
+    }, [navigate]);
 
     const handleDeclineInvitation = (id: string) => {
         setInvitations(prev => prev.filter(inv => inv.id !== id));
@@ -101,7 +153,7 @@ export default function HomePage() {
                 logoUrl: `https://placehold.co/150x150/6D28D9/FFFFFF?text=${accepted.companyName.charAt(0)}`
             };
             setCompanies(prev => [...prev, newCompany]);
-            handleDeclineInvitation(id); 
+            setInvitations(prev => prev.filter(inv => inv.id !== id));
             toast.success(`Você agora faz parte da empresa ${accepted.companyName}!`);
         }
     };
@@ -122,7 +174,13 @@ export default function HomePage() {
 
     return (
         <div className="home-container">
-            {userData && <HeaderHome user={{ name: userData.fullName, email: userData.email, avatarUrl: '' }} />}
+            {/* AQUI A MÁGICA ACONTECE! Gerando a URL do avatar com a primeira letra do nome. */}
+            {userData && <HeaderHome user={{ 
+                name: userData.fullName, 
+                email: userData.email, 
+                avatarUrl: `https://placehold.co/40x40/FFFFFF/6D28D9?text=${userData.fullName.charAt(0)}` 
+            }} />}
+            
             <main className='containerhome'>
                 <section className="welcome-section">
                     <h1 className="welcome-title">
@@ -146,8 +204,8 @@ export default function HomePage() {
                         <h2 className="section-title">Convites Pendentes</h2>
                         <div className="invitations-section">
                             {invitations.map(invitation => (
-                                <InvitationCard 
-                                    key={invitation.id} 
+                                <InvitationCard
+                                    key={invitation.id}
                                     invitation={invitation}
                                     onAccept={handleAcceptInvitation}
                                     onDecline={handleDeclineInvitation}

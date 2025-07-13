@@ -1,0 +1,180 @@
+/* MyAccountStyle.css */
+
+.page-wrapper {
+    background-color: #f0f2f5;
+    min-height: 100vh;
+}
+
+.account-container {
+    padding: 2rem 0 4rem;
+}
+
+.account-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.account-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.account-section {
+    width: 100%;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.title-icon {
+    color: #2563eb;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem 2rem;
+    border: 1px solid #e2e8f0;
+}
+
+/* Card de Informações */
+.info-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row strong {
+    color: #475569;
+    font-weight: 600;
+}
+
+.info-row span {
+    color: #1e293b;
+}
+
+/* Grid de Assinaturas */
+.subscriptions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.subscription-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subscription-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.07);
+}
+
+.subscription-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8fafc;
+}
+
+.subscription-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-ativo .status-badge {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-cancelado .status-badge {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.subscription-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+.subscription-body p {
+    margin: 0 0 0.75rem 0;
+    color: #475569;
+}
+
+.subscription-body p:last-child {
+    margin-bottom: 0;
+}
+
+.subscription-footer {
+    padding: 1rem 1.5rem;
+    background-color: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    text-align: right;
+}
+
+.cancel-button {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.cancel-button:hover {
+    background-color: #dc2626;
+}
+
+/* Estilos para o container de erro */
+.error-container {
+    text-align: center;
+    padding: 4rem 1rem;
+}

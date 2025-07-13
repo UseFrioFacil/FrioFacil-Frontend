@@ -4,9 +4,9 @@ import {
     Snowflake,
     ChevronDown,
     LogOut,
-    Settings,
     User,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface UserProfile {
     name: string;
@@ -14,14 +14,15 @@ interface UserProfile {
     avatarUrl: string;
 }
 
-const mockUser: UserProfile = {
-    name: 'Ryan safadinha',
-    email: 'ryan.barreto@email.com',
-    avatarUrl: 'https://placehold.co/100x100/E0F2FE/3B82F6?text=A',
-};
 
 const HeaderHome: FC<{ user: UserProfile }> = ({ user }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("accessToken");
+        navigate("/login");
+    };
 
     return (
         <header className="home-header">
@@ -30,7 +31,6 @@ const HeaderHome: FC<{ user: UserProfile }> = ({ user }) => {
                 <span>FrioFácil</span>
             </div>
             <div className="home-header-actions">
-                {/* O botão de notificação foi removido daqui */}
                 <div className="home-header-user-menu-container">
                     <button className="home-header-user-menu-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <img src={user.avatarUrl} alt={user.name} className="home-header-avatar" />
@@ -43,9 +43,8 @@ const HeaderHome: FC<{ user: UserProfile }> = ({ user }) => {
                                 <p className="home-header-dropdown-user-name">{user.name}</p>
                                 <p className="home-header-dropdown-user-email">{user.email}</p>
                             </div>
-                            <a href="#" className="home-header-dropdown-item"><User size={16}/> Minha Conta</a>
-                            <a href="#" className="home-header-dropdown-item"><Settings size={16}/> Configurações</a>
-                            <a href="#" className="home-header-dropdown-item home-header-dropdown-item-danger"><LogOut size={16}/> Sair</a>
+                            <a onClick={() => navigate("/minhaconta")} className="home-header-dropdown-item"><User size={16}/> Minha Conta</a>
+                            <a onClick={() => handleLogout()} className="home-header-dropdown-item home-header-dropdown-item-danger"><LogOut size={16}/> Sair</a>
                         </div>
                     )}
                 </div>
@@ -55,4 +54,3 @@ const HeaderHome: FC<{ user: UserProfile }> = ({ user }) => {
 };
 
 export default HeaderHome
-export { mockUser }

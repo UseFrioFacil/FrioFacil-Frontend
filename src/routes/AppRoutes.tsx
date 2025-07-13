@@ -11,6 +11,7 @@ import AcceptInvitePage from '../pages/Invite/InviteLink.tsx'
 import HomePage from '../pages/Home/HomePage.tsx';
 import Cadastro from '../pages/Register/Register.tsx'
 import ProtectedRoute from "../components/ProtectedRoute.tsx"
+import MinhaContaPage from '../pages/MyCount/MyAccount.tsx';
 
 export default function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ export default function AppRoutes() {
         <Route path='/cadastro' element={<Cadastro/>}/>
         <Route path='/convite' element={<AcceptInvitePage />} />
         <Route path='/home' element={<ProtectedRoute><HomePage/></ProtectedRoute>}/>
+        <Route path='/minhaconta' element={<ProtectedRoute><MinhaContaPage/></ProtectedRoute>}/>
         <Route path='/cadastrarempresa' element={<ProtectedRoute><RegisterPage/></ProtectedRoute>}/>
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path='/checkout' element={<ProtectedRoute><PaymentPage /></ProtectedRoute>} />'
