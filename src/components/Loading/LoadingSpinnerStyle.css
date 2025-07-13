@@ -1,0 +1,66 @@
+/* src/components/LoadingScreen/LoadingScreen.css */
+
+.loading-screen {
+  position: fixed; /* Garante que cubra toda a tela */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f0f9ff; /* Mesma cor de fundo da seção 'features' para uma transição suave */
+  z-index: 9999; /* Fica acima de todo o conteúdo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease-out, visibility 0s 0.5s; /* Animação de fade-out */
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Estado oculto para quando o carregamento terminar */
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden; /* Remove o elemento do fluxo para não bloquear cliques */
+}
+
+.loading-content {
+  text-align: center;
+  /* Animação de entrada sutil, herdada do seu design */
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* O Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 24px; /* Centraliza e adiciona espaço abaixo */
+  
+  /* Cor da "trilha" do spinner, um azul bem claro */
+  border: 6px solid rgba(59, 130, 246, 0.2); 
+  
+  /* Cor principal do spinner, o azul da sua marca */
+  border-top-color: #3b82f6; 
+
+  /* Animação */
+  animation: spin 1s linear infinite;
+}
+
+/* Título, usando a paleta de cores principal */
+.loading-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827; /* Cor dos títulos principais */
+  margin-bottom: 8px;
+}
+
+/* Texto de apoio */
+.loading-text {
+  font-size: 18px;
+  color: #4b5563; /* Cor dos subtítulos/descrições */
+}

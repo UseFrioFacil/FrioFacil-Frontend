@@ -1,11 +1,10 @@
 import type { FC } from 'react';
 import { useState } from 'react';
-import { 
-    Snowflake, 
-    Bell, 
-    ChevronDown, 
-    LogOut, 
-    Settings, 
+import {
+    Snowflake,
+    ChevronDown,
+    LogOut,
+    Settings,
     User,
 } from 'lucide-react';
 
@@ -31,10 +30,7 @@ const HeaderHome: FC<{ user: UserProfile }> = ({ user }) => {
                 <span>FrioFácil</span>
             </div>
             <div className="home-header-actions">
-                <button className="home-header-icon-button">
-                    <Bell size={22} />
-                    <span className="home-header-notification-dot"></span>
-                </button>
+                {/* O botão de notificação foi removido daqui */}
                 <div className="home-header-user-menu-container">
                     <button className="home-header-user-menu-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <img src={user.avatarUrl} alt={user.name} className="home-header-avatar" />

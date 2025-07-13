@@ -11,7 +11,7 @@ import Footer from '../../components/Footer/Footer';
 const LoginPage: FC = () => {
     return(
         <div>
-            <Header showOptions={false} showMenu={false}/>
+            <Header showOptions = {false} showMenu = {false} showBackButton = {true}/>
             <LoginScreen />;
             <Footer/>
         </div>

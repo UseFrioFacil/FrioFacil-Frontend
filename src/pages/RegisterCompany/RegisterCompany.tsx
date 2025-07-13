@@ -8,7 +8,7 @@ import RegistrationScreen from './uiRegisterCompany/RegistrationCompanyScreen'
 const RegisterPage: FC = () => {
     return(
       <div>
-        <Header showOptions={false} showMenu={false}/>
+        <Header showOptions = {false} showMenu = {false} showBackButton = {true}/>
         <RegistrationScreen />
         <Footer/>
       </div>

@@ -6,9 +6,10 @@ import RegisterScreen from './uiRegister/RegisterScreen';
 export default function App() {
     return (
         <>
-            <Header showMenu={false} showOptions={false}/>
+            <Header showOptions = {false} showMenu = {false} showBackButton = {true}/>
             <RegisterScreen />
             <Footer/>
         </>
     );
 }
+ 

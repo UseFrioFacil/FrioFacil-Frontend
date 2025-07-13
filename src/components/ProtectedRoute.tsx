@@ -1,7 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useState, type ReactNode } from 'react';
 import { toast } from 'react-toastify';
-import { MdError } from 'react-icons/md';
 import { useEffect } from 'react';
 
 interface ProtectedRouteProps {
@@ -9,14 +8,12 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
   const [redirect, setRedirect] = useState(false)
 
   useEffect(() => {
     if (!token) {
-      toast.error("Você precisa estar logado para acessar essa página!", {
-        icon: <MdError color="#1F3B4D" size={26} />
-      });
+      toast.error("Você precisa estar logado para acessar essa página!");
 
       setTimeout(() => setRedirect(true), 50);
     }

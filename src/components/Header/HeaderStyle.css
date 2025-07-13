@@ -9,7 +9,7 @@
 
 .header-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Mantém logo à esquerda e ações à direita */
   align-items: center;
   padding: 15px 0;
 }
@@ -33,9 +33,43 @@
   color: #1f2937;
 }
 
-/* Menu Mobile */
-.mobile-menu-button {
+/* ============== ESTILOS ADICIONADOS/AJUSTADOS ============== */
+
+/* Container para as ações do lado direito (botões de ação ou botão de voltar) */
+.header-right-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Esconde as ações e a navegação de desktop por padrão (mobile-first) */
+.nav-desktop, .nav-desktop-actions {
   display: none;
+}
+
+/* Estilo para o botão de voltar */
+.btn-voltar {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre ícone e texto */
+  background-color: transparent;
+  border: 1px solid #d1d5db; /* Cinza claro */
+  color: #374151; /* Cinza escuro */
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #f3f4f6; /* Fundo cinza claro ao passar o mouse */
+}
+
+
+/* ============== MENU MOBILE (Seu código original) ============== */
+.mobile-menu-button {
+  display: none; /* Controlado pela media query abaixo */
   background: none;
   border: none;
   cursor: pointer;
@@ -78,20 +112,38 @@
   gap: 16px;
 }
 
-/* Responsividade */
+/* ============== RESPONSIVIDADE ============== */
 
+/* Estilos para Mobile (até 767px) */
 @media (max-width: 767px) {
-  
+  /* Mostra o botão do menu hambúrguer */
   .mobile-menu-button {
     display: block;
   }
-  
+
+  /* Classe que o React adiciona para abrir o menu */
   .mobile-menu-open {
     display: block;
   }
 
-  .header-container{
-    justify-content: center;
-    gap: 50%;
+  /*
+   * CORREÇÃO: O seu '.header-container' para mobile foi removido.
+   * A regra 'justify-content: space-between' já garante o alinhamento correto
+   * (logo à esquerda, ações à direita) sem precisar de 'gap' ou 'justify-content: center'.
+  */
+}
+
+/* Estilos para Desktop (a partir de 768px) */
+@media (min-width: 768px) {
+  /* Esconde o botão de menu hambúrguer */
+  .mobile-menu-button {
+    display: none;
+  }
+
+  /* Mostra a navegação e as ações de desktop */
+  .nav-desktop, .nav-desktop-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Espaçamento entre os links/botões */
   }
 }

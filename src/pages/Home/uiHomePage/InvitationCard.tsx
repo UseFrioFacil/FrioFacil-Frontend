@@ -5,7 +5,7 @@ import {
     Mail
 } from 'lucide-react';
 
-interface Invitation {
+export interface Invitation {
     id: string;
     companyName: string;
     from: string;
