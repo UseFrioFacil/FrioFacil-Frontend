@@ -7,49 +7,27 @@ import './MyAccountStyle.css';
 import Header from '../../components/Header/Header.tsx';
 import LoadingSpinner from '../../components/Loading/LoadingSpinner.tsx';
 
-// --- INTERFACES DE DADOS ---
+// --- INTERFACES DE DADOS ATUALIZADAS ---
 
-// Interface atualizada para corresponder à resposta da sua API.
 interface UserProfile {
     cpf: string;
     fullName: string;
     phone: string;
     email: string;
-    memberSince: string; 
+    memberSince: string;
 }
 
+// Interface ajustada para a API de assinaturas
 interface Subscription {
     id: string;
-    planName: string;
     status: 'Ativo' | 'Inativo' | 'Cancelado';
-    nextBillingDate: string; 
-    price: string;
+    planName: string;
+    companyId: string;
+    nextBillingDate: string | null;
+    paymentMethod: string; // Ex: "Visa **** 4242"
 }
 
-// --- MOCKS DE API (PARA FUNCIONALIDADES AINDA NÃO IMPLEMENTADAS) ---
-
-const fetchSubscriptionsMock = (token: string): Promise<{ data: Subscription[] }> => {
-    console.log("Ainda não ta pronto pq vou ter que fazer uma requisição na ApiNode", token);
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve({
-                data: [
-                    { id: 'sub_1', planName: 'Plano Frio-Forte', status: 'Ativo', nextBillingDate: '2025-08-01T10:00:00Z', price: 'R$ 99,90/mês' },
-                    { id: 'sub_2', planName: 'Plano Gelo-Extra', status: 'Ativo', nextBillingDate: '2025-07-20T10:00:00Z', price: 'R$ 149,90/mês' },
-                ]
-            });
-        }, 1200);
-    });
-};
-
-const cancelSubscriptionMock = (subscriptionId: string, token: string): Promise<{ data: { message: string } }> => {
-    console.log(`Canceling subscription ${subscriptionId} with token:`, token);
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve({ data: { message: 'Assinatura cancelada com sucesso!' } });
-        }, 500);
-    });
-};
+// --- MOCK RESTANTE (APENAS PARA DELETAR CONTA) ---
 
 const deleteAccountMock = (token: string): Promise<{ data: { message: string } }> => {
     console.log(`Deleting account with token:`, token);
@@ -71,7 +49,6 @@ export default function MinhaContaPage() {
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
     
-    // Estados para o modal de deleção
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [confirmationText, setConfirmationText] = useState('');
 
@@ -88,31 +65,43 @@ export default function MinhaContaPage() {
             setError(null);
 
             try {
-                // Requisição real para o perfil do usuário
+                // Requisição para o perfil do usuário
                 const profilePromise = axios.get('http://localhost:5103/api/friofacil/myaccount', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                // Promise.all para buscar dados do perfil e assinaturas em paralelo
+                // 1. Requisição REAL para as assinaturas do usuário
+                const subscriptionsPromise = axios.get('http://localhost:25565/api/subscriptions/me', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
                 const [profileResponse, subsResponse] = await Promise.all([
                     profilePromise,
-                    fetchSubscriptionsMock(token) // Mantendo o mock para assinaturas
+                    subscriptionsPromise
                 ]);
 
-                // Mapeia os dados da API para o formato esperado pelo estado do componente
-                const apiData = profileResponse.data;
+                // Mapeamento dos dados do perfil
+                const profileApiData = profileResponse.data;
                 const formattedUserProfile: UserProfile = {
-                    fullName: apiData.fullname,
-                    email: apiData.email,
-                    memberSince: apiData.createdAt,
-                    cpf: apiData.cpf,
-                    phone: apiData.phone
+                    fullName: profileApiData.fullname,
+                    email: profileApiData.email,
+                    memberSince: profileApiData.createdAt,
+                    cpf: profileApiData.cpf,
+                    phone: profileApiData.phone
                 };
-                
                 setUserProfile(formattedUserProfile);
-                setSubscriptions(subsResponse.data);
+                
+                // 2. Mapeamento dos dados da API de assinaturas para o formato do frontend
+                const subsApiData = subsResponse.data.data;
+                const formattedSubscriptions: Subscription[] = subsApiData.map((sub: any) => ({
+                    id: sub.id,
+                    status: sub.status === 'active' ? 'Ativo' : 'Inativo',
+                    planName: `Plano ${sub.plan_type.charAt(0).toUpperCase() + sub.plan_type.slice(1)}`,
+                    companyId: sub.company_temp_id,
+                    nextBillingDate: sub.next_billing_date,
+                    paymentMethod: `${sub.default_payment_method.card.brand.toUpperCase()} final ${sub.default_payment_method.card.last4}`
+                }));
+                setSubscriptions(formattedSubscriptions);
 
             } catch (err) {
                 console.error("Erro ao buscar dados da conta:", err);
@@ -139,13 +128,19 @@ export default function MinhaContaPage() {
         }
 
         try {
-            await cancelSubscriptionMock(subscriptionId, token);
+            // 3. Chamada REAL para a API de cancelamento
+            await axios.post(`http://localhost:25565/api/cancel-subscription/${subscriptionId}`, {}, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            // Atualiza o estado local para refletir o cancelamento
             setSubscriptions(prevSubs =>
                 prevSubs.map(sub =>
                     sub.id === subscriptionId ? { ...sub, status: 'Cancelado' } : sub
                 )
             );
             toast.success("Assinatura cancelada com sucesso!");
+
         } catch (err) {
             console.error("Erro ao cancelar assinatura:", err);
             toast.error("Não foi possível cancelar a assinatura. Tente novamente.");
@@ -157,29 +152,26 @@ export default function MinhaContaPage() {
             toast.error("O texto de confirmação está incorreto.");
             return;
         }
-
         const token = localStorage.getItem("accessToken");
         if (!token) {
             toast.error("Sua sessão expirou. Faça login novamente.");
             navigate('/login');
             return;
         }
-
         try {
-            await deleteAccountMock(token);
+            await deleteAccountMock(token); // Mantendo mock aqui
             toast.success("Sua conta foi deletada com sucesso. Sentiremos sua falta!");
-            
             localStorage.removeItem("accessToken");
             setIsDeleteModalOpen(false);
             navigate('/login');
-
         } catch (err) {
             console.error("Erro ao deletar conta:", err);
             toast.error("Não foi possível deletar sua conta. Por favor, entre em contato com o suporte.");
         }
     };
     
-    const formatDate = (dateString: string) => {
+    const formatDate = (dateString: string | null) => {
+        if (!dateString) return 'N/A';
         return new Date(dateString).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: 'long',
@@ -216,7 +208,7 @@ export default function MinhaContaPage() {
                                 <strong>Nome Completo:</strong>
                                 <span>{userProfile?.fullName}</span>
                             </div>
-                             <div className="info-row">
+                            <div className="info-row">
                                 <strong>CPF:</strong>
                                 <span>{userProfile?.cpf}</span>
                             </div>
@@ -246,12 +238,13 @@ export default function MinhaContaPage() {
                                             <span className={`status-badge`}>{sub.status}</span>
                                         </div>
                                         <div className="subscription-body">
-                                            <p><strong>Preço:</strong> {sub.price}</p>
+                                            {/* 4. Exibindo dados reais da assinatura */}
+                                            <p><strong>Pagamento:</strong> {sub.paymentMethod}</p>
                                             {sub.status === 'Ativo' && (
                                                 <p><strong>Próxima cobrança:</strong> {formatDate(sub.nextBillingDate)}</p>
                                             )}
                                             {sub.status === 'Cancelado' && (
-                                                <p>O acesso permanecerá até o fim do ciclo de cobrança.</p>
+                                                <p>O acesso ao plano foi encerrado.</p>
                                             )}
                                         </div>
                                         {sub.status === 'Ativo' && (
@@ -268,7 +261,9 @@ export default function MinhaContaPage() {
                                 ))}
                             </div>
                         ) : (
-                            <p>Você ainda não possui nenhuma assinatura ativa.</p>
+                            <div className="card info-card">
+                                <p>Você ainda não possui nenhuma assinatura ativa.</p>
+                            </div>
                         )}
                     </section>
 
@@ -286,12 +281,11 @@ export default function MinhaContaPage() {
                             </div>
                         </div>
                     </section>
-
                 </main>
             </div>
 
             {isDeleteModalOpen && (
-                <div className="modal-overlay">
+                 <div className="modal-overlay">
                     <div className="modal-content">
                         <h3 className="modal-title">Você tem certeza absoluta?</h3>
                         <p className="modal-text">
