@@ -5,15 +5,11 @@ import {
     Mail
 } from 'lucide-react';
 
+// ATUALIZAÇÃO 1: A interface foi sincronizada com a de HomePage.tsx, removendo o campo 'from'.
 export interface Invitation {
     id: string;
     companyName: string;
-    from: string;
 }
-
-const mockInvitations: Invitation[] = [
-    { id: 'inv1', companyName: 'Refrigeração Ártico', from: 'contato@artico.com' },
-];
 
 const InvitationCard: FC<{ invitation: Invitation, onAccept: (id: string) => void, onDecline: (id: string) => void }> = ({ invitation, onAccept, onDecline }) => (
     <div className="card invitation-card">
@@ -21,8 +17,8 @@ const InvitationCard: FC<{ invitation: Invitation, onAccept: (id: string) => voi
             <Mail size={24} />
         </div>
         <div className="invitation-details">
-            <p>Você foi convidado para se juntar à empresa <strong>{invitation.companyName}</strong>.</p>
-            <p className="invitation-from">De: {invitation.from}</p>
+            {/* O texto foi ajustado para não depender mais do campo 'from' */}
+            <p>Você recebeu um convite para se juntar à empresa <strong>{invitation.companyName}</strong>.</p>
         </div>
         <div className="invitation-actions">
             <button className="button-icon accept" onClick={() => onAccept(invitation.id)} aria-label="Aceitar">
@@ -35,5 +31,4 @@ const InvitationCard: FC<{ invitation: Invitation, onAccept: (id: string) => voi
     </div>
 );
 
-export default InvitationCard
-export {mockInvitations}
+export default InvitationCard;

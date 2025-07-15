@@ -28,9 +28,9 @@ export interface Company {
 export interface Invitation {
     id: string;
     companyName: string;
-    from: string;
 }
 
+// Interfaces da API
 interface ApiCompany {
     usercompanyid: string;
     userid: string;
@@ -41,9 +41,9 @@ interface ApiCompany {
 }
 
 interface ApiInvitation {
-    id: string;
-    companyName: string;
-    from: string;
+    inviteid: string;
+    tradename: string;
+    // ... outros campos da API do convite
 }
 
 interface ApiHomeResponse {
@@ -79,6 +79,7 @@ export default function HomePage() {
     const [companies, setCompanies] = useState<Company[]>([]);
     const [invitations, setInvitations] = useState<Invitation[]>([]);
 
+    // A função fetchHomeData permanece a mesma
     useEffect(() => {
         const fetchHomeData = async () => {
             const token = localStorage.getItem("accessToken");
@@ -86,83 +87,87 @@ export default function HomePage() {
                 navigate('/login');
                 return;
             }
-
             setIsLoading(true);
-
             try {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                };
-
+                const config = { headers: { Authorization: `Bearer ${token}` } };
                 const response = await axios.get<ApiHomeResponse>('http://localhost:5103/api/friofacil/home', config);
                 const data = response.data;
-
-                setUserData({
-                    userId: data.userId,
-                    fullName: data.fullName,
-                    email: data.email,
-                });
-
-                if (data.arrayCompanies && Array.isArray(data.arrayCompanies)) {
-                    const formattedCompanies: Company[] = data.arrayCompanies.map((apiCompany) => ({
-                        id: apiCompany.companyid,
-                        name: apiCompany.tradename,
-                        logoUrl: `https://placehold.co/150x150/6D28D9/FFFFFF?text=${apiCompany.tradename.charAt(0)}`,
-                        role: apiCompany.role
+                setUserData({ userId: data.userId, fullName: data.fullName, email: data.email });
+                if (data.arrayCompanies) {
+                    const formattedCompanies: Company[] = data.arrayCompanies.map(c => ({
+                        id: c.companyid,
+                        name: c.tradename,
+                        logoUrl: `https://placehold.co/150x150/6D28D9/FFFFFF?text=${c.tradename.charAt(0)}`,
+                        role: c.role
                     }));
                     setCompanies(formattedCompanies);
                 }
-
-                if (data.arrayInvites && Array.isArray(data.arrayInvites)) {
-                    const formattedInvitations: Invitation[] = data.arrayInvites.map((apiInvite) => ({
-                        id: apiInvite.id,
-                        companyName: apiInvite.companyName,
-                        from: apiInvite.from
+                if (data.arrayInvites) {
+                    const formattedInvitations: Invitation[] = data.arrayInvites.map(i => ({
+                        id: i.inviteid,
+                        companyName: i.tradename,
                     }));
                     setInvitations(formattedInvitations);
                 }
-
             } catch (err) {
-                setError("Não foi possível carregar os dados da página. Tente novamente mais tarde.");
-                toast.error("Erro ao buscar dados. Você será redirecionado.");
-                
+                setError("Não foi possível carregar os dados.");
+                toast.error("Erro ao buscar dados.");
                 if (axios.isAxiosError(err) && (err.response?.status === 401 || err.response?.status === 403)) {
-                    localStorage.removeItem("accessToken");
                     navigate('/login');
                 }
             } finally {
                 setIsLoading(false);
             }
         };
-
         fetchHomeData();
     }, [navigate]);
 
-    const handleDeclineInvitation = (id: string) => {
-        setInvitations(prev => prev.filter(inv => inv.id !== id));
-        toast.info("Convite recusado.");
-    };
-    
-    const handleAcceptInvitation = (id: string) => {
-        const accepted = invitations.find(inv => inv.id === id);
-        if(accepted) {
-            const newCompany: Company = {
-                id: String(Date.now()),
-                name: accepted.companyName,
-                logoUrl: `https://placehold.co/150x150/6D28D9/FFFFFF?text=${accepted.companyName.charAt(0)}`,
-                role: 'funcionario'
+    // ATUALIZAÇÃO: Função genérica para responder ao convite
+    const handleRespondToInvitation = async (inviteId: string, status: 'aceito' | 'recusado') => {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+            toast.error("Sessão expirada. Por favor, faça login novamente.");
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const payload = {
+                inviteid: inviteId,
+                status: status
             };
-            setCompanies(prev => [...prev, newCompany]);
-            setInvitations(prev => prev.filter(inv => inv.id !== id));
-            toast.success(`Você agora faz parte da empresa ${accepted.companyName}!`);
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
+            await axios.patch('http://localhost:5103/api/friofacil/respondinvite', payload, config);
+
+            const successMessage = status === 'aceito' ? 'Convite aceito com sucesso!' : 'Convite recusado.';
+            toast.success(successMessage);
+
+            // Adiciona um pequeno delay antes de recarregar para o usuário ver o toast
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+
+        } catch (err) {
+            console.error("Erro ao responder ao convite:", err);
+            toast.error("Não foi possível processar sua resposta. Tente novamente.");
         }
     };
 
-    if (isLoading) {
-        return <LoadingSpinner isLoading={true} />;
-    }
+    // As funções de aceite e recusa agora chamam a nova função genérica
+    const handleAcceptInvitation = (id: string) => {
+        handleRespondToInvitation(id, 'aceito');
+    };
+
+    const handleDeclineInvitation = (id: string) => {
+        handleRespondToInvitation(id, 'recusado');
+    };
+
+    if (isLoading) return <LoadingSpinner isLoading={true} />;
 
     if (error) {
         return (
@@ -184,9 +189,7 @@ export default function HomePage() {
             
             <main className='containerhome'>
                 <section className="welcome-section">
-                    <h1 className="welcome-title">
-                        Bem-vindo(a) de volta, {userData?.fullName.split(' ')[0]}!
-                    </h1>
+                    <h1 className="welcome-title">Bem-vindo(a) de volta, {userData?.fullName.split(' ')[0]}!</h1>
                     <p className="welcome-subtitle">Escolha uma empresa para gerenciar ou crie uma nova para começar.</p>
                 </section>
 

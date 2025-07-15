@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { User, CreditCard, XCircle, ShieldAlert } from 'lucide-react';
+import { User, CreditCard, XCircle, ShieldAlert, Building2 } from 'lucide-react';
 import './MyAccountStyle.css';
 import Header from '../../components/Header/Header.tsx';
 import LoadingSpinner from '../../components/Loading/LoadingSpinner.tsx';
 
-// --- INTERFACES DE DADOS ATUALIZADAS ---
+// --- INTERFACES DE DADOS ---
 
 interface UserProfile {
     cpf: string;
@@ -17,17 +17,17 @@ interface UserProfile {
     memberSince: string;
 }
 
-// Interface ajustada para a API de assinaturas
 interface Subscription {
     id: string;
     status: 'Ativo' | 'Inativo' | 'Cancelado';
     planName: string;
     companyId: string;
+    tradeName?: string;
     nextBillingDate: string | null;
-    paymentMethod: string; // Ex: "Visa **** 4242"
+    paymentMethod: string;
 }
 
-// --- MOCK RESTANTE (APENAS PARA DELETAR CONTA) ---
+// --- MOCK RESTANTE ---
 
 const deleteAccountMock = (token: string): Promise<{ data: { message: string } }> => {
     console.log(`Deleting account with token:`, token);
@@ -65,12 +65,10 @@ export default function MinhaContaPage() {
             setError(null);
 
             try {
-                // Requisição para o perfil do usuário
                 const profilePromise = axios.get('http://localhost:5103/api/friofacil/myaccount', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                // 1. Requisição REAL para as assinaturas do usuário
                 const subscriptionsPromise = axios.get('http://localhost:25565/api/subscriptions/me', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -82,26 +80,30 @@ export default function MinhaContaPage() {
 
                 // Mapeamento dos dados do perfil
                 const profileApiData = profileResponse.data;
-                const formattedUserProfile: UserProfile = {
+                setUserProfile({
                     fullName: profileApiData.fullname,
                     email: profileApiData.email,
                     memberSince: profileApiData.createdAt,
                     cpf: profileApiData.cpf,
                     phone: profileApiData.phone
-                };
-                setUserProfile(formattedUserProfile);
+                });
                 
-                // 2. Mapeamento dos dados da API de assinaturas para o formato do frontend
+                // Mapeamento e filtragem dos dados da API de assinaturas
                 const subsApiData = subsResponse.data.data;
-                const formattedSubscriptions: Subscription[] = subsApiData.map((sub: any) => ({
+                const allSubscriptions: Subscription[] = subsApiData.map((sub: any) => ({
                     id: sub.id,
-                    status: sub.status === 'active' ? 'Ativo' : 'Inativo',
+                    status: sub.status === 'active' ? 'Ativo' : (sub.status === 'canceled' ? 'Cancelado' : 'Inativo'),
                     planName: `Plano ${sub.plan_type.charAt(0).toUpperCase() + sub.plan_type.slice(1)}`,
-                    companyId: sub.company_temp_id,
+                    companyId: sub.companyid,
+                    tradeName: sub.tradename,
                     nextBillingDate: sub.next_billing_date,
                     paymentMethod: `${sub.default_payment_method.card.brand.toUpperCase()} final ${sub.default_payment_method.card.last4}`
                 }));
-                setSubscriptions(formattedSubscriptions);
+
+                // 1. FILTRANDO PARA REMOVER AS ASSINATURAS CANCELADAS
+                const activeSubscriptions = allSubscriptions.filter(sub => sub.status !== 'Cancelado');
+                
+                setSubscriptions(activeSubscriptions);
 
             } catch (err) {
                 console.error("Erro ao buscar dados da conta:", err);
@@ -128,17 +130,13 @@ export default function MinhaContaPage() {
         }
 
         try {
-            // 3. Chamada REAL para a API de cancelamento
             await axios.post(`http://localhost:25565/api/cancel-subscription/${subscriptionId}`, {}, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
-            // Atualiza o estado local para refletir o cancelamento
-            setSubscriptions(prevSubs =>
-                prevSubs.map(sub =>
-                    sub.id === subscriptionId ? { ...sub, status: 'Cancelado' } : sub
-                )
-            );
+            // Ao cancelar, a assinatura é removida da lista em vez de ter o status alterado
+            setSubscriptions(prevSubs => prevSubs.filter(sub => sub.id !== subscriptionId));
+            
             toast.success("Assinatura cancelada com sucesso!");
 
         } catch (err) {
@@ -159,7 +157,7 @@ export default function MinhaContaPage() {
             return;
         }
         try {
-            await deleteAccountMock(token); // Mantendo mock aqui
+            await deleteAccountMock(token);
             toast.success("Sua conta foi deletada com sucesso. Sentiremos sua falta!");
             localStorage.removeItem("accessToken");
             setIsDeleteModalOpen(false);
@@ -172,7 +170,11 @@ export default function MinhaContaPage() {
     
     const formatDate = (dateString: string | null) => {
         if (!dateString) return 'N/A';
-        return new Date(dateString).toLocaleDateString('pt-BR', {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return 'N/A';
+        }
+        return date.toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: 'long',
             year: 'numeric'
@@ -234,35 +236,31 @@ export default function MinhaContaPage() {
                                 {subscriptions.map(sub => (
                                     <div key={sub.id} className={`card subscription-card status-${sub.status.toLowerCase()}`}>
                                         <div className="subscription-header">
-                                            <h3>{sub.planName}</h3>
+                                            <h3><Building2 size={18} className="title-icon"/> {sub.tradeName || sub.planName}</h3>
                                             <span className={`status-badge`}>{sub.status}</span>
                                         </div>
                                         <div className="subscription-body">
-                                            {/* 4. Exibindo dados reais da assinatura */}
+                                            {sub.tradeName && <p><strong>Plano:</strong> {sub.planName}</p>}
                                             <p><strong>Pagamento:</strong> {sub.paymentMethod}</p>
                                             {sub.status === 'Ativo' && (
                                                 <p><strong>Próxima cobrança:</strong> {formatDate(sub.nextBillingDate)}</p>
                                             )}
-                                            {sub.status === 'Cancelado' && (
-                                                <p>O acesso ao plano foi encerrado.</p>
-                                            )}
                                         </div>
-                                        {sub.status === 'Ativo' && (
-                                            <div className="subscription-footer">
-                                                <button 
-                                                    onClick={() => handleCancelSubscription(sub.id)}
-                                                    className="cancel-button"
-                                                >
-                                                    <XCircle size={16} /> Cancelar Assinatura
-                                                </button>
-                                            </div>
-                                        )}
+                                        {/* O botão de cancelar só aparece para assinaturas ativas, que são as únicas visíveis agora */}
+                                        <div className="subscription-footer">
+                                            <button 
+                                                onClick={() => handleCancelSubscription(sub.id)}
+                                                className="cancel-button"
+                                            >
+                                                <XCircle size={16} /> Cancelar Assinatura
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
                         ) : (
                             <div className="card info-card">
-                                <p>Você ainda não possui nenhuma assinatura ativa.</p>
+                                <p>Você não possui nenhuma assinatura ativa.</p>
                             </div>
                         )}
                     </section>
