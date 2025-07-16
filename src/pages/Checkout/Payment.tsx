@@ -8,7 +8,6 @@ import CheckoutForm from './uiCheckout/CheckoutForm';
 import PlanSelector from './uiCheckout/PlanSelector';
 import Header from '../../components/Header/Header';
 
-// Chave pública do Stripe (deve ser guardada em variáveis de ambiente em um projeto real)
 const stripePromise = loadStripe('pk_test_51RjWIRHKR0vqiVIlUdWni0r20rOdgsAQ0fGlUCuxxlVWjeAXG7A2pgn5oHaHbneWB8lmwmX0LoC2ZUrJuJH3JXa800Lh5oadUh');
 
 // Configuração dos planos
@@ -50,8 +49,8 @@ export default function PaymentPage() {
 
     useEffect(() => {
         if (!tokenTempCompany) {
-            toast.error("Por favor, cadastre os dados da empresa primeiro.");
-            navigate('/cadastrarempresa'); 
+            toast.error("Token da empresa não encontrado. Por favor, retorne à página inicial.");
+            navigate('/home'); 
         }
     }, [tokenTempCompany, navigate]);
 
@@ -77,7 +76,7 @@ export default function PaymentPage() {
                 <Elements stripe={stripePromise}>
                     <CheckoutForm 
                         selectedPlan={selectedPlan} 
-                        tokenTempCompany={tokenTempCompany} 
+                        tokenCompany={tokenTempCompany} 
                     />
                 </Elements>
             </div>

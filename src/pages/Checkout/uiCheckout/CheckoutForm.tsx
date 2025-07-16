@@ -45,12 +45,12 @@ const formatCEP = (value: string): string => {
 
 interface CheckoutFormProps {
     selectedPlan: typeof plans[0];
-    tokenTempCompany: string | null; // Este é o TOKEN da empresa temporária
+    tokenCompany: string | null; // Este é o TOKEN da empresa temporária
 }
 
 // --- COMPONENTE PRINCIPAL ---
 
-const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenTempCompany }) => {
+const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenCompany }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
@@ -81,7 +81,7 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenTempCompany })
             setLoading(false);
             return;
         }
-        if (!tokenTempCompany) {
+        if (!tokenCompany) {
             toast.error("Identificação da empresa não encontrada.");
             setLoading(false);
             return;
@@ -134,8 +134,10 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenTempCompany })
                 customerPhone: customerPhone.replace(/\D/g, ''),
                 customerAddress: customerAddress,
                 paymentMethodId: paymentMethod.id,
-                companyTempId: tokenTempCompany, // TOKEN da empresa vai no corpo
+                companyToken: tokenCompany, // TOKEN da empresa vai no corpo
             };
+
+            console.log(payload)
             
             const response = await axios.post(
                 'http://localhost:25565/api/create-subscription', 

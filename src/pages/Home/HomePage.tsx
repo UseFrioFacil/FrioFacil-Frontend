@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, CreditCard, Trash2, AlertTriangle } from 'lucide-react';
 import './HomePageStyle.css';
 import HeaderHome from './uiHomePage/HeaderHome.tsx';
 import InvitationCard from './uiHomePage/InvitationCard.tsx';
@@ -30,12 +30,20 @@ export interface Invitation {
     companyName: string;
 }
 
+// ATUALIZAÇÃO: Interface para a empresa temporária com os novos campos
+export interface TempCompany {
+    companyId: string; // Alterado de tempCompanyId
+    tradeName: string;
+    status: string;
+    paymentToken: string;
+}
+
 // Interfaces da API
 interface ApiCompany {
     usercompanyid: string;
     userid: string;
     tradename: string;
-    companyid: string;
+    companyid:string;
     role: string;
     entrydate: string;
 }
@@ -43,7 +51,6 @@ interface ApiCompany {
 interface ApiInvitation {
     inviteid: string;
     tradename: string;
-    // ... outros campos da API do convite
 }
 
 interface ApiHomeResponse {
@@ -52,6 +59,7 @@ interface ApiHomeResponse {
     email: string;
     arrayInvites: ApiInvitation[];
     arrayCompanies: ApiCompany[];
+    arrayTempCompanies?: TempCompany[];
 }
 
 // --- COMPONENTES EMBUTIDOS ---
@@ -68,6 +76,33 @@ const CreateCompanyCard: FC = () => {
     );
 };
 
+const TempCompanyCard: FC<{
+    company: TempCompany;
+    onPay: (token: string) => void;
+    onDelete: (id: string) => void;
+}> = ({ company, onPay, onDelete }) => {
+    return (
+        <div className="card temp-company-card">
+            <div className="temp-company-header">
+                <AlertTriangle size={24} className="temp-company-icon" />
+                <h3 className="company-name">{company.tradeName}</h3>
+            </div>
+            <p className="temp-company-status">Status: <strong>{company.status}</strong></p>
+            <p className="temp-company-text">Finalize o cadastro para ativar sua empresa e ter acesso a todos os recursos.</p>
+            <div className="temp-company-actions">
+                 {/* ATUALIZAÇÃO: Passando o companyId para a função onDelete */}
+                <button className="button button-delete" onClick={() => onDelete(company.companyId)}>
+                    <Trash2 size={16} /> Deletar
+                </button>
+                <button className="button button-primary" onClick={() => onPay(company.paymentToken)}>
+                    <CreditCard size={16} /> Ir para Pagamento
+                </button>
+            </div>
+        </div>
+    );
+};
+
+
 // --- COMPONENTE PRINCIPAL DA PÁGINA ---
 
 export default function HomePage() {
@@ -78,8 +113,8 @@ export default function HomePage() {
     const [userData, setUserData] = useState<UserData | null>(null);
     const [companies, setCompanies] = useState<Company[]>([]);
     const [invitations, setInvitations] = useState<Invitation[]>([]);
+    const [tempCompanies, setTempCompanies] = useState<TempCompany[]>([]);
 
-    // A função fetchHomeData permanece a mesma
     useEffect(() => {
         const fetchHomeData = async () => {
             const token = localStorage.getItem("accessToken");
@@ -92,7 +127,9 @@ export default function HomePage() {
                 const config = { headers: { Authorization: `Bearer ${token}` } };
                 const response = await axios.get<ApiHomeResponse>('http://localhost:5103/api/friofacil/home', config);
                 const data = response.data;
+
                 setUserData({ userId: data.userId, fullName: data.fullName, email: data.email });
+
                 if (data.arrayCompanies) {
                     const formattedCompanies: Company[] = data.arrayCompanies.map(c => ({
                         id: c.companyid,
@@ -102,6 +139,7 @@ export default function HomePage() {
                     }));
                     setCompanies(formattedCompanies);
                 }
+
                 if (data.arrayInvites) {
                     const formattedInvitations: Invitation[] = data.arrayInvites.map(i => ({
                         id: i.inviteid,
@@ -109,6 +147,11 @@ export default function HomePage() {
                     }));
                     setInvitations(formattedInvitations);
                 }
+
+                if (data.arrayTempCompanies && Array.isArray(data.arrayTempCompanies)) {
+                    setTempCompanies(data.arrayTempCompanies);
+                }
+
             } catch (err) {
                 setError("Não foi possível carregar os dados.");
                 toast.error("Erro ao buscar dados.");
@@ -122,7 +165,6 @@ export default function HomePage() {
         fetchHomeData();
     }, [navigate]);
 
-    // ATUALIZAÇÃO: Função genérica para responder ao convite
     const handleRespondToInvitation = async (inviteId: string, status: 'aceito' | 'recusado') => {
         const token = localStorage.getItem("accessToken");
         if (!token) {
@@ -130,41 +172,35 @@ export default function HomePage() {
             navigate('/login');
             return;
         }
-
         try {
-            const payload = {
-                inviteid: inviteId,
-                status: status
-            };
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            };
-
-            await axios.patch('http://localhost:5103/api/friofacil/respondinvite', payload, config);
-
+            const payload = { inviteid: inviteId, status: status };
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            await axios.put('http://localhost:5103/api/friofacil/respondinvite', payload, config);
             const successMessage = status === 'aceito' ? 'Convite aceito com sucesso!' : 'Convite recusado.';
             toast.success(successMessage);
-
-            // Adiciona um pequeno delay antes de recarregar para o usuário ver o toast
-            setTimeout(() => {
-                window.location.reload();
-            }, 1500);
-
+            setTimeout(() => window.location.reload(), 1500);
         } catch (err) {
             console.error("Erro ao responder ao convite:", err);
             toast.error("Não foi possível processar sua resposta. Tente novamente.");
         }
     };
 
-    // As funções de aceite e recusa agora chamam a nova função genérica
-    const handleAcceptInvitation = (id: string) => {
-        handleRespondToInvitation(id, 'aceito');
+    const handleAcceptInvitation = (id: string) => handleRespondToInvitation(id, 'aceito');
+    const handleDeclineInvitation = (id: string) => handleRespondToInvitation(id, 'recusado');
+
+    const handleGoToPayment = (token: string) => {
+        // ADICIONADO PARA DEBUG: Verifica se o token está sendo recebido corretamente.
+        console.log("Navigating to checkout with token:", token);
+        navigate('/checkout', { 
+            state: { tokenTempCompany: token } 
+        });
     };
 
-    const handleDeclineInvitation = (id: string) => {
-        handleRespondToInvitation(id, 'recusado');
+    const handleDeleteTempCompany = async (id: string) => {
+        console.log(`Deletando empresa temporária com ID: ${id}`);
+        toast.info("Empresa temporária deletada.");
+        // ATUALIZAÇÃO: Filtra usando o novo campo companyId
+        setTempCompanies(prev => prev.filter(c => c.companyId !== id));
     };
 
     if (isLoading) return <LoadingSpinner isLoading={true} />;
@@ -202,6 +238,22 @@ export default function HomePage() {
                         <CreateCompanyCard />
                     </div>
                 </section>
+
+                {tempCompanies.length > 0 && (
+                    <section>
+                        <h2 className="section-title">Finalize seu Cadastro</h2>
+                        <div className="companies-grid">
+                            {tempCompanies.map(company => (
+                                <TempCompanyCard
+                                    key={company.companyId} // ATUALIZAÇÃO: Usa o novo campo para a key
+                                    company={company}
+                                    onPay={handleGoToPayment}
+                                    onDelete={handleDeleteTempCompany}
+                                />
+                            ))}
+                        </div>
+                    </section>
+                )}
                 
                 {invitations.length > 0 && (
                     <section>

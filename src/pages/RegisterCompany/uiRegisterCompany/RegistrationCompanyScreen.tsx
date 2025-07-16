@@ -51,13 +51,17 @@ const RegistrationScreen: FC = () => {
                 }
             });
 
-            const tokenTempCompany = response.data.tempCompanyId; 
+            // CORREÇÃO: O token agora é lido do campo 'paymentToken' da resposta, conforme a atualização do backend.
+            const paymentToken = response.data.paymentToken; 
             
-            toast.success("Dados validados com sucesso! Você será redirecionado.");
-            
-            navigate('/checkout', { 
-                state: { tokenTempCompany: tokenTempCompany } 
-            });
+            if (paymentToken) {
+                toast.success("Dados validados com sucesso! Você será redirecionado.");
+                navigate('/checkout', { 
+                    state: { tokenTempCompany: paymentToken } 
+                });
+            } else {
+                toast.error("Erro: O token de pagamento não foi recebido do servidor.");
+            }
 
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || "Ocorreu um erro. Tente novamente.";
