@@ -172,10 +172,11 @@ export default function HomePage() {
             navigate('/login');
             return;
         }
+
         try {
             const payload = { inviteid: inviteId, status: status };
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            await axios.put('http://localhost:5103/api/friofacil/respondinvite', payload, config);
+            await axios.patch('http://localhost:5103/api/friofacil/respondinvite', payload, config);
             const successMessage = status === 'aceito' ? 'Convite aceito com sucesso!' : 'Convite recusado.';
             toast.success(successMessage);
             setTimeout(() => window.location.reload(), 1500);
