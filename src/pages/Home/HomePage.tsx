@@ -25,14 +25,14 @@ export interface Company {
     role: string;
 }
 
+// CORREÇÃO: Adicionando a interface 'Invitation' que estava faltando.
 export interface Invitation {
     id: string;
     companyName: string;
 }
 
-// ATUALIZAÇÃO: Interface para a empresa temporária com os novos campos
 export interface TempCompany {
-    companyId: string; // Alterado de tempCompanyId
+    companyId: string; 
     tradeName: string;
     status: string;
     paymentToken: string;
@@ -90,7 +90,6 @@ const TempCompanyCard: FC<{
             <p className="temp-company-status">Status: <strong>{company.status}</strong></p>
             <p className="temp-company-text">Finalize o cadastro para ativar sua empresa e ter acesso a todos os recursos.</p>
             <div className="temp-company-actions">
-                 {/* ATUALIZAÇÃO: Passando o companyId para a função onDelete */}
                 <button className="button button-delete" onClick={() => onDelete(company.companyId)}>
                     <Trash2 size={16} /> Deletar
                 </button>
@@ -175,8 +174,9 @@ export default function HomePage() {
 
         try {
             const payload = { inviteid: inviteId, status: status };
-            const config = { headers: { Authorization: `Bearer ${token}` } };
-            await axios.patch('http://localhost:5103/api/friofacil/respondinvite', payload, config);
+            await axios.patch('http://localhost:5103/api/friofacil/respondinvite', payload, { 
+                headers: { Authorization: `Bearer ${token}` } 
+            });
             const successMessage = status === 'aceito' ? 'Convite aceito com sucesso!' : 'Convite recusado.';
             toast.success(successMessage);
             setTimeout(() => window.location.reload(), 1500);
@@ -190,18 +190,36 @@ export default function HomePage() {
     const handleDeclineInvitation = (id: string) => handleRespondToInvitation(id, 'recusado');
 
     const handleGoToPayment = (token: string) => {
-        // ADICIONADO PARA DEBUG: Verifica se o token está sendo recebido corretamente.
-        console.log("Navigating to checkout with token:", token);
         navigate('/checkout', { 
             state: { tokenTempCompany: token } 
         });
     };
 
     const handleDeleteTempCompany = async (id: string) => {
-        console.log(`Deletando empresa temporária com ID: ${id}`);
-        toast.info("Empresa temporária deletada.");
-        // ATUALIZAÇÃO: Filtra usando o novo campo companyId
-        setTempCompanies(prev => prev.filter(c => c.companyId !== id));
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+            toast.error("Sessão expirada. Por favor, faça login novamente.");
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const payload = { CompanyId: id };
+            await axios.delete("http://localhost:5103/api/friofacil/tempcompanydelete", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                data: payload 
+            });
+
+            toast.success("Empresa temporária deletada com sucesso!");
+            
+            setTempCompanies(prev => prev.filter(c => c.companyId !== id));
+
+        } catch (error) {
+            console.error("Erro ao deletar empresa temporária:", error);
+            toast.error("Não foi possível deletar a empresa. Tente novamente.");
+        }
     };
 
     if (isLoading) return <LoadingSpinner isLoading={true} />;
@@ -246,7 +264,7 @@ export default function HomePage() {
                         <div className="companies-grid">
                             {tempCompanies.map(company => (
                                 <TempCompanyCard
-                                    key={company.companyId} // ATUALIZAÇÃO: Usa o novo campo para a key
+                                    key={company.companyId}
                                     company={company}
                                     onPay={handleGoToPayment}
                                     onDelete={handleDeleteTempCompany}
