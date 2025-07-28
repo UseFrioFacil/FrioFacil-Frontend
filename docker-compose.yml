@@ -4,4 +4,4 @@ services:
   frontend:
     build: .
     ports:
-      - "8181:8181"
+      - "24319:24319"
