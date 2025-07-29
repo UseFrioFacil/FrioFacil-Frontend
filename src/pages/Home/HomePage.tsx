@@ -204,12 +204,10 @@ export default function HomePage() {
         }
 
         try {
-            const payload = { CompanyId: id };
-            await axios.delete("http://localhost:5103/api/friofacil/tempcompanydelete", {
+            await axios.delete(`http://localhost:5103/api/friofacil/tempcompanydelete/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
-                data: payload 
             });
 
             toast.success("Empresa temporária deletada com sucesso!");
