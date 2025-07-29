@@ -204,7 +204,7 @@ export default function HomePage() {
         }
 
         try {
-            await axios.delete(`http://localhost:5103/api/friofacil/tempcompanydelete/${id}`, {
+            await axios.delete(`http://localhost:5103/api/friofacil/companydelete/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
