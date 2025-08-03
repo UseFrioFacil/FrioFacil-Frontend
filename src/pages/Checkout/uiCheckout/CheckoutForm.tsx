@@ -5,6 +5,7 @@ import { CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useEle
 import { plans } from "../Payment"; // Verifique se o caminho para este import está correto
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { PAYMENT_API_URLS } from '../../../config/api';
 
 // --- FUNÇÕES AUXILIARES ---
 
@@ -140,7 +141,7 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenCompany }) => 
             console.log(payload)
             
             const response = await axios.post(
-                'http://localhost:25565/api/create-subscription', 
+                PAYMENT_API_URLS.CREATE_SUBSCRIPTION,
                 payload,
                 {
                     headers: {

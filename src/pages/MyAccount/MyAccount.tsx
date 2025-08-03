@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { API_URLS } from '../../config/api';
+import { API_URLS, PAYMENT_API_URLS } from '../../config/api';
 import { User, CreditCard, XCircle, ShieldAlert, Building2, AlertTriangle, Loader2 } from 'lucide-react';
 import './MyAccountStyle.css';
 import Header from '../../components/Header/Header.tsx';
@@ -63,7 +63,7 @@ export default function MinhaContaPage() {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                const subscriptionsPromise = axios.get('http://localhost:25565/api/subscriptions/me', {
+                                const subscriptionsPromise = axios.get(PAYMENT_API_URLS.GET_SUBSCRIPTIONS, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
@@ -80,7 +80,7 @@ export default function MinhaContaPage() {
                     cpf: profileApiData.cpf,
                     phone: profileApiData.phone
                 });
-                
+
                 const subsApiData = subsResponse.data.data;
                 const allSubscriptions: Subscription[] = subsApiData.map((sub: any) => ({
                     id: sub.id,
@@ -124,7 +124,7 @@ export default function MinhaContaPage() {
         }
 
         try {
-            await axios.post(`http://localhost:25565/api/cancel-subscription/${subscriptionToCancel.id}`, {}, {
+            await axios.post(`${PAYMENT_API_URLS.CANCEL_SUBSCRIPTION}/${subscriptionToCancel.id}`, {}, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
@@ -160,7 +160,7 @@ export default function MinhaContaPage() {
             toast.info("Cancelando assinaturas...");
             for (const sub of subscriptions) {
                 try {
-                    await axios.post(`http://localhost:25565/api/cancel-subscription/${sub.id}`, {}, {
+                    await axios.post(`${PAYMENT_API_URLS.CANCEL_SUBSCRIPTION}/${sub.id}`, {}, {
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
                 } catch (subError) {
