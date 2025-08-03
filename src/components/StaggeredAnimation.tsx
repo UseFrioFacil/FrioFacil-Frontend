@@ -18,45 +18,39 @@ const StaggeredAnimation: React.FC<StaggeredAnimationProps> = ({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: staggerDelay
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: direction === 'up' ? 30 : direction === 'down' ? -30 : 0,
-      x: direction === 'left' ? 30 : direction === 'right' ? -30 : 0,
-      scale: 0.9
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      x: 0,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
-
   return (
     <motion.div
       ref={ref}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={containerVariants}
+      initial={{ opacity: 0 }}
+      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
       className={className}
     >
       {children.map((child, index) => (
-        <motion.div key={index} variants={itemVariants}>
+        <motion.div 
+          key={index}
+          initial={{
+            opacity: 0,
+            y: direction === 'up' ? 30 : direction === 'down' ? -30 : 0,
+            x: direction === 'left' ? 30 : direction === 'right' ? -30 : 0,
+            scale: 0.9
+          }}
+          animate={isInView ? {
+            opacity: 1,
+            y: 0,
+            x: 0,
+            scale: 1
+          } : {
+            opacity: 0,
+            y: direction === 'up' ? 30 : direction === 'down' ? -30 : 0,
+            x: direction === 'left' ? 30 : direction === 'right' ? -30 : 0,
+            scale: 0.9
+          }}
+          transition={{
+            duration: 0.5,
+            delay: index * staggerDelay,
+            ease: "easeOut"
+          }}
+        >
           {child}
         </motion.div>
       ))}
