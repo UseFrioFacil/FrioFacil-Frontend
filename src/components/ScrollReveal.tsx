@@ -1,5 +1,6 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
+import { useRef } from 'react';
+import type { ReactNode } from 'react';
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -34,7 +35,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       transition: {
         duration,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94]
+        ease: "easeOut"
       }
     }
   };
