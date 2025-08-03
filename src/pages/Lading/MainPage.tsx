@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import { ShieldCheck, Users, Calendar, BarChart, DollarSign, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
 import './MainPageStyle.css';
 import "../../styles/global.css"
 import Header from '../../components/Header/Header';
@@ -8,6 +9,8 @@ import FeatureCard from './uiLanding/FeatureCard';
 import PricingCard from './uiLanding/PricingCard';
 import FaqItem from './uiLanding/FaqItem';
 import HeroCarousel from './uiLanding/HeroCarousel.tsx';
+import ScrollReveal from '../../components/ScrollReveal';
+import StaggeredAnimation from '../../components/StaggeredAnimation';
 
 // Componente Principal da Aplicação
 const LandingPage: FC = () => {
@@ -20,23 +23,68 @@ const LandingPage: FC = () => {
       <main>
         <section className="hero">
           <div className="hero-content container">
-            <h1 className="hero-title">
-              Gerencie sua empresa de climatização <span>sem complicação</span>.
-            </h1>
-            <p className="hero-subtitle">
+            <motion.h1 
+              className="hero-title"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Gerencie sua empresa de climatização <motion.span
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+              >
+                sem complicação
+              </motion.span>.
+            </motion.h1>
+            <motion.p 
+              className="hero-subtitle"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               FrioFácil é a plataforma completa para organizar seus clientes, agendamentos e finanças. Mais tempo para você, mais satisfação para seus clientes.
-            </p>
-            <div className="hero-buttons">
-              <a href="#pricing" className="btn btn-primary btn-lg">
+            </motion.p>
+            <motion.div 
+              className="hero-buttons"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <motion.a 
+                href="#pricing" 
+                className="btn btn-primary btn-lg"
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0 8px 30px rgba(59, 130, 246, 0.3)" 
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
                 Ver Planos e Preços
-              </a>
-              <a href="#features" className="btn btn-secondary btn-lg">
+              </motion.a>
+              <motion.a 
+                href="#features" 
+                className="btn btn-secondary btn-lg"
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)" 
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
                 Conhecer Recursos
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
             
             {/* Componente do Carrossel*/}
-            <HeroCarousel/>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            >
+              <HeroCarousel/>
+            </motion.div>
 
           </div>
         </section>
@@ -44,14 +92,16 @@ const LandingPage: FC = () => {
         {/* Seção de Recursos */}
         <section id="features" className="section features">
           <div className="container">
-            <div className="section-header">
-              <span className="section-subtitle">Tudo em um só lugar</span>
-              <h2 className="section-title">A plataforma que trabalha por você</h2>
-              <p className="section-description">
-                Deixe a burocracia de lado e foque no que realmente importa: um serviço de qualidade.
-              </p>
-            </div>
-            <div className="features-grid">
+            <ScrollReveal>
+              <div className="section-header">
+                <span className="section-subtitle">Tudo em um só lugar</span>
+                <h2 className="section-title">A plataforma que trabalha por você</h2>
+                <p className="section-description">
+                  Deixe a burocracia de lado e foque no que realmente importa: um serviço de qualidade.
+                </p>
+              </div>
+            </ScrollReveal>
+            <StaggeredAnimation className="features-grid">
               <FeatureCard icon={Users} title="Gestão de Clientes" color="bg-blue-500">
                 Tenha um cadastro completo de seus clientes, com histórico de serviços, equipamentos e contatos. Acesse tudo de qualquer lugar.
               </FeatureCard>
@@ -70,21 +120,23 @@ const LandingPage: FC = () => {
               <FeatureCard icon={Zap} title="Automação de Lembretes" color="bg-indigo-500">
                 Envie lembretes automáticos de manutenções futuras para seus clientes via WhatsApp ou e-mail, garantindo a recorrência do serviço.
               </FeatureCard>
-            </div>
+            </StaggeredAnimation>
           </div>
         </section>
 
         {/* Seção de Planos */}
         <section id="pricing" className="section pricing">
           <div className="container">
-            <div className="section-header">
-              <span className="section-subtitle">Preços Transparentes</span>
-              <h2 className="section-title">Escolha o plano perfeito para sua empresa</h2>
-              <p className="section-description">
-                Comece pequeno e cresça conosco. Sem taxas escondidas ou contratos de longo prazo.
-              </p>
-            </div>
-            <div className="pricing-grid">
+            <ScrollReveal>
+              <div className="section-header">
+                <span className="section-subtitle">Preços Transparentes</span>
+                <h2 className="section-title">Escolha o plano perfeito para sua empresa</h2>
+                <p className="section-description">
+                  Comece pequeno e cresça conosco. Sem taxas escondidas ou contratos de longo prazo.
+                </p>
+              </div>
+            </ScrollReveal>
+            <StaggeredAnimation className="pricing-grid">
               <PricingCard
                 plan="Básico"
                 price="29,99"
@@ -111,18 +163,20 @@ const LandingPage: FC = () => {
                 cta="Escolher Profissional"
                 popular={true}
               />
-            </div>
+            </StaggeredAnimation>
           </div>
         </section>
 
         {/* Seção de FAQ */}
         <section id="faq" className="section faq">
           <div className="container">
-            <div className="section-header">
-              <h2 className="section-title">Dúvidas Frequentes</h2>
-              <p className="section-description">Tudo o que você precisa saber antes de começar.</p>
-            </div>
-            <div className="faq-content">
+            <ScrollReveal>
+              <div className="section-header">
+                <h2 className="section-title">Dúvidas Frequentes</h2>
+                <p className="section-description">Tudo o que você precisa saber antes de começar.</p>
+              </div>
+            </ScrollReveal>
+            <StaggeredAnimation className="faq-content">
               <FaqItem
                 question="Preciso instalar algum programa?"
                 answer="Não! O FrioFácil é 100% online. Você e sua equipe podem acessar de qualquer lugar, seja pelo computador, tablet ou celular, apenas com um navegador de internet."
@@ -139,7 +193,7 @@ const LandingPage: FC = () => {
                 question="Como funciona o suporte técnico?"
                 answer="Nosso suporte está disponível para ajudar. Dependendo do seu plano, você pode nos contatar por e-mail ou ter um atendimento prioritário via WhatsApp para resolver qualquer questão rapidamente."
               />
-            </div>
+            </StaggeredAnimation>
           </div>
         </section>
       </main>

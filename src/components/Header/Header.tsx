@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import { Snowflake, Menu, X, ArrowLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './HeaderStyle.css'
 import '../../styles/global.css'
 import { useNavigate } from 'react-router-dom';
@@ -28,70 +29,180 @@ const Header: FC<HeaderProps> = ({ showOptions = true, showMenu = true, showBack
   const navigate = useNavigate();
 
   return (
-    <header className="header">
+    <motion.header 
+      className="header"
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
       <div className="header-container container">
-        <a className="logo" onClick={() => navigate('/')}>
-          <Snowflake className="logo-icon" />
+        <motion.a 
+          className="logo" 
+          onClick={() => navigate('/')}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          >
+            <Snowflake className="logo-icon" />
+          </motion.div>
           <span className="logo-text">FrioFácil</span>
-        </a>
+        </motion.a>
 
         {/* Navegação central para Desktop */}
         {showOptions &&
-        <nav className="nav-desktop">
-          {navLinks.map(link => (
-            <a key={link.name} href={link.href} className="nav-link">
+        <motion.nav 
+          className="nav-desktop"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+        >
+          {navLinks.map((link, index) => (
+            <motion.a 
+              key={link.name} 
+              href={link.href} 
+              className="nav-link"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + index * 0.1, duration: 0.3 }}
+              whileHover={{ y: -2, color: '#3b82f6' }}
+              whileTap={{ scale: 0.95 }}
+            >
               {link.name}
-            </a>
+            </motion.a>
           ))}
-        </nav>}
+        </motion.nav>}
 
         {/* 2. Container para os elementos do lado direito */}
         <div className="header-right-actions">
           {showBackButton ? (
-            <button className="btn-voltar" onClick={() => navigate(-1)}>
+            <motion.button 
+              className="btn-voltar" 
+              onClick={() => navigate(-1)}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              whileHover={{ x: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <ArrowLeft size={18} />
               <span>Voltar</span>
-            </button>
+            </motion.button>
           ) : (
             <>
-              <div className="nav-desktop-actions">
-                <a onClick={() => navigate("/login")} className="nav-link">Entrar</a>
-                <a className="btn btn-primary" onClick={() => navigate("/cadastreempresa")}>Comece Grátis</a>
-              </div>
+              <motion.div 
+                className="nav-desktop-actions"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4, duration: 0.4 }}
+              >
+                <motion.a 
+                  onClick={() => navigate("/login")} 
+                  className="nav-link"
+                  whileHover={{ y: -2, color: '#3b82f6' }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Entrar
+                </motion.a>
+                <motion.a 
+                  className="btn btn-primary" 
+                  onClick={() => navigate("/cadastreempresa")}
+                  whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(59, 130, 246, 0.3)" }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  Comece Grátis
+                </motion.a>
+              </motion.div>
 
-              {showMenu && <button
+              {showMenu && <motion.button
                 className="mobile-menu-button"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                transition={{ delay: 0.5, duration: 0.3 }}
               >
-                {isMenuOpen ? <X /> : <Menu />}
-              </button>}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={isMenuOpen ? 'close' : 'menu'}
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {isMenuOpen ? <X /> : <Menu />}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.button>}
             </>
           )}
         </div>
       </div>
 
       {/* Menu Mobile: só abre se o botão de voltar não estiver visível */}
-      {!showBackButton && (
-        <div className={`mobile-menu ${isMenuOpen ? 'mobile-menu-open' : ''}`}>
-          <nav className="mobile-nav">
-            {navLinks.map(link => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="mobile-nav-link"
-                onClick={() => setIsMenuOpen(false)}
+      <AnimatePresence>
+        {!showBackButton && isMenuOpen && (
+          <motion.div 
+            className="mobile-menu mobile-menu-open"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <motion.nav 
+              className="mobile-nav"
+              initial={{ y: -20 }}
+              animate={{ y: 0 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
+            >
+              {navLinks.map((link, index) => (
+                <motion.a
+                  key={link.name}
+                  href={link.href}
+                  className="mobile-nav-link"
+                  onClick={() => setIsMenuOpen(false)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + index * 0.05, duration: 0.3 }}
+                  whileHover={{ x: 5, color: '#3b82f6' }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {link.name}
+                </motion.a>
+              ))}
+              <motion.div 
+                className="mobile-nav-footer"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
               >
-                {link.name}
-              </a>
-            ))}
-            <div className="mobile-nav-footer">
-              <a onClick={() => navigate("/login")} className="mobile-nav-link">Entrar</a>
-              <a onClick={() => navigate("/cadastreempresa")} className="btn btn-primary">Comece Grátis</a>
-            </div>
-          </nav>
-        </div>
-      )}
-    </header>
+                <motion.a 
+                  onClick={() => navigate("/login")} 
+                  className="mobile-nav-link"
+                  whileHover={{ x: 5, color: '#3b82f6' }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Entrar
+                </motion.a>
+                <motion.a 
+                  onClick={() => navigate("/cadastreempresa")} 
+                  className="btn btn-primary"
+                  whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(59, 130, 246, 0.3)" }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  Comece Grátis
+                </motion.a>
+              </motion.div>
+            </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 };
 

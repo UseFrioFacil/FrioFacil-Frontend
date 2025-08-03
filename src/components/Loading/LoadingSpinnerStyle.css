@@ -1,66 +1,111 @@
 /* src/components/LoadingScreen/LoadingScreen.css */
 
 .loading-screen {
-  position: fixed; /* Garante que cubra toda a tela */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #f0f9ff; /* Mesma cor de fundo da seção 'features' para uma transição suave */
-  z-index: 9999; /* Fica acima de todo o conteúdo */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(255, 255, 255, 0.95) 100%);
+  backdrop-filter: blur(10px);
   display: flex;
-  align-items: center;
   justify-content: center;
-  transition: opacity 0.5s ease-out, visibility 0s 0.5s; /* Animação de fade-out */
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Estado oculto para quando o carregamento terminar */
-.loading-screen.hidden {
-  opacity: 0;
-  visibility: hidden; /* Remove o elemento do fluxo para não bloquear cliques */
+  align-items: center;
+  z-index: 9999;
 }
 
 .loading-content {
   text-align: center;
-  /* Animação de entrada sutil, herdada do seu design */
-  animation: fadeInUp 0.8s ease-out;
+  position: relative;
 }
 
-/* O Spinner */
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.spinner-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 30px;
 }
 
-.spinner {
-  width: 60px;
-  height: 60px;
+.spinner-outer,
+.spinner-middle,
+.spinner-inner {
+  position: absolute;
   border-radius: 50%;
-  margin: 0 auto 24px; /* Centraliza e adiciona espaço abaixo */
-  
-  /* Cor da "trilha" do spinner, um azul bem claro */
-  border: 6px solid rgba(59, 130, 246, 0.2); 
-  
-  /* Cor principal do spinner, o azul da sua marca */
-  border-top-color: #3b82f6; 
-
-  /* Animação */
-  animation: spin 1s linear infinite;
+  border: 2px solid transparent;
 }
 
-/* Título, usando a paleta de cores principal */
+.spinner-outer {
+  width: 120px;
+  height: 120px;
+  border-top: 2px solid #3b82f6;
+  border-right: 2px solid #3b82f6;
+}
+
+.spinner-middle {
+  width: 80px;
+  height: 80px;
+  top: 20px;
+  left: 20px;
+  border-left: 2px solid #60a5fa;
+  border-bottom: 2px solid #60a5fa;
+}
+
+.spinner-inner {
+  width: 40px;
+  height: 40px;
+  top: 20px;
+  left: 20px;
+  border-top: 2px solid #93c5fd;
+  border-right: 2px solid #93c5fd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-icon {
+  color: #3b82f6;
+  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
+}
+
 .loading-title {
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 700;
-  color: #111827; /* Cor dos títulos principais */
-  margin-bottom: 8px;
+  color: #1f2937;
+  margin: 0 0 12px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
 }
 
-/* Texto de apoio */
 .loading-text {
-  font-size: 18px;
-  color: #4b5563; /* Cor dos subtítulos/descrições */
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0 0 20px;
+  font-weight: 500;
+}
+
+.loading-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.loading-dot {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Animação de entrada sutil */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
