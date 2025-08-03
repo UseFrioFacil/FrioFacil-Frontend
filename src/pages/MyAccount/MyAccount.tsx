@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { API_URLS } from '../../config/api';
 import { User, CreditCard, XCircle, ShieldAlert, Building2, AlertTriangle, Loader2 } from 'lucide-react';
 import './MyAccountStyle.css';
 import Header from '../../components/Header/Header.tsx';
@@ -58,7 +59,7 @@ export default function MinhaContaPage() {
             setError(null);
 
             try {
-                const profilePromise = axios.get('http://localhost:5103/api/friofacil/myaccount', {
+                const profilePromise = axios.get(API_URLS.MY_ACCOUNT, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
@@ -170,7 +171,7 @@ export default function MinhaContaPage() {
 
             // 2. Se todas as assinaturas foram canceladas, deletar a conta do usuário
             toast.info("Deletando sua conta...");
-            await axios.delete('http://localhost:5103/api/friofacil/userdelete', {
+            await axios.delete(API_URLS.USER_DELETE, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 

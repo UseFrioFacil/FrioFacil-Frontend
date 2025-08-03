@@ -2,6 +2,7 @@ import type { FC, ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 import { Mail, Lock, User, FileText, Phone } from 'lucide-react';
 import FormInput from '../../../components/Form/FormInput';
+import { API_URLS } from '../../../config/api';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 // O ToastContainer é necessário para as notificações aparecerem
@@ -43,7 +44,7 @@ const TelaDeCadastro: FC = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:5103/api/friofacil/register', formData);
+            const response = await axios.post(API_URLS.REGISTER, formData);
             toast.success(response.data.message || 'Cadastro realizado com sucesso!');
             localStorage.setItem("accessToken", response.data.token)
             navigate('/home');

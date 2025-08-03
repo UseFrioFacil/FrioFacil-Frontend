@@ -1,6 +1,7 @@
 import type { FC, ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URLS } from '../../../config/api';
 import {
     User, Mail, Phone, Home, MapPin, Building, ChevronsRight, Briefcase
 } from 'lucide-react';
@@ -44,7 +45,7 @@ const RegistrationScreen: FC = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:5103/api/friofacil/createtempcompany', formData, {
+            const response = await axios.post(API_URLS.CREATE_TEMP_COMPANY, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${accessToken}`

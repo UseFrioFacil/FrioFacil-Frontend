@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URLS } from '../../config/api';
 import { toast } from 'react-toastify';
 import { PlusCircle, CreditCard, Trash2, AlertTriangle } from 'lucide-react';
 import './HomePageStyle.css';
@@ -124,7 +125,7 @@ export default function HomePage() {
             setIsLoading(true);
             try {
                 const config = { headers: { Authorization: `Bearer ${token}` } };
-                const response = await axios.get<ApiHomeResponse>('http://localhost:5103/api/friofacil/home', config);
+                const response = await axios.get<ApiHomeResponse>(API_URLS.HOME, config);
                 const data = response.data;
 
                 setUserData({ userId: data.userId, fullName: data.fullName, email: data.email });
@@ -174,7 +175,7 @@ export default function HomePage() {
 
         try {
             const payload = { inviteid: inviteId, status: status };
-            await axios.patch('http://localhost:5103/api/friofacil/respondinvite', payload, { 
+            await axios.patch(API_URLS.RESPOND_INVITE, payload, { 
                 headers: { Authorization: `Bearer ${token}` } 
             });
             const successMessage = status === 'aceito' ? 'Convite aceito com sucesso!' : 'Convite recusado.';
@@ -204,7 +205,7 @@ export default function HomePage() {
         }
 
         try {
-            await axios.delete(`http://localhost:5103/api/friofacil/companydelete/${id}`, {
+            await axios.delete(`${API_URLS.COMPANY_DELETE}/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

@@ -4,6 +4,7 @@ import { Mail, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { API_URLS } from '../../../config/api';
 import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../../../components/Form/FormInput';
 import LoadingSpinner from '../../../components/Loading/LoadingSpinner';
@@ -37,7 +38,7 @@ const LoginScreen: FC = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:5103/api/friofacil/login', formData);
+            const response = await axios.post(API_URLS.LOGIN, formData);
             toast.success(response.data.message);
             localStorage.setItem("accessToken", response.data.token)
             navigate('/home');
