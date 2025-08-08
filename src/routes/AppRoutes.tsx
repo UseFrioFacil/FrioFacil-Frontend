@@ -6,6 +6,7 @@ import LandingPage from '../pages/Lading/MainPage.tsx';
 import RequestServicePage from "../pages/Client/RequestServicePage.tsx"
 import RegisterPage from '../pages/RegisterCompany/RegisterCompany.tsx'
 import LoginPage from '../pages/Login/LoginPage.tsx';
+import ForgotPasswordPage from '../pages/ForgotPassword/ForgotPasswordPage.tsx';
 import DashboardPage from '../pages/Dashboard/DashboardPage.tsx'
 import NotFoundPage from '../pages/NotFound/NotFoundPage.tsx';
 import PaymentPage  from '../pages/Checkout/Payment.tsx';
@@ -35,6 +36,11 @@ function AnimatedRoutes() {
         <Route path="/login" element={
           <PageTransition>
             <LoginPage />
+          </PageTransition>
+        } />
+        <Route path="/forgot-password" element={
+          <PageTransition>
+            <ForgotPasswordPage />
           </PageTransition>
         } />
         <Route path='/cadastro' element={

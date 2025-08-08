@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import type {FC, FormEvent} from 'react';
-import { Mail, Lock } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { API_URLS } from '../../../config/api';
 import 'react-toastify/dist/ReactToastify.css';
 import FormInput from '../../../components/Form/FormInput';
+import PasswordInput from '../../../components/Form/PasswordInput';
 import LoadingSpinner from '../../../components/Loading/LoadingSpinner';
 
 const LoginScreen: FC = () => {
@@ -35,12 +36,19 @@ const LoginScreen: FC = () => {
             return;
         }
 
+        // Validação básica de email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            toast.error('Por favor, insira um email válido.');
+            return;
+        }
+
         setIsLoading(true);
 
         try {
             const response = await axios.post(API_URLS.LOGIN, formData);
-            toast.success(response.data.message);
-            localStorage.setItem("accessToken", response.data.token)
+            toast.success(response.data.message || 'Login realizado com sucesso!');
+            localStorage.setItem("accessToken", response.data.token);
             navigate('/home');
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -73,15 +81,16 @@ const LoginScreen: FC = () => {
                             placeholder="voce@exemplo.com"
                             value={formData.email}
                             onChange={handleChange}
+                            required={true}
                         />
-                        <FormInput
-                            icon={Lock}
+                        
+                        <PasswordInput
                             id="userpassword"
-                            type="password"
                             label="Senha"
                             placeholder="Sua senha"
                             value={formData.userpassword}
                             onChange={handleChange}
+                            required={true}
                         />
 
                         <div className="form-options">
@@ -92,9 +101,13 @@ const LoginScreen: FC = () => {
                                 </label>
                             </div>
                             <div className="forgot-password">
-                                <a href="#" className="forgot-link">
+                                <button 
+                                    type="button"
+                                    className="forgot-link" 
+                                    onClick={() => navigate('/forgot-password')}
+                                >
                                     Esqueceu a senha?
-                                </a>
+                                </button>
                             </div>
                         </div>
 

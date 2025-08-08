@@ -28,9 +28,9 @@ const FormInput: FC<FormInputProps> = ({
             {required && <span className="required-asterisk">*</span>}
         </label>
         <div className="input-wrapper">
-            <span className="input-icon">
-                <Icon className="icon" />
-            </span>
+            <div className="input-icon">
+                <Icon size={20} />
+            </div>
             <input 
                 type={type} 
                 id={id} 

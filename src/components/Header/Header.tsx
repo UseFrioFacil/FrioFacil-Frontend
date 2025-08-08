@@ -22,11 +22,19 @@ const Header: FC<HeaderProps> = ({ showOptions = true, showMenu = true, showBack
 
   const navLinks: NavLink[] = [
     { name: 'Recursos', href: '#features' },
-    { name: 'Planos', href: '#pricing' },
-    { name: 'Dúvidas', href: '#faq' },
+    { name: 'Preços', href: '#pricing' },
+    { name: 'FAQ', href: '#faq' },
   ];
 
   const navigate = useNavigate();
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.querySelector(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
 
   return (
     <motion.header 
@@ -65,6 +73,10 @@ const Header: FC<HeaderProps> = ({ showOptions = true, showMenu = true, showBack
               key={link.name} 
               href={link.href} 
               className="nav-link"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(link.href);
+              }}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 + index * 0.1, duration: 0.3 }}
@@ -108,12 +120,12 @@ const Header: FC<HeaderProps> = ({ showOptions = true, showMenu = true, showBack
                 </motion.a>
                 <motion.a 
                   className="btn btn-primary" 
-                  onClick={() => navigate("/cadastreempresa")}
+                  onClick={() => scrollToSection('#pricing')}
                   whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(59, 130, 246, 0.3)" }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
-                  Comece Grátis
+                  Comece
                 </motion.a>
               </motion.div>
 
@@ -164,7 +176,10 @@ const Header: FC<HeaderProps> = ({ showOptions = true, showMenu = true, showBack
                   key={link.name}
                   href={link.href}
                   className="mobile-nav-link"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(link.href);
+                  }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 + index * 0.05, duration: 0.3 }}
@@ -189,13 +204,13 @@ const Header: FC<HeaderProps> = ({ showOptions = true, showMenu = true, showBack
                   Entrar
                 </motion.a>
                 <motion.a 
-                  onClick={() => navigate("/cadastreempresa")} 
+                  onClick={() => scrollToSection('#pricing')} 
                   className="btn btn-primary"
                   whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(59, 130, 246, 0.3)" }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
-                  Comece Grátis
+                  Comece
                 </motion.a>
               </motion.div>
             </motion.nav>

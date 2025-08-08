@@ -23,6 +23,7 @@
   position: relative; 
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 /* --- Ícone --- */
@@ -30,17 +31,18 @@
   /* 2. Posiciona o ícone absolutamente dentro do .input-wrapper */
   position: absolute; 
   left: 12px; /* Distância da borda esquerda */
-  height: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
   display: flex;
   align-items: center;
+  justify-content: center;
   /* Impede que o ícone seja clicável, passando o clique para o input */
   pointer-events: none; 
   color: #667085; /* Cor cinza para o ícone */
-}
-
-.input-icon .icon {
-  width: 20px;
-  height: 20px;
+  z-index: 10; /* Garante que o ícone fique acima do input */
+  transition: color 0.2s ease;
 }
 
 /* --- Campo de Input --- */
@@ -57,14 +59,52 @@
   font-size: 16px;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
   transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: white;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input:focus + .input-icon {
+  color: #3b82f6; /* Muda a cor do ícone quando o input está focado */
 }
 
 .form-input::placeholder {
   color: #98a2b3;
+}
+
+/* --- Estados de Hover --- */
+.form-input:hover {
+  border-color: #a3bffa;
+}
+
+.form-input:hover + .input-icon {
+  color: #4f46e5;
+}
+
+/* --- Estados de Erro (opcional) --- */
+.form-input.error {
+  border-color: #ef4444;
+}
+
+.form-input.error + .input-icon {
+  color: #ef4444;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+  .form-input {
+    font-size: 16px; /* Evita zoom no iOS */
+  }
+  
+  .input-icon {
+    left: 10px;
+  }
+  
+  .form-input {
+    padding-left: 40px !important;
+  }
 }

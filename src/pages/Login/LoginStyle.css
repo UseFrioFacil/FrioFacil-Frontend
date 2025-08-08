@@ -54,6 +54,83 @@
     gap: 1.5rem;
 }
 
+/* Garantir que os ícones dos inputs funcionem corretamente */
+.login-form .form-input-container {
+    position: relative;
+}
+
+.login-form .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.login-form .input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    pointer-events: none;
+    color: #667085;
+    transition: color 0.2s ease;
+}
+
+.login-form .form-input:focus + .input-icon {
+    color: #3b82f6;
+}
+
+.login-form .form-input:hover + .input-icon {
+    color: #4f46e5;
+}
+
+/* Botão de toggle da senha - MELHORADO */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #667085;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+.password-toggle:hover {
+    color: #4f46e5;
+    background-color: #f3f4f6;
+    transform: translateY(-50%) scale(1.05);
+}
+
+.password-toggle:focus {
+    outline: none;
+    color: #3b82f6;
+    background-color: #eff6ff;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.password-toggle:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* Animação suave para o ícone do olho */
+.password-toggle svg {
+    transition: transform 0.2s ease;
+}
+
+.password-toggle:hover svg {
+    transform: scale(1.1);
+}
+
 /* Opções do formulário */
 .form-options {
     display: flex;
@@ -85,6 +162,10 @@
     font-weight: 500;
     color: #3b82f6;
     text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
 }
 
 .forgot-link:hover {
@@ -116,6 +197,13 @@
     box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.05);
 }
 
+.submit-button:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
 /* Link de cadastro */
 .signup-link-container {
     margin-top: 2rem;
@@ -131,8 +219,54 @@
     font-weight: 600;
     color: #3b82f6;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .signup-link:hover {
     color: #2563eb;
+}
+
+/* Responsividade para os inputs */
+@media (max-width: 768px) {
+    .login-form .input-icon {
+        left: 10px;
+    }
+    
+    .login-form .form-input {
+        padding-left: 40px !important;
+    }
+    
+    .password-toggle {
+        right: 10px;
+        padding: 4px;
+        min-width: 28px;
+        min-height: 28px;
+    }
+    
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 2rem 0.5rem;
+    }
+    
+    .login-card {
+        padding: 1.5rem;
+    }
+    
+    .login-title {
+        font-size: 1.5rem;
+    }
+    
+    .password-toggle {
+        right: 8px;
+        padding: 3px;
+        min-width: 24px;
+        min-height: 24px;
+    }
 }
