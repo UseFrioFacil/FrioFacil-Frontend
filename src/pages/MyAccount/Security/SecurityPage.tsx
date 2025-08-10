@@ -10,8 +10,6 @@ import {
     Monitor,
     Smartphone,
     Laptop,
-    Shield,
-    Bell,
     Smartphone as DeviceIcon
 } from 'lucide-react';
 import './SecurityStyle.css';

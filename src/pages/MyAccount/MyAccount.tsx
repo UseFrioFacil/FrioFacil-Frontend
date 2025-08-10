@@ -127,10 +127,10 @@ export default function MinhaContaPage() {
             <div className="error-container">
                 <AlertTriangle size={48} className="error-icon" />
                 <h2>Erro ao carregar dados</h2>
-                <p>{error}</p>
+            <p>{error}</p>
                 <button onClick={() => window.location.reload()}>Tentar Novamente</button>
-            </div>
-        );
+        </div>
+    );
     }
 
     return (
@@ -152,14 +152,14 @@ export default function MinhaContaPage() {
                                 />
                                 <button className="edit-picture-button">
                                     <Edit3 size={16} />
-                                </button>
-                            </div>
-                        </div>
+                                        </button>
+                                    </div>
+                                </div>
                         <div className="profile-info">
                             <h2 className="user-name">{userProfile?.fullName}</h2>
                             <p className="user-email">{userProfile?.email}</p>
-                        </div>
-                    </div>
+                                    </div>
+                                </div>
 
                     {/* Account Management Grid */}
                     <div className="account-grid">
@@ -169,28 +169,28 @@ export default function MinhaContaPage() {
                             <div className="card-header">
                                 <div className="card-icon personal-icon">
                                     <User size={24} />
-                                </div>
+                                                </div>
                                 <h3 className="card-title">Dados Pessoais</h3>
-                            </div>
+                                                </div>
                             <p className="card-description">
                                 Veja e edite suas informações pessoais, como nome, CPF e telefone.
                             </p>
-                            <button 
+                                            <button 
                                 className="card-action-button"
                                 onClick={handleEditProfile}
                             >
                                 Gerenciar Dados →
-                            </button>
-                        </div>
+                                            </button>
+                                </div>
 
                         {/* Security Card */}
                         <div className="account-card security-card">
                             <div className="card-header">
                                 <div className="card-icon security-icon">
                                     <Shield size={24} />
-                                </div>
+                                                        </div>
                                 <h3 className="card-title">Segurança</h3>
-                            </div>
+                                                    </div>
                             <p className="card-description">
                                 Altere sua senha e gerencie as configurações de segurança da sua conta.
                             </p>
@@ -207,9 +207,9 @@ export default function MinhaContaPage() {
                             <div className="card-header">
                                 <div className="card-icon orders-icon">
                                     <ShoppingBag size={24} />
-                                </div>
+                    </div>
                                 <h3 className="card-title">Meus Pedidos</h3>
-                            </div>
+                </div>
                             <p className="card-description">
                                 Acompanhe seus pedidos, veja o histórico e gerencie devoluções.
                             </p>
@@ -226,9 +226,9 @@ export default function MinhaContaPage() {
                             <div className="card-header">
                                 <div className="card-icon addresses-icon">
                                     <LocationIcon size={24} />
-                                </div>
+                        </div>
                                 <h3 className="card-title">Endereços</h3>
-                            </div>
+                        </div>
                             <p className="card-description">
                                 Adicione, edite ou remova seus endereços de entrega e faturamento.
                             </p>
@@ -245,26 +245,26 @@ export default function MinhaContaPage() {
                             <div className="card-header">
                                 <div className="card-icon settings-icon">
                                     <Cog size={24} />
-                                </div>
-                                <h3 className="card-title">Configurações da Conta</h3>
                             </div>
+                                <h3 className="card-title">Configurações da Conta</h3>
+                        </div>
                             <p className="card-description">
                                 Gerencie preferências de notificação, idioma e temas da sua conta.
                             </p>
-                            <button 
+                                <button 
                                 className="card-action-button"
                                 onClick={handleAccountSettings}
-                            >
+                                >
                                 Ajustar Preferências →
-                            </button>
-                        </div>
+                                </button>
+                            </div>
 
                         {/* Support Tickets Card */}
                         <div className="account-card support-card">
                             <div className="card-header">
                                 <div className="card-icon support-icon">
                                     <Headphones size={24} />
-                                </div>
+                        </div>
                                 <h3 className="card-title">Tickets de Suporte</h3>
                             </div>
                             <p className="card-description">
@@ -281,15 +281,15 @@ export default function MinhaContaPage() {
 
                     {/* Logout Button */}
                     <div className="logout-section">
-                        <button 
+                            <button 
                             className="logout-button"
                             onClick={handleLogout}
                         >
                             <LogOut size={20} />
                             Sair da Conta
-                        </button>
+                            </button>
+                        </div>
                     </div>
-                </div>
             </main>
 
 
