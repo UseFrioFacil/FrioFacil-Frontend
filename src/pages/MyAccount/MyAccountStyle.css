@@ -1,752 +1,256 @@
-/* MyAccountStyle.css */
-
-.page-wrapper {
-    background-color: #f0f2f5;
-    min-height: 100vh;
-}
-
-.account-container {
-    padding: 2rem 0 4rem;
-}
-
-.account-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-}
-
-.account-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1e293b;
-    border-bottom: 2px solid #2563eb;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-/* --- NAVEGAÇÃO POR ABAS --- */
-.tabs-navigation {
-    display: flex;
-    background: white;
-    border-radius: 12px;
-    padding: 0.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
-    gap: 0.5rem;
-}
-
-.tab-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border: none;
-    background: transparent;
-    border-radius: 8px;
-    font-weight: 500;
-    color: #64748b;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    min-width: fit-content;
-}
-
-.tab-button:hover {
-    background-color: #f1f5f9;
-    color: #2563eb;
-}
-
-.tab-button.active {
-    background-color: #2563eb;
-    color: white;
-}
-
-.tab-button.active svg {
-    color: white;
-}
-
-.tab-content {
-    min-height: 400px;
-}
-
-.account-section {
-    width: 100%;
-}
-
-.section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #334155;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.title-icon {
-    color: #2563eb;
-}
-
-.card {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    padding: 1.5rem 2rem;
-    border: 1px solid #e2e8f0;
-}
-
-/* --- CARD DE INFORMAÇÕES PESSOAIS --- */
-.info-card {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-.info-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background-color: #f8fafc;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-}
-
-.info-icon {
-    color: #2563eb;
-    flex-shrink: 0;
-}
-
-.info-item div {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.info-item strong {
-    color: #475569;
-    font-weight: 600;
-    font-size: 0.875rem;
-}
-
-.info-item span {
-    color: #1e293b;
-    font-size: 1rem;
-}
-
-.card-actions {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 1rem;
-    border-top: 1px solid #e2e8f0;
-}
-
-.edit-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.edit-button:hover {
-    background-color: #1d4ed8;
-}
-
-/* --- SEÇÃO DE SEGURANÇA --- */
-.security-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.security-card {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.security-card h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1e293b;
+/* Reset e configurações básicas */
+* {
     margin: 0;
-}
-
-.security-card p {
-    color: #64748b;
-    margin: 0;
-    font-size: 0.9rem;
-}
-
-.security-status {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.status-indicator {
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.status-indicator.enabled {
-    background-color: #dcfce7;
-    color: #166534;
-}
-
-.status-indicator.disabled {
-    background-color: #fee2e2;
-    color: #991b1b;
-}
-
-.security-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: #f8fafc;
-    color: #475569;
-    border: 1px solid #e2e8f0;
-    padding: 0.75rem 1rem;
-    border-radius: 6px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    align-self: flex-start;
-}
-
-.security-button:hover {
-    background-color: #e2e8f0;
-    color: #1e293b;
-}
-
-.login-history {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.login-item {
-    padding: 1rem;
-    background-color: #f8fafc;
-    border-radius: 6px;
-    border: 1px solid #e2e8f0;
-}
-
-.login-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.login-date {
-    font-weight: 600;
-    color: #1e293b;
-}
-
-.login-location {
-    color: #475569;
-    font-size: 0.9rem;
-}
-
-.login-device {
-    color: #64748b;
-    font-size: 0.8rem;
-}
-
-/* --- GRID DE ASSINATURAS --- */
-.subscriptions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.subscription-card {
     padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
 }
 
-.subscription-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.07);
+/* Container principal */
+.minha-conta-container {
+    min-height: 100vh;
+    background-color: #f3f4f6;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.subscription-header {
-    padding: 1rem 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f8fafc;
-}
-
-.subscription-header h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #2563eb;
-}
-
-.status-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.status-ativo .status-badge {
-    background-color: #dcfce7;
-    color: #166534;
-}
-
-.status-cancelado .status-badge {
-    background-color: #fee2e2;
-    color: #991b1b;
-}
-
-.subscription-body {
-    padding: 1.5rem;
+/* Conteúdo principal */
+.main-content {
     flex-grow: 1;
+    padding: 2rem 1rem;
 }
 
-.subscription-body p {
-    margin: 0 0 0.75rem 0;
-    color: #475569;
+.content-wrapper {
+    max-width: 64rem;
+    margin: 0 auto;
 }
 
-.subscription-body p:last-child {
-    margin-bottom: 0;
-}
-
-.subscription-footer {
-    padding: 1rem 1.5rem;
-    background-color: #f8fafc;
-    border-top: 1px solid #e2e8f0;
-    text-align: right;
-}
-
-.cancel-button {
-    background-color: #fca5a5;
-    color: #b91c1c;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: background-color 0.2s ease;
-}
-
-.cancel-button:hover {
-    background-color: #f87171;
-    color: #7f1d1d;
-}
-
-/* --- CONFIGURAÇÕES DA CONTA --- */
-.settings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 2rem;
-}
-
-.settings-card {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.settings-card h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 0;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.setting-item:last-child {
-    border-bottom: none;
-}
-
-.setting-item div {
-    flex: 1;
-}
-
-.setting-item strong {
-    display: block;
-    color: #1e293b;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
-.setting-item p {
-    color: #64748b;
-    font-size: 0.9rem;
-    margin: 0;
-}
-
-.setting-item label {
-    color: #1e293b;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    display: block;
-}
-
-.setting-item select {
-    padding: 0.5rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    background-color: white;
-    color: #1e293b;
-    font-size: 0.9rem;
-    min-width: 200px;
-}
-
-/* --- TOGGLE SWITCH --- */
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #cbd5e1;
-    transition: 0.3s;
-    border-radius: 24px;
-}
-
-.toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.3s;
-    border-radius: 50%;
-}
-
-input:checked + .toggle-slider {
-    background-color: #2563eb;
-}
-
-input:checked + .toggle-slider:before {
-    transform: translateX(26px);
-}
-
-/* --- SEÇÃO DE SUPORTE --- */
-.support-header {
+/* Título da página */
+.page-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #111827;
     margin-bottom: 2rem;
-}
-
-.support-header .card {
     text-align: center;
 }
 
-.support-header h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 0 0 0.5rem 0;
-}
-
-.support-header p {
-    color: #64748b;
-    margin: 0 0 1.5rem 0;
-}
-
-.support-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.primary-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.primary-button:hover {
-    background-color: #1d4ed8;
-}
-
-.secondary-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: #f8fafc;
-    color: #475569;
-    border: 1px solid #e2e8f0;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.secondary-button:hover {
-    background-color: #e2e8f0;
-    color: #1e293b;
-}
-
-.tickets-list {
+/* Card de visão geral do perfil */
+.profile-overview-card {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
 }
 
-.ticket-item {
-    padding: 1.5rem;
-    background-color: #f8fafc;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    transition: all 0.2s ease;
+@media (min-width: 768px) {
+    .profile-overview-card {
+        flex-direction: row;
+        padding: 2rem;
+        gap: 2rem;
+    }
 }
 
-.ticket-item:hover {
-    background-color: #f1f5f9;
-    border-color: #cbd5e1;
+.profile-picture-section {
+    position: relative;
 }
 
-.ticket-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
+.profile-picture-container {
+    position: relative;
+    display: inline-block;
 }
 
-.ticket-header h4 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 0;
+.profile-picture {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #dbeafe;
 }
 
-.ticket-meta {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.priority-badge {
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.priority-baixa {
-    background-color: #dcfce7;
-    color: #166534;
-}
-
-.priority-média {
-    background-color: #fef3c7;
-    color: #92400e;
-}
-
-.priority-alta {
-    background-color: #fecaca;
-    color: #991b1b;
-}
-
-.priority-crítica {
-    background-color: #fee2e2;
-    color: #7f1d1d;
-}
-
-.status-badge {
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.status-aberto {
-    background-color: #dbeafe;
-    color: #1e40af;
-}
-
-.status-em-andamento {
-    background-color: #fef3c7;
-    color: #92400e;
-}
-
-.status-resolvido {
-    background-color: #dcfce7;
-    color: #166534;
-}
-
-.status-fechado {
-    background-color: #f1f5f9;
-    color: #475569;
-}
-
-.ticket-description {
-    color: #64748b;
-    margin: 0 0 1rem 0;
-    line-height: 1.5;
-}
-
-.ticket-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.ticket-date {
-    color: #94a3b8;
-    font-size: 0.875rem;
-}
-
-.view-ticket-button {
-    background-color: #2563eb;
+.edit-picture-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #2563eb;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.view-ticket-button:hover {
-    background-color: #1d4ed8;
-}
-
-/* --- ZONA DE PERIGO --- */
-.danger-title {
-    color: #b91c1c;
-}
-
-.danger-icon {
-    color: #b91c1c;
-}
-
-.danger-zone-card {
-    border-color: #fca5a5;
-    background-color: #fef2f2;
-}
-
-.danger-zone-content {
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.danger-zone-subtitle {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #b91c1c;
-    margin: 0 0 0.5rem 0;
+.edit-picture-button:hover {
+    background: #1d4ed8;
 }
 
-.danger-zone-text {
-    color: #dc2626;
-    margin: 0 0 1rem 0;
-    font-size: 0.9rem;
-    line-height: 1.5;
+.profile-info {
+    text-align: center;
 }
 
-.danger-zone-list {
-    color: #dc2626;
-    margin: 0;
-    padding-left: 1.5rem;
-    font-size: 0.9rem;
+@media (min-width: 768px) {
+    .profile-info {
+        text-align: left;
+    }
 }
 
-.danger-zone-list li {
+.user-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
     margin-bottom: 0.25rem;
 }
 
-.delete-account-button {
+.user-email {
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+/* Grid de gerenciamento da conta */
+.account-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+    .account-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Cards da conta */
+.account-card {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.account-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background-color: #dc2626;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.card-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+}
+
+.personal-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.security-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.orders-icon {
+    background: #f3e8ff;
+    color: #9333ea;
+}
+
+.addresses-icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.settings-icon {
+    background: #fed7aa;
+    color: #ea580c;
+}
+
+.support-icon {
+    background: #cffafe;
+    color: #0891b2;
+}
+
+.card-title {
+    font-size: 1.25rem;
     font-weight: 600;
+    color: #111827;
+}
+
+.card-description {
+    color: #6b7280;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.card-action-button {
+    background: none;
+    border: none;
+    color: #2563eb;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-    white-space: nowrap;
-    flex-shrink: 0;
+    transition: color 0.2s;
+    font-size: 0.875rem;
 }
 
-.delete-account-button:hover {
-    background-color: #b91c1c;
+.card-action-button:hover {
+    color: #1d4ed8;
 }
 
-/* --- MODAIS --- */
+/* Seção de logout */
+.logout-section {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+.logout-button {
+    background: #ef4444;
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.logout-button:hover {
+    background: #dc2626;
+}
+
+.logout-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.5);
+}
+
+/* Modais */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(10, 10, 10, 0.75);
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -755,104 +259,31 @@ input:checked + .toggle-slider:before {
 }
 
 .modal-content {
-    background: #ffffff;
+    background: white;
+    border-radius: 0.75rem;
     padding: 2rem;
-    border-radius: 8px;
     max-width: 500px;
     width: 100%;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    text-align: left;
     max-height: 90vh;
     overflow-y: auto;
 }
 
 .modal-title {
     font-size: 1.5rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-}
-
-.modal-text {
-    font-size: 1rem;
-    color: #475569;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-}
-
-.modal-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 6px;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    transition: border-color 0.2s;
-}
-
-.modal-input:focus {
-    outline: none;
-    border-color: #2563eb;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-}
-
-.modal-button {
-    padding: 0.7rem 1.4rem;
-    border: none;
-    border-radius: 6px;
     font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, opacity 0.2s ease;
+    color: #111827;
+    margin-bottom: 1.5rem;
 }
 
-.modal-button.cancel {
-    background-color: #e2e8f0;
-    color: #475569;
-}
-
-.modal-button.cancel:hover {
-    background-color: #cbd5e1;
-}
-
-.modal-button.confirm {
-    background-color: #2563eb;
-    color: white;
-}
-
-.modal-button.confirm:hover {
-    background-color: #1d4ed8;
-}
-
-.modal-button.confirm-delete {
-    background-color: #dc2626;
-    color: white;
-}
-
-.modal-button.confirm-delete:hover {
-    background-color: #b91c1c;
-}
-
-.modal-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* --- FORMULÁRIOS --- */
 .form-group {
     margin-bottom: 1.5rem;
 }
 
 .form-group label {
     display: block;
+    font-weight: 500;
+    color: #374151;
     margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #1e293b;
 }
 
 .form-group input,
@@ -860,11 +291,10 @@ input:checked + .toggle-slider:before {
 .form-group select {
     width: 100%;
     padding: 0.75rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
     font-size: 1rem;
     transition: border-color 0.2s;
-    background-color: white;
 }
 
 .form-group input:focus,
@@ -872,107 +302,142 @@ input:checked + .toggle-slider:before {
 .form-group select:focus {
     outline: none;
     border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-/* --- CAMPOS DE SENHA --- */
 .password-input {
     position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.password-input input {
-    padding-right: 3rem;
 }
 
 .password-toggle {
     position: absolute;
     right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
     background: none;
     border: none;
-    color: #64748b;
+    color: #6b7280;
     cursor: pointer;
     padding: 0.25rem;
-    border-radius: 4px;
-    transition: color 0.2s ease;
 }
 
 .password-toggle:hover {
-    color: #1e293b;
+    color: #374151;
 }
 
-/* --- ANIMAÇÕES --- */
-.animate-spin {
-    animation: spin 1s linear infinite;
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
 }
 
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.modal-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-/* --- RESPONSIVIDADE --- */
-@media (max-width: 768px) {
-    .tabs-navigation {
-        flex-wrap: wrap;
+.modal-button.cancel {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.modal-button.cancel:hover {
+    background: #e5e7eb;
+}
+
+.modal-button.confirm {
+    background: #2563eb;
+    color: white;
+}
+
+.modal-button.confirm:hover {
+    background: #1d4ed8;
+}
+
+.modal-button.confirm:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* Container de erro */
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    text-align: center;
+    padding: 2rem;
+}
+
+.error-icon {
+    color: #ef4444;
+    margin-bottom: 1rem;
+}
+
+.error-container h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.error-container p {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+.error-container button {
+    background: #2563eb;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.error-container button:hover {
+    background: #1d4ed8;
+}
+
+/* Responsividade adicional */
+@media (max-width: 640px) {
+    .main-content {
+        padding: 1rem 0.5rem;
     }
     
-    .tab-button {
-        flex: 1;
-        min-width: 120px;
-        justify-content: center;
+    .page-title {
+        font-size: 1.875rem;
     }
     
-    .info-grid {
-        grid-template-columns: 1fr;
+    .account-card {
+        padding: 1rem;
     }
     
-    .security-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .settings-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .danger-zone-content {
+    .card-header {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-    
-    .delete-account-button {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .support-actions {
-        flex-direction: column;
-    }
-    
-    .ticket-header {
-        flex-direction: column;
-        align-items: flex-start;
+        text-align: center;
         gap: 0.5rem;
     }
     
-    .ticket-footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+    .card-icon {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-content {
+        padding: 1.5rem;
     }
     
     .modal-actions {
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
     
     .modal-button {
@@ -980,22 +445,25 @@ input:checked + .toggle-slider:before {
     }
 }
 
-@media (max-width: 480px) {
-    .account-main {
-        padding: 0 0.5rem;
+/* Animações */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
     }
-    
-    .card {
-        padding: 1rem;
-    }
-    
-    .modal-content {
-        padding: 1.5rem;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-/* Estilos para o container de erro */
-.error-container {
-    text-align: center;
-    padding: 4rem 1rem;
+.account-card {
+    animation: fadeIn 0.3s ease-out;
 }
+
+.account-card:nth-child(1) { animation-delay: 0.1s; }
+.account-card:nth-child(2) { animation-delay: 0.2s; }
+.account-card:nth-child(3) { animation-delay: 0.3s; }
+.account-card:nth-child(4) { animation-delay: 0.4s; }
+.account-card:nth-child(5) { animation-delay: 0.5s; }
+.account-card:nth-child(6) { animation-delay: 0.6s; }
