@@ -28,10 +28,6 @@ interface UserProfile {
     state?: string;
 }
 
-
-
-
-
 // --- COMPONENTE PRINCIPAL ---
 export default function MinhaContaPage() {
     const navigate = useNavigate();
@@ -42,30 +38,24 @@ export default function MinhaContaPage() {
     // Estados dos dados
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
-
-
     // Dados mockados para demonstração
     useEffect(() => {
-        // Simular carregamento assíncrono
-        const timer = setTimeout(() => {
-            const mockData = {
-                userProfile: {
-                    cpf: '123.456.789-00',
-                    fullName: 'Maria Silva',
-                    phone: '(11) 99999-9999',
-                    email: 'maria.silva@email.com',
-                    memberSince: '2023-01-15',
-                    address: 'Rua das Flores, 123',
-                    city: 'São Paulo',
-                    state: 'SP'
-                }
-            };
+        // Carregar dados imediatamente sem delay artificial
+        const mockData = {
+            userProfile: {
+                cpf: '123.456.789-00',
+                fullName: 'Maria Silva',
+                phone: '(11) 99999-9999',
+                email: 'maria.silva@email.com',
+                memberSince: '2023-01-15',
+                address: 'Rua das Flores, 123',
+                city: 'São Paulo',
+                state: 'SP'
+            }
+        };
 
-            setUserProfile(mockData.userProfile);
-            setIsLoading(false);
-        }, 500); // Pequeno delay para mostrar o loading
-
-        return () => clearTimeout(timer);
+        setUserProfile(mockData.userProfile);
+        setIsLoading(false);
     }, []);
 
     const handleDeleteAccount = () => {
@@ -84,8 +74,8 @@ export default function MinhaContaPage() {
         navigate('/seguranca');
     };
 
-    const handleViewOrders = () => {
-        toast.info('Histórico de pedidos será implementado em breve!');
+    const handleViewSubscriptions = () => {
+        toast.info('Minhas assinaturas será implementado em breve!');
     };
 
     const handleManageAddresses = () => {
@@ -100,8 +90,6 @@ export default function MinhaContaPage() {
         toast.info('Sistema de tickets será implementado em breve!');
     };
 
-
-
     if (isLoading) {
         return <LoadingSpinner isLoading={true} />;
     }
@@ -111,10 +99,10 @@ export default function MinhaContaPage() {
             <div className="error-container">
                 <AlertTriangle size={48} className="error-icon" />
                 <h2>Erro ao carregar dados</h2>
-            <p>{error}</p>
+                <p>{error}</p>
                 <button onClick={() => window.location.reload()}>Tentar Novamente</button>
-        </div>
-    );
+            </div>
+        );
     }
 
     return (
@@ -137,13 +125,13 @@ export default function MinhaContaPage() {
                                 <button className="edit-picture-button">
                                     <Edit3 size={16} strokeWidth={1.5} />
                                 </button>
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
                         <div className="profile-info">
                             <h2 className="user-name">{userProfile?.fullName}</h2>
                             <p className="user-email">{userProfile?.email}</p>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
 
                     {/* Account Management Grid */}
                     <div className="account-grid">
@@ -159,13 +147,13 @@ export default function MinhaContaPage() {
                             <p className="card-description">
                                 Veja e edite suas informações pessoais, como nome, CPF e telefone.
                             </p>
-                                            <button 
+                            <button 
                                 className="card-action-button"
                                 onClick={handleEditProfile}
                             >
                                 Gerenciar Dados →
-                                            </button>
-                                </div>
+                            </button>
+                        </div>
 
                         {/* Security Card */}
                         <div className="account-card security-card">
@@ -182,26 +170,26 @@ export default function MinhaContaPage() {
                                 className="card-action-button"
                                 onClick={handleChangePassword}
                             >
-                                Alterar Senha →
+                                Gerenciar Segurança →
                             </button>
                         </div>
 
-                        {/* My Orders Card */}
+                        {/* My Subscriptions Card */}
                         <div className="account-card orders-card">
                             <div className="card-header">
                                 <div className="card-icon orders-icon">
                                     <ShoppingBag size={24} strokeWidth={1.5} />
                                 </div>
-                                <h3 className="card-title">Meus Pedidos</h3>
+                                <h3 className="card-title">Minhas Assinaturas</h3>
                             </div>
                             <p className="card-description">
-                                Acompanhe seus pedidos, veja o histórico e gerencie devoluções.
+                                Acompanhe suas assinaturas, veja o histórico e gerencie renovações.
                             </p>
                             <button 
                                 className="card-action-button"
-                                onClick={handleViewOrders}
+                                onClick={handleViewSubscriptions}
                             >
-                                Ver Histórico →
+                                Ver Assinaturas →
                             </button>
                         </div>
                         
@@ -235,13 +223,13 @@ export default function MinhaContaPage() {
                             <p className="card-description">
                                 Gerencie preferências de notificação, idioma e temas da sua conta.
                             </p>
-                                <button 
+                            <button 
                                 className="card-action-button"
                                 onClick={handleAccountSettings}
-                                >
+                            >
                                 Ajustar Preferências →
-                                </button>
-                            </div>
+                            </button>
+                        </div>
 
                         {/* Support Tickets Card */}
                         <div className="account-card support-card">
@@ -281,10 +269,8 @@ export default function MinhaContaPage() {
                             </button>
                         </div>
                     </div>
-                    </div>
+                </div>
             </main>
-
-
         </div>
     );
 }
