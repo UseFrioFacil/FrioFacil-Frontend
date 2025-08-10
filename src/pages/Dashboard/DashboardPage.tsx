@@ -24,6 +24,7 @@ import InformacoesView from './uiDashboard/InformacoesView.tsx';
 import Sidebar from './uiDashboard/layout/SideBar.tsx'
 //LayoutTopBar
 import TopBar from './uiDashboard/layout/TopBar.tsx';
+import LoadingSpinner from '../../components/Loading/LoadingSpinner.tsx';
 
 
 // --- TIPOS E INTERFACES ---
@@ -50,6 +51,7 @@ export default function DashboardPage() {
     const [userRole, setUserRole] = useState<Role>('admin');
     const [activeView, setActiveView] = useState('inicio');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isLoading, _setIsLoading] = useState(false);
     const currentUser = mockUsers[userRole];
 
     const renderContent = () => {
@@ -83,7 +85,7 @@ export default function DashboardPage() {
 
     return (
         <>
-            
+            <LoadingSpinner isLoading={isLoading} />
             <div className="dashboard-layout">
                 <div className={`sidebar-container-mobile ${isSidebarOpen ? 'open' : ''}`}>
                     <Sidebar user={currentUser} activeView={activeView} setActiveView={setActiveView} closeSidebar={() => setIsSidebarOpen(false)} />

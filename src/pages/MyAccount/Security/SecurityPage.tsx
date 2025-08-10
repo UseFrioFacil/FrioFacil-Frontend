@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { toast } from 'react-toastify';
 import { 
-    ArrowLeft,
     Eye,
     EyeOff,
     CheckCircle,
@@ -14,6 +13,7 @@ import {
 } from 'lucide-react';
 import './SecurityStyle.css';
 import Header from '../../../components/Header/Header.tsx';
+import LoadingSpinner from '../../../components/Loading/LoadingSpinner.tsx';
 
 // --- INTERFACES DE DADOS ---
 interface LoginHistory {
@@ -42,7 +42,6 @@ interface PasswordStrength {
 
 // --- COMPONENTE PRINCIPAL ---
 export default function SecurityPage() {
-    const navigate = useNavigate();
 
     // Estados dos formulários
     const [passwordData, setPasswordData] = useState({
@@ -75,6 +74,9 @@ export default function SecurityPage() {
         color: '',
         width: '0%'
     });
+
+    // Estado de loading
+    const [isLoading, setIsLoading] = useState(false);
 
     // Dados mockados
     const [loginHistory] = useState<LoginHistory[]>([
@@ -212,35 +214,43 @@ export default function SecurityPage() {
             return;
         }
 
+        setIsLoading(true);
+        
         // Simular alteração de senha
-        toast.success('Senha alterada com sucesso!');
-        setPasswordData({
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: ''
-        });
-        setPasswordStrength({
-            score: 0,
-            text: '',
-            color: '',
-            width: '0%'
-        });
+        setTimeout(() => {
+            toast.success('Senha alterada com sucesso!');
+            setPasswordData({
+                currentPassword: '',
+                newPassword: '',
+                confirmPassword: ''
+            });
+            setPasswordStrength({
+                score: 0,
+                text: '',
+                color: '',
+                width: '0%'
+            });
+            setIsLoading(false);
+        }, 1500);
     };
 
     // Função para ativar/desativar 2FA
     const handleToggleTwoFactor = () => {
-        setTwoFactorEnabled(!twoFactorEnabled);
-        toast.success(twoFactorEnabled ? '2FA desativado' : '2FA ativado');
+        setIsLoading(true);
+        setTimeout(() => {
+            setTwoFactorEnabled(!twoFactorEnabled);
+            toast.success(twoFactorEnabled ? '2FA desativado' : '2FA ativado');
+            setIsLoading(false);
+        }, 1000);
     };
 
     // Função para gerenciar dispositivos
     const handleManageDevices = () => {
-        toast.info('Funcionalidade de gerenciamento de dispositivos será implementada em breve!');
-    };
-
-    // Função para voltar
-    const handleGoBack = () => {
-        navigate('/minhaconta');
+        setIsLoading(true);
+        setTimeout(() => {
+            toast.info('Funcionalidade de gerenciamento de dispositivos será implementada em breve!');
+            setIsLoading(false);
+        }, 1000);
     };
 
     // Atualizar validação da senha quando ela mudar
@@ -250,21 +260,11 @@ export default function SecurityPage() {
 
     return (
         <div className="security-container">
-            <Header />
+            <LoadingSpinner isLoading={isLoading} />
+            <Header showOptions={false} showMenu={false} showBackButton={true} />
             
             <main className="main-content">
                 <div className="content-wrapper">
-                    {/* Back Link */}
-                    <div className="back-link-section">
-                        <button 
-                            onClick={handleGoBack}
-                            className="back-link"
-                        >
-                            <ArrowLeft size={16} />
-                            Voltar para Minha Conta
-                        </button>
-                    </div>
-
                     <h1 className="page-title">Segurança</h1>
 
                     {/* Grid Layout */}

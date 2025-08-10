@@ -47,7 +47,18 @@ const LoadingSpinner: FC<LoadingScreenProps> = ({ isLoading }) => {
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
                     >
-                      <Snowflake size={32} className="loading-icon" />
+                      <motion.div
+                        animate={{ 
+                          rotate: 360,
+                          y: [0, -5, 0]
+                        }}
+                        transition={{ 
+                          rotate: { duration: 3, repeat: Infinity, ease: "linear" },
+                          y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                        }}
+                      >
+                        <Snowflake size={32} className="loading-icon" />
+                      </motion.div>
                     </motion.div>
                   </motion.div>
                 </motion.div>

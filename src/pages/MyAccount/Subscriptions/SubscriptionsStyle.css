@@ -1,0 +1,406 @@
+.subscriptions-container {
+    min-height: 100vh;
+    background-color: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+}
+
+.subscriptions-container .main-content {
+    padding: 2rem 1rem;
+}
+
+.subscriptions-container .content-wrapper {
+    max-width: 64rem;
+    margin: 0 auto;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+.subscriptions-container .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.subscriptions-container .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.subscriptions-container .page-subtitle {
+    color: #64748b;
+    font-size: 1rem;
+}
+
+.subscriptions-container .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+}
+
+.subscriptions-container .current-plan-section {
+    margin-bottom: 2rem;
+}
+
+.subscriptions-container .current-plan-card {
+    background: #2563eb;
+    color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.subscriptions-container .plan-badges {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.subscriptions-container .plan-badge {
+    background: white;
+    color: #2563eb;
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.subscriptions-container .status-badge {
+    background: #4ade80;
+    color: #14532d;
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.subscriptions-container .plan-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.subscriptions-container .price-period {
+    font-size: 1rem;
+    color: #bfdbfe;
+}
+
+.subscriptions-container .renewal-info {
+    font-size: 0.875rem;
+    color: #bfdbfe;
+    margin-bottom: 1rem;
+}
+
+.subscriptions-container .manage-button {
+    background: white;
+    color: #2563eb;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.subscriptions-container .manage-button:hover {
+    background: #f1f5f9;
+}
+
+.subscriptions-container .payment-method-section {
+    margin-bottom: 2rem;
+}
+
+.subscriptions-container .payment-method-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+}
+
+.subscriptions-container .payment-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.subscriptions-container .payment-icon {
+    color: #64748b;
+    width: 2rem;
+    height: 2rem;
+}
+
+.subscriptions-container .payment-type {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.subscriptions-container .payment-digits {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.subscriptions-container .change-payment-button {
+    color: #2563eb;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.subscriptions-container .other-plans-section {
+    margin-bottom: 2rem;
+}
+
+.subscriptions-container .plans-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .subscriptions-container .plans-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.subscriptions-container .plan-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    background: white;
+}
+
+.subscriptions-container .plan-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.subscriptions-container .plan-description {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.subscriptions-container .plan-price-secondary {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.subscriptions-container .plan-features {
+    list-style: none;
+    margin-bottom: 1rem;
+}
+
+.subscriptions-container .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #475569;
+    margin-bottom: 0.5rem;
+}
+
+.subscriptions-container .check-icon {
+    color: #10b981;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.subscriptions-container .change-plan-button {
+    width: 100%;
+    background: #e2e8f0;
+    color: #1e293b;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.subscriptions-container .billing-history-section {
+    margin-bottom: 2rem;
+}
+
+.subscriptions-container .billing-table {
+    width: 100%;
+    background: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.subscriptions-container .billing-table thead {
+    background: #f8fafc;
+}
+
+.subscriptions-container .billing-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #475569;
+}
+
+.subscriptions-container .billing-table td {
+    padding: 0.75rem 1rem;
+    color: #334155;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.subscriptions-container .status-badge-table {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+}
+
+.subscriptions-container .status-badge-table.paid {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.subscriptions-container .download-button {
+    color: #2563eb;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.subscriptions-container .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 1rem;
+}
+
+.subscriptions-container .modal-content {
+    background: white;
+    width: 100%;
+    max-width: 28rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.subscriptions-container .modal-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.subscriptions-container .modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.subscriptions-container .modal-subtitle {
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+
+.subscriptions-container .modal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.subscriptions-container .modal-option {
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.subscriptions-container .modal-option:hover {
+    background: #f8fafc;
+}
+
+.subscriptions-container .option-icon {
+    color: #2563eb;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.subscriptions-container .option-icon.cancel {
+    color: #dc2626;
+}
+
+.subscriptions-container .option-content {
+    flex: 1;
+}
+
+.subscriptions-container .option-title {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+.subscriptions-container .option-title.cancel {
+    color: #dc2626;
+}
+
+.subscriptions-container .option-description {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.subscriptions-container .option-arrow {
+    color: #9ca3af;
+}
+
+@media (max-width: 768px) {
+    .subscriptions-container .content-wrapper {
+        padding: 1rem;
+    }
+    
+    .subscriptions-container .page-title {
+        font-size: 1.75rem;
+    }
+    
+    .subscriptions-container .payment-method-card {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .subscriptions-container .billing-table {
+        font-size: 0.875rem;
+    }
+    
+    .subscriptions-container .billing-table th,
+    .subscriptions-container .billing-table td {
+        padding: 0.5rem;
+    }
+}

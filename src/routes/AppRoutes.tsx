@@ -17,6 +17,7 @@ import ProtectedRoute from "../components/ProtectedRoute.tsx"
 import MinhaContaPage from '../pages/MyAccount/MyAccount.tsx';
 import SecurityPage from '../pages/MyAccount/Security/SecurityPage.tsx';
 import PersonalDataPage from '../pages/MyAccount/PersonalData/PersonalDataPage.tsx';
+import SubscriptionsPage from '../pages/MyAccount/Subscriptions/SubscriptionsPage.tsx';
 
 // Componente interno para usar useLocation
 function AnimatedRoutes() {
@@ -73,6 +74,11 @@ function AnimatedRoutes() {
         <Route path='/minhaconta/dados-pessoais' element={
           <PageTransition>
             <ProtectedRoute><PersonalDataPage/></ProtectedRoute>
+          </PageTransition>
+        }/>
+        <Route path='/minhaconta/assinaturas' element={
+          <PageTransition>
+            <ProtectedRoute><SubscriptionsPage/></ProtectedRoute>
           </PageTransition>
         }/>
         <Route path='/cadastrarempresa' element={

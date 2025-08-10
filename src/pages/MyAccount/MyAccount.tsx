@@ -75,7 +75,7 @@ export default function MinhaContaPage() {
     };
 
     const handleViewSubscriptions = () => {
-        toast.info('Minhas assinaturas será implementado em breve!');
+        navigate('/minhaconta/assinaturas');
     };
 
     const handleManageAddresses = () => {
@@ -100,7 +100,9 @@ export default function MinhaContaPage() {
                 <AlertTriangle size={48} className="error-icon" />
                 <h2>Erro ao carregar dados</h2>
                 <p>{error}</p>
-                <button onClick={() => window.location.reload()}>Tentar Novamente</button>
+                <button onClick={() => window.location.reload()}>
+                    Tentar Novamente
+                </button>
             </div>
         );
     }
@@ -113,17 +115,17 @@ export default function MinhaContaPage() {
                 <div className="content-wrapper">
                     <h1 className="page-title">Minha Conta</h1>
 
-                    {/* Profile Overview Card */}
+                    {/* Card de visão geral do perfil */}
                     <div className="profile-overview-card">
                         <div className="profile-picture-section">
                             <div className="profile-picture-container">
                                 <img 
-                                    className="profile-picture" 
-                                    src="https://placehold.co/128x128/E0E7FF/4F46E5?text=AV" 
-                                    alt="Foto do Perfil" 
+                                    src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face" 
+                                    alt="Foto de perfil" 
+                                    className="profile-picture"
                                 />
                                 <button className="edit-picture-button">
-                                    <Edit3 size={16} strokeWidth={1.5} />
+                                    <Edit3 size={12} />
                                 </button>
                             </div>
                         </div>
@@ -133,141 +135,105 @@ export default function MinhaContaPage() {
                         </div>
                     </div>
 
-                    {/* Account Management Grid */}
+                    {/* Grid de opções da conta */}
                     <div className="account-grid">
-                        
-                        {/* Personal Data Card */}
-                        <div className="account-card personal-data-card">
+                        {/* Dados Pessoais */}
+                        <div className="account-card" onClick={handleEditProfile}>
                             <div className="card-header">
                                 <div className="card-icon personal-icon">
-                                    <User size={24} strokeWidth={1.5} />
+                                    <User size={24} />
                                 </div>
-                                <h3 className="card-title">Dados Pessoais</h3>
                             </div>
-                            <p className="card-description">
-                                Veja e edite suas informações pessoais, como nome, CPF e telefone.
-                            </p>
-                            <button 
-                                className="card-action-button"
-                                onClick={handleEditProfile}
-                            >
-                                Gerenciar Dados →
+                            <h3 className="card-title">Dados Pessoais</h3>
+                            <p className="card-description">Gerencie suas informações pessoais</p>
+                            <button className="card-action-button">
+                                Editar Dados
                             </button>
                         </div>
 
-                        {/* Security Card */}
-                        <div className="account-card security-card">
+                        {/* Segurança */}
+                        <div className="account-card" onClick={handleChangePassword}>
                             <div className="card-header">
                                 <div className="card-icon security-icon">
-                                    <Shield size={24} strokeWidth={1.5} />
+                                    <Shield size={24} />
                                 </div>
-                                <h3 className="card-title">Segurança</h3>
                             </div>
-                            <p className="card-description">
-                                Altere sua senha e gerencie as configurações de segurança da sua conta.
-                            </p>
-                            <button 
-                                className="card-action-button"
-                                onClick={handleChangePassword}
-                            >
-                                Gerenciar Segurança →
+                            <h3 className="card-title">Segurança</h3>
+                            <p className="card-description">Altere sua senha e configurações de segurança</p>
+                            <button className="card-action-button">
+                                Alterar Senha
                             </button>
                         </div>
 
-                        {/* My Subscriptions Card */}
-                        <div className="account-card orders-card">
+                        {/* Minhas Assinaturas */}
+                        <div className="account-card" onClick={handleViewSubscriptions}>
                             <div className="card-header">
                                 <div className="card-icon orders-icon">
-                                    <ShoppingBag size={24} strokeWidth={1.5} />
+                                    <ShoppingBag size={24} />
                                 </div>
-                                <h3 className="card-title">Minhas Assinaturas</h3>
                             </div>
-                            <p className="card-description">
-                                Acompanhe suas assinaturas, veja o histórico e gerencie renovações.
-                            </p>
-                            <button 
-                                className="card-action-button"
-                                onClick={handleViewSubscriptions}
-                            >
-                                Ver Assinaturas →
+                            <h3 className="card-title">Minhas Assinaturas</h3>
+                            <p className="card-description">Gerencie seu plano e veja histórico de pagamentos</p>
+                            <button className="card-action-button">
+                                Ver Assinaturas
                             </button>
                         </div>
-                        
-                        {/* Saved Addresses Card */}
-                        <div className="account-card addresses-card">
+
+                        {/* Endereços */}
+                        <div className="account-card" onClick={handleManageAddresses}>
                             <div className="card-header">
                                 <div className="card-icon addresses-icon">
-                                    <LocationIcon size={24} strokeWidth={1.5} />
+                                    <LocationIcon size={24} />
                                 </div>
-                                <h3 className="card-title">Endereços</h3>
                             </div>
-                            <p className="card-description">
-                                Adicione, edite ou remova seus endereços de entrega e faturamento.
-                            </p>
-                            <button 
-                                className="card-action-button"
-                                onClick={handleManageAddresses}
-                            >
-                                Gerenciar Endereços →
+                            <h3 className="card-title">Endereços</h3>
+                            <p className="card-description">Gerencie seus endereços de entrega</p>
+                            <button className="card-action-button">
+                                Gerenciar
                             </button>
                         </div>
 
-                        {/* Account Settings Card */}
-                        <div className="account-card settings-card">
+                        {/* Configurações da Conta */}
+                        <div className="account-card" onClick={handleAccountSettings}>
                             <div className="card-header">
                                 <div className="card-icon settings-icon">
-                                    <Cog size={24} strokeWidth={1.5} />
+                                    <Cog size={24} />
                                 </div>
-                                <h3 className="card-title">Configurações da Conta</h3>
                             </div>
-                            <p className="card-description">
-                                Gerencie preferências de notificação, idioma e temas da sua conta.
-                            </p>
-                            <button 
-                                className="card-action-button"
-                                onClick={handleAccountSettings}
-                            >
-                                Ajustar Preferências →
+                            <h3 className="card-title">Configurações</h3>
+                            <p className="card-description">Preferências e configurações da conta</p>
+                            <button className="card-action-button">
+                                Configurar
                             </button>
                         </div>
 
-                        {/* Support Tickets Card */}
-                        <div className="account-card support-card">
+                        {/* Suporte */}
+                        <div className="account-card" onClick={handleSupportTickets}>
                             <div className="card-header">
                                 <div className="card-icon support-icon">
-                                    <Headphones size={24} strokeWidth={1.5} />
+                                    <Headphones size={24} />
                                 </div>
-                                <h3 className="card-title">Tickets de Suporte</h3>
                             </div>
-                            <p className="card-description">
-                                Precisa de ajuda? Abra um chamado ou acompanhe o status dos seus tickets.
-                            </p>
-                            <button 
-                                className="card-action-button"
-                                onClick={handleSupportTickets}
-                            >
-                                Abrir um chamado →
+                            <h3 className="card-title">Suporte</h3>
+                            <p className="card-description">Entre em contato com nosso suporte</p>
+                            <button className="card-action-button">
+                                Contatar
                             </button>
                         </div>
+                    </div>
 
-                        {/* Delete Account Card */}
-                        <div className="account-card delete-account-card">
-                            <div className="card-header">
-                                <div className="card-icon delete-icon">
-                                    <Trash2 size={24} strokeWidth={1.5} />
-                                </div>
-                                <h3 className="card-title">Deletar Conta</h3>
+                    {/* Card de deletar conta */}
+                    <div className="delete-account-card">
+                        <div className="card-header">
+                            <div className="card-icon delete-icon">
+                                <Trash2 size={24} />
                             </div>
-                            <p className="card-description">
-                                Exclua permanentemente sua conta e todos os dados associados. Esta ação não pode ser desfeita.
-                            </p>
-                            <button 
-                                className="card-action-button delete-button"
-                                onClick={handleDeleteAccount}
-                            >
-                                Deletar Conta →
-                            </button>
                         </div>
+                        <h3 className="card-title">Deletar Conta</h3>
+                        <p className="card-description">Exclua permanentemente sua conta e todos os dados</p>
+                        <button className="card-action-button delete-button" onClick={handleDeleteAccount}>
+                            Deletar Conta
+                        </button>
                     </div>
                 </div>
             </main>

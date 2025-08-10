@@ -4,7 +4,7 @@ const API_CONFIG = {
   BASE_URL: 'https://backend.usefriofacil.com.br',
   
   // URL base da API de pagamento
-  PAYMENT_BASE_URL: 'https://payment.usefriofacil.com.br',
+  PAYMENT_BASE_URL: import.meta.env.DEV ? 'http://localhost:3001' : 'https://payment.usefriofacil.com.br',
   
   // Endpoints da API do backend
   ENDPOINTS: {

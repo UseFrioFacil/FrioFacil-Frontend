@@ -52,8 +52,19 @@ const Header: FC<HeaderProps> = ({ showOptions = true, showMenu = true, showBack
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
           <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            animate={{ 
+              rotate: 360,
+              y: [0, -2, 0]
+            }}
+            transition={{ 
+              rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+              y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+            }}
+            whileHover={{ 
+              scale: 1.1,
+              rotate: 0,
+              transition: { duration: 0.3 }
+            }}
           >
             <Snowflake className="logo-icon" />
           </motion.div>

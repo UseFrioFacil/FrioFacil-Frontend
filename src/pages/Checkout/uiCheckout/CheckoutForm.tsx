@@ -6,6 +6,7 @@ import { plans } from "../Payment"; // Verifique se o caminho para este import e
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { PAYMENT_API_URLS } from '../../../config/api';
+import LoadingSpinner from '../../../components/Loading/LoadingSpinner.tsx';
 
 // --- FUNÇÕES AUXILIARES ---
 
@@ -190,7 +191,9 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenCompany }) => 
     }
 
     return (
-        <form className="payment-form" onSubmit={handleSubmit}>
+        <>
+            <LoadingSpinner isLoading={loading} />
+            <form className="payment-form" onSubmit={handleSubmit}>
             <div className="plan-info">
                 <h3>Plano {selectedPlan.name}</h3>
                 <p className="price">R$ {selectedPlan.price.toFixed(2)}/mês</p>
@@ -291,6 +294,7 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ selectedPlan, tokenCompany }) => 
             <div className="security-badge"><Lock size={14} /><span>Pagamento seguro e criptografado</span></div>
             <div className="subscription-terms"><p>Ao assinar, você concorda com os termos de serviço. A assinatura será renovada automaticamente a cada mês.</p></div>
         </form>
+        </>
     );
 };
 

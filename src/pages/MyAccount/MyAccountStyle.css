@@ -1,10 +1,3 @@
-/* Reset e configurações básicas */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 /* Container principal */
 .minha-conta-container {
     min-height: 100vh;
@@ -13,18 +6,18 @@
 }
 
 /* Conteúdo principal */
-.main-content {
+.minha-conta-container .main-content {
     flex-grow: 1;
     padding: 2rem 1rem;
 }
 
-.content-wrapper {
+.minha-conta-container .content-wrapper {
     max-width: 64rem;
     margin: 0 auto;
 }
 
 /* Título da página */
-.page-title {
+.minha-conta-container .page-title {
     font-size: 2.25rem;
     font-weight: 700;
     color: #111827;
@@ -33,7 +26,7 @@
 }
 
 /* Card de visão geral do perfil */
-.profile-overview-card {
+.minha-conta-container .profile-overview-card {
     background: white;
     border-radius: 0.75rem;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -48,23 +41,23 @@
 }
 
 @media (min-width: 768px) {
-    .profile-overview-card {
+    .minha-conta-container .profile-overview-card {
         flex-direction: row;
         padding: 2rem;
         gap: 2rem;
     }
 }
 
-.profile-picture-section {
+.minha-conta-container .profile-picture-section {
     position: relative;
 }
 
-.profile-picture-container {
+.minha-conta-container .profile-picture-container {
     position: relative;
     display: inline-block;
 }
 
-.profile-picture {
+.minha-conta-container .profile-picture {
     width: 6rem;
     height: 6rem;
     border-radius: 50%;
@@ -73,11 +66,11 @@
     transition: transform 0.2s ease;
 }
 
-.profile-picture:hover {
+.minha-conta-container .profile-picture:hover {
     transform: scale(1.05);
 }
 
-.edit-picture-button {
+.minha-conta-container .edit-picture-button {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -95,40 +88,40 @@
     box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
-.edit-picture-button:hover {
+.minha-conta-container .edit-picture-button:hover {
     background: #1d4ed8;
     transform: scale(1.1);
     box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
 }
 
-.edit-picture-button:active {
+.minha-conta-container .edit-picture-button:active {
     transform: scale(0.95);
 }
 
-.profile-info {
+.minha-conta-container .profile-info {
     text-align: center;
 }
 
 @media (min-width: 768px) {
-    .profile-info {
+    .minha-conta-container .profile-info {
         text-align: left;
     }
 }
 
-.user-name {
+.minha-conta-container .user-name {
     font-size: 1.5rem;
     font-weight: 700;
     color: #111827;
     margin-bottom: 0.25rem;
 }
 
-.user-email {
+.minha-conta-container .user-email {
     color: #6b7280;
     font-size: 1rem;
 }
 
 /* Grid de gerenciamento da conta */
-.account-grid {
+.minha-conta-container .account-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -136,28 +129,28 @@
 }
 
 @media (min-width: 768px) {
-    .account-grid {
+    .minha-conta-container .account-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
     }
 }
 
 @media (min-width: 1024px) {
-    .account-grid {
+    .minha-conta-container .account-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 2.5rem;
     }
 }
 
 @media (min-width: 1200px) {
-    .account-grid {
+    .minha-conta-container .account-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 3rem;
     }
 }
 
 /* Cards da conta */
-.account-card {
+.minha-conta-container .account-card {
     background: white;
     border-radius: 1rem;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -175,7 +168,7 @@
     transform: translateY(0);
 }
 
-.account-card::before {
+.minha-conta-container .account-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -187,24 +180,24 @@
     transition: transform 0.3s ease;
 }
 
-.account-card:hover {
+.minha-conta-container .account-card:hover {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     transform: translateY(-2px);
     border-color: #e5e7eb;
 }
 
-.account-card:hover::before {
+.minha-conta-container .account-card:hover::before {
     transform: scaleX(1);
 }
 
-.card-header {
+.minha-conta-container .card-header {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
     gap: 1rem;
 }
 
-.card-icon {
+.minha-conta-container .card-icon {
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
@@ -216,66 +209,66 @@
     position: relative;
 }
 
-.card-icon svg {
+.minha-conta-container .card-icon svg {
     width: 1.5rem;
     height: 1.5rem;
     transition: transform 0.3s ease;
 }
 
-.account-card:hover .card-icon svg {
+.minha-conta-container .account-card:hover .card-icon svg {
     transform: scale(1.1);
 }
 
-.personal-icon {
+.minha-conta-container .personal-icon {
     background: linear-gradient(135deg, #dbeafe, #bfdbfe);
     color: #2563eb;
 }
 
-.security-icon {
+.minha-conta-container .security-icon {
     background: linear-gradient(135deg, #dcfce7, #bbf7d0);
     color: #16a34a;
 }
 
-.orders-icon {
+.minha-conta-container .orders-icon {
     background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
     color: #9333ea;
 }
 
-.addresses-icon {
+.minha-conta-container .addresses-icon {
     background: linear-gradient(135deg, #fef3c7, #fde68a);
     color: #d97706;
 }
 
-.settings-icon {
+.minha-conta-container .settings-icon {
     background: linear-gradient(135deg, #fed7aa, #fdba74);
     color: #ea580c;
 }
 
-.support-icon {
+.minha-conta-container .support-icon {
     background: linear-gradient(135deg, #cffafe, #a5f3fc);
     color: #0891b2;
 }
 
-.delete-icon {
+.minha-conta-container .delete-icon {
     background: linear-gradient(135deg, #fee2e2, #fecaca);
     color: #dc2626;
 }
 
-.card-title {
+.minha-conta-container .card-title {
     font-size: 1.25rem;
     font-weight: 600;
     color: #111827;
     margin: 0;
 }
 
-.card-description {
+.minha-conta-container .card-description {
     color: #6b7280;
     margin-bottom: 1.5rem;
     line-height: 1.6;
     font-size: 0.95rem;
 }
 
-.card-action-button {
+.minha-conta-container .card-action-button {
     background: transparent;
     color: #2563eb;
     border: 1px solid #dbeafe;
@@ -293,7 +286,7 @@
     overflow: hidden;
 }
 
-.card-action-button::before {
+.minha-conta-container .card-action-button::before {
     content: '';
     position: absolute;
     top: 0;
@@ -304,7 +297,7 @@
     transition: left 0.5s ease;
 }
 
-.card-action-button:hover {
+.minha-conta-container .card-action-button:hover {
     background: #2563eb;
     color: white;
     border-color: #2563eb;
@@ -312,34 +305,34 @@
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-.card-action-button:hover::before {
+.minha-conta-container .card-action-button:hover::before {
     left: 100%;
 }
 
-.card-action-button:active {
+.minha-conta-container .card-action-button:active {
     transform: translateY(0);
 }
 
 /* Estilo especial para o botão de deletar conta */
-.delete-button {
+.minha-conta-container .delete-button {
     background: #dc2626 !important;
     color: white !important;
     border-color: #dc2626 !important;
     box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
 }
 
-.delete-button:hover {
+.minha-conta-container .delete-button:hover {
     background: #b91c1c !important;
     border-color: #b91c1c !important;
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
-.delete-button:focus {
+.minha-conta-container .delete-button:focus {
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
 }
 
 /* Card especial para deletar conta */
-.delete-account-card {
+.minha-conta-container .delete-account-card {
     border: 2px solid #fecaca;
     background: linear-gradient(135deg, #fef2f2, #ffffff);
     position: relative;
@@ -350,19 +343,19 @@
 }
 
 @media (max-width: 768px) {
-    .delete-account-card {
+    .minha-conta-container .delete-account-card {
         grid-column: span 1;
         min-height: 240px;
         padding: 1.5rem;
     }
 }
 
-.delete-account-card::before {
+.minha-conta-container .delete-account-card::before {
     background: linear-gradient(90deg, #dc2626, #ef4444);
     height: 4px;
 }
 
-.delete-account-card::after {
+.minha-conta-container .delete-account-card::after {
     content: '';
     position: absolute;
     top: 0;
@@ -373,40 +366,40 @@
     pointer-events: none;
 }
 
-.delete-account-card:hover {
+.minha-conta-container .delete-account-card:hover {
     border-color: #fca5a5;
     box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.15), 0 10px 10px -5px rgba(220, 38, 38, 0.08);
     transform: translateY(-3px);
 }
 
-.delete-account-card .card-title {
+.minha-conta-container .delete-account-card .card-title {
     color: #dc2626;
     font-size: 1.5rem;
 }
 
-.delete-account-card .card-description {
+.minha-conta-container .delete-account-card .card-description {
     color: #991b1b;
     font-size: 1rem;
 }
 
-.delete-account-card .card-icon {
+.minha-conta-container .delete-account-card .card-icon {
     width: 4rem;
     height: 4rem;
 }
 
-.delete-account-card .card-icon svg {
+.minha-conta-container .delete-account-card .card-icon svg {
     width: 2rem;
     height: 2rem;
 }
 
-.delete-account-card .card-action-button {
+.minha-conta-container .delete-account-card .card-action-button {
     padding: 0.875rem 1.25rem;
     font-size: 1rem;
     font-weight: 600;
 }
 
 /* Modal styles */
-.modal-overlay {
+.minha-conta-container .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -420,7 +413,7 @@
     animation: fadeIn 0.3s ease;
 }
 
-.modal-content {
+.minha-conta-container .modal-content {
     background: white;
     border-radius: 0.75rem;
     padding: 2rem;
@@ -431,26 +424,26 @@
     animation: slideIn 0.3s ease;
 }
 
-.modal-title {
+.minha-conta-container .modal-title {
     font-size: 1.5rem;
     font-weight: 600;
     color: #111827;
     margin-bottom: 1.5rem;
 }
 
-.form-group {
+.minha-conta-container .form-group {
     margin-bottom: 1.5rem;
 }
 
-.form-group label {
+.minha-conta-container .form-group label {
     display: block;
     font-weight: 500;
     color: #374151;
     margin-bottom: 0.5rem;
 }
 
-.form-group input,
-.form-group select {
+.minha-conta-container .form-group input,
+.minha-conta-container .form-group select {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #d1d5db;
@@ -459,18 +452,18 @@
     transition: border-color 0.2s ease;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.minha-conta-container .form-group input:focus,
+.minha-conta-container .form-group select:focus {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-.password-input {
+.minha-conta-container .password-input {
     position: relative;
 }
 
-.password-toggle {
+.minha-conta-container .password-toggle {
     position: absolute;
     right: 0.75rem;
     top: 50%;
@@ -482,18 +475,18 @@
     padding: 0.25rem;
 }
 
-.password-toggle:hover {
+.minha-conta-container .password-toggle:hover {
     color: #374151;
 }
 
-.modal-actions {
+.minha-conta-container .modal-actions {
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
     margin-top: 2rem;
 }
 
-.modal-button {
+.minha-conta-container .modal-button {
     padding: 0.75rem 1.5rem;
     border-radius: 0.375rem;
     font-weight: 500;
@@ -502,31 +495,31 @@
     border: none;
 }
 
-.modal-button.cancel {
+.minha-conta-container .modal-button.cancel {
     background: #f3f4f6;
     color: #374151;
 }
 
-.modal-button.cancel:hover {
+.minha-conta-container .modal-button.cancel:hover {
     background: #e5e7eb;
 }
 
-.modal-button.confirm {
+.minha-conta-container .modal-button.confirm {
     background: #2563eb;
     color: white;
 }
 
-.modal-button.confirm:hover {
+.minha-conta-container .modal-button.confirm:hover {
     background: #1d4ed8;
 }
 
-.modal-button.confirm:disabled {
+.minha-conta-container .modal-button.confirm:disabled {
     background: #9ca3af;
     cursor: not-allowed;
 }
 
 /* Error container */
-.error-container {
+.minha-conta-container .error-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -536,24 +529,24 @@
     padding: 2rem;
 }
 
-.error-icon {
+.minha-conta-container .error-icon {
     color: #ef4444;
     margin-bottom: 1rem;
 }
 
-.error-container h2 {
+.minha-conta-container .error-container h2 {
     font-size: 1.5rem;
     font-weight: 600;
     color: #111827;
     margin-bottom: 0.5rem;
 }
 
-.error-container p {
+.minha-conta-container .error-container p {
     color: #6b7280;
     margin-bottom: 1.5rem;
 }
 
-.error-container button {
+.minha-conta-container .error-container button {
     background: #2563eb;
     color: white;
     padding: 0.75rem 1.5rem;
@@ -564,7 +557,7 @@
     transition: background-color 0.2s;
 }
 
-.error-container button:hover {
+.minha-conta-container .error-container button:hover {
     background: #1d4ed8;
 }
 
@@ -600,223 +593,214 @@
     }
 }
 
-/* Aplicar animações com delays escalonados - REMOVIDO para evitar piscamento */
-/* .account-card:nth-child(1) { animation-delay: 0.1s; }
-.account-card:nth-child(2) { animation-delay: 0.2s; }
-.account-card:nth-child(3) { animation-delay: 0.3s; }
-.account-card:nth-child(4) { animation-delay: 0.4s; }
-.account-card:nth-child(5) { animation-delay: 0.5s; }
-.account-card:nth-child(6) { animation-delay: 0.6s; }
-.account-card:nth-child(7) { animation-delay: 0.7s; } */
-
 /* Responsividade melhorada */
 @media (max-width: 768px) {
-    .main-content {
+    .minha-conta-container .main-content {
         padding: 1rem 0.75rem;
     }
     
-    .page-title {
+    .minha-conta-container .page-title {
         font-size: 1.75rem;
         margin-bottom: 1.5rem;
     }
     
-    .profile-overview-card {
+    .minha-conta-container .profile-overview-card {
         padding: 1.25rem;
         margin-bottom: 1.5rem;
     }
     
-    .profile-picture {
+    .minha-conta-container .profile-picture {
         width: 5rem;
         height: 5rem;
     }
     
-    .user-name {
+    .minha-conta-container .user-name {
         font-size: 1.25rem;
     }
     
-    .account-grid {
+    .minha-conta-container .account-grid {
         gap: 1.5rem;
         margin-bottom: 2rem;
     }
     
-    .account-card {
+    .minha-conta-container .account-card {
         padding: 1.25rem;
         min-height: 200px;
     }
     
-    .delete-account-card {
+    .minha-conta-container .delete-account-card {
         grid-column: span 1;
         min-height: 220px;
         padding: 1.25rem;
     }
     
-    .delete-account-card .card-title {
+    .minha-conta-container .delete-account-card .card-title {
         font-size: 1.25rem;
     }
     
-    .delete-account-card .card-description {
+    .minha-conta-container .delete-account-card .card-description {
         font-size: 0.9rem;
     }
     
-    .delete-account-card .card-icon {
+    .minha-conta-container .delete-account-card .card-icon {
         width: 3rem;
         height: 3rem;
     }
     
-    .delete-account-card .card-icon svg {
+    .minha-conta-container .delete-account-card .card-icon svg {
         width: 1.5rem;
         height: 1.5rem;
     }
     
-    .delete-account-card .card-action-button {
+    .minha-conta-container .delete-account-card .card-action-button {
         padding: 0.75rem 1rem;
         font-size: 0.9rem;
     }
     
-    .card-header {
+    .minha-conta-container .card-header {
         flex-direction: column;
         text-align: center;
         gap: 0.75rem;
         margin-bottom: 1rem;
     }
     
-    .card-icon {
+    .minha-conta-container .card-icon {
         width: 2.5rem;
         height: 2.5rem;
         margin: 0;
     }
     
-    .card-icon svg {
+    .minha-conta-container .card-icon svg {
         width: 1.25rem;
         height: 1.25rem;
     }
     
-    .card-title {
+    .minha-conta-container .card-title {
         font-size: 1.125rem;
     }
     
-    .card-description {
+    .minha-conta-container .card-description {
         font-size: 0.85rem;
         margin-bottom: 1.25rem;
     }
     
-    .card-action-button {
+    .minha-conta-container .card-action-button {
         padding: 0.625rem 0.875rem;
         font-size: 0.85rem;
     }
 }
 
 @media (max-width: 480px) {
-    .main-content {
+    .minha-conta-container .main-content {
         padding: 0.75rem 0.5rem;
     }
     
-    .page-title {
+    .minha-conta-container .page-title {
         font-size: 1.5rem;
     }
     
-    .profile-overview-card {
+    .minha-conta-container .profile-overview-card {
         padding: 1rem;
     }
     
-    .profile-picture {
+    .minha-conta-container .profile-picture {
         width: 4rem;
         height: 4rem;
     }
     
-    .user-name {
+    .minha-conta-container .user-name {
         font-size: 1.125rem;
     }
     
-    .user-email {
+    .minha-conta-container .user-email {
         font-size: 0.9rem;
     }
     
-    .account-card {
+    .minha-conta-container .account-card {
         padding: 1rem;
         min-height: 180px;
     }
     
-    .delete-account-card {
+    .minha-conta-container .delete-account-card {
         padding: 1rem;
         min-height: 200px;
     }
     
-    .delete-account-card .card-title {
+    .minha-conta-container .delete-account-card .card-title {
         font-size: 1.125rem;
     }
     
-    .delete-account-card .card-description {
+    .minha-conta-container .delete-account-card .card-description {
         font-size: 0.85rem;
     }
     
-    .delete-account-card .card-icon {
+    .minha-conta-container .delete-account-card .card-icon {
         width: 2.5rem;
         height: 2.5rem;
     }
     
-    .delete-account-card .card-icon svg {
+    .minha-conta-container .delete-account-card .card-icon svg {
         width: 1.25rem;
         height: 1.25rem;
     }
     
-    .delete-account-card .card-action-button {
+    .minha-conta-container .delete-account-card .card-action-button {
         padding: 0.625rem 0.875rem;
         font-size: 0.85rem;
     }
     
-    .card-icon {
+    .minha-conta-container .card-icon {
         width: 2rem;
         height: 2rem;
     }
     
-    .card-icon svg {
+    .minha-conta-container .card-icon svg {
         width: 1rem;
         height: 1rem;
     }
     
-    .card-title {
+    .minha-conta-container .card-title {
         font-size: 1rem;
     }
     
-    .card-description {
+    .minha-conta-container .card-description {
         font-size: 0.8rem;
     }
     
-    .card-action-button {
+    .minha-conta-container .card-action-button {
         padding: 0.5rem 0.75rem;
         font-size: 0.8rem;
     }
     
-    .modal-content {
+    .minha-conta-container .modal-content {
         padding: 1.5rem;
         margin: 1rem;
     }
     
-    .modal-actions {
+    .minha-conta-container .modal-actions {
         flex-direction: column;
     }
     
-    .modal-button {
+    .minha-conta-container .modal-button {
         width: 100%;
     }
 }
 
 /* Prevenir piscamento em dispositivos com preferência de movimento reduzido */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    .minha-conta-container *,
+    .minha-conta-container *::before,
+    .minha-conta-container *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
     
-    .account-card {
+    .minha-conta-container .account-card {
         animation: none;
     }
     
-    .profile-overview-card {
+    .minha-conta-container .profile-overview-card {
         animation: none;
     }
 }
