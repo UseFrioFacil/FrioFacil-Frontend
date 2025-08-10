@@ -4,8 +4,6 @@ import { toast } from 'react-toastify';
 import { 
     User, 
     AlertTriangle, 
-    Eye,
-    EyeOff,
     Shield,
     LogOut,
     Edit3,
@@ -44,20 +42,7 @@ export default function MinhaContaPage() {
     // Estados dos dados
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
-    // Estados dos modais
-    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
-    // Estados para formulários
-    const [passwordData, setPasswordData] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-    });
-    const [showPasswords, setShowPasswords] = useState({
-        current: false,
-        new: false,
-        confirm: false
-    });
 
     // Dados mockados para demonstração
     useEffect(() => {
@@ -108,11 +93,11 @@ export default function MinhaContaPage() {
     };
 
     const handleEditProfile = () => {
-        toast.info('Funcionalidade de edição será implementada em breve!');
+        navigate('/minhaconta/dados-pessoais');
     };
 
     const handleChangePassword = () => {
-        setIsPasswordModalOpen(true);
+        navigate('/seguranca');
     };
 
     const handleViewOrders = () => {
@@ -307,92 +292,7 @@ export default function MinhaContaPage() {
                 </div>
             </main>
 
-            {/* Modal para alterar senha */}
-            {isPasswordModalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h3 className="modal-title">Alterar Senha</h3>
-                        <div className="form-group">
-                            <label>Senha Atual</label>
-                            <div className="password-input">
-                                <input 
-                                    type={showPasswords.current ? "text" : "password"}
-                                    value={passwordData.currentPassword}
-                                    onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
-                                    placeholder="Digite sua senha atual"
-                                />
-                                <button 
-                                    type="button"
-                                    className="password-toggle"
-                                    onClick={() => setShowPasswords(prev => ({ ...prev, current: !prev.current }))}
-                                >
-                                    {showPasswords.current ? <EyeOff size={16} /> : <Eye size={16} />}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label>Nova Senha</label>
-                            <div className="password-input">
-                                <input 
-                                    type={showPasswords.new ? "text" : "password"}
-                                    value={passwordData.newPassword}
-                                    onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
-                                    placeholder="Digite a nova senha"
-                                />
-                                <button 
-                                    type="button"
-                                    className="password-toggle"
-                                    onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
-                                >
-                                    {showPasswords.new ? <EyeOff size={16} /> : <Eye size={16} />}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label>Confirmar Nova Senha</label>
-                            <div className="password-input">
-                                <input 
-                                    type={showPasswords.confirm ? "text" : "password"}
-                                    value={passwordData.confirmPassword}
-                                    onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                                    placeholder="Confirme a nova senha"
-                                />
-                                <button 
-                                    type="button"
-                                    className="password-toggle"
-                                    onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
-                                >
-                                    {showPasswords.confirm ? <EyeOff size={16} /> : <Eye size={16} />}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="modal-actions">
-                            <button 
-                                className="modal-button cancel" 
-                                onClick={() => { 
-                                    setIsPasswordModalOpen(false); 
-                                    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-                                    setShowPasswords({ current: false, new: false, confirm: false });
-                                }}
-                            >
-                                Cancelar
-                            </button>
-                            <button 
-                                className="modal-button confirm" 
-                                onClick={() => {
-                                    toast.success('Senha alterada com sucesso!');
-                                    setIsPasswordModalOpen(false);
-                                    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-                                    setShowPasswords({ current: false, new: false, confirm: false });
-                                }}
-                                disabled={!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword}
-                            >
-                                Alterar Senha
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+
         </div>
     );
 }

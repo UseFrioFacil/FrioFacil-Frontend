@@ -15,6 +15,8 @@ import HomePage from '../pages/Home/HomePage.tsx';
 import Cadastro from '../pages/Register/Register.tsx'
 import ProtectedRoute from "../components/ProtectedRoute.tsx"
 import MinhaContaPage from '../pages/MyAccount/MyAccount.tsx';
+import SecurityPage from '../pages/MyAccount/Security/SecurityPage.tsx';
+import PersonalDataPage from '../pages/MyAccount/PersonalData/PersonalDataPage.tsx';
 
 // Componente interno para usar useLocation
 function AnimatedRoutes() {
@@ -61,6 +63,16 @@ function AnimatedRoutes() {
         <Route path='/minhaconta' element={
           <PageTransition>
             <ProtectedRoute><MinhaContaPage/></ProtectedRoute>
+          </PageTransition>
+        }/>
+        <Route path='/seguranca' element={
+          <PageTransition>
+            <ProtectedRoute><SecurityPage/></ProtectedRoute>
+          </PageTransition>
+        }/>
+        <Route path='/minhaconta/dados-pessoais' element={
+          <PageTransition>
+            <ProtectedRoute><PersonalDataPage/></ProtectedRoute>
           </PageTransition>
         }/>
         <Route path='/cadastrarempresa' element={
